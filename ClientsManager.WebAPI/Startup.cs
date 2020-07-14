@@ -33,7 +33,7 @@ namespace ClientsManager.WebAPI
             //register the custom action Validation Filters Middleware
             services.AddScoped<TimeFrameValidationFilter>();
             services.AddScoped<IdValidator>();
-
+            services.AddScoped<EmployeeIdValidator>();
 
             services.AddControllers();
 
@@ -45,8 +45,11 @@ namespace ClientsManager.WebAPI
                 options.UseSqlServer(_configuration["connectionstring"])
             );
 
-            //Add DI 
+            //Add Repositories DI dependencies 
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped<ITimeFrameRepository, TimeFrameRepository>();
+
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

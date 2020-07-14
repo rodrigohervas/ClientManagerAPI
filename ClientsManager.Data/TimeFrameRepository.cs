@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -61,6 +62,11 @@ namespace ClientsManager.Data
         public async Task<TimeFrame> GetTimeFrameByIdAsync(int id)
         {
             return await _context.TimeFrames.FindAsync(id);
+        }
+
+        public async Task<IEnumerable<TimeFrame>> GetByAsync(Expression<Func<TimeFrame, bool>> searchCriteria)
+        {
+            return await _context.TimeFrames.Where(searchCriteria).ToListAsync();
         }
 
         /// <summary>

@@ -1,6 +1,7 @@
 ﻿using ClientsManager.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace ClientsManager.Data
@@ -13,6 +14,7 @@ namespace ClientsManager.Data
         Task<IEnumerable<TimeFrame>> GetAllTimeFramesAsync();
         Task<IEnumerable<TimeFrame>> GetTimeFramesByEmployeeIdAsync(int employee_id);
         Task<TimeFrame> GetTimeFrameByIdAsync(int id);
+        Task<IEnumerable<TimeFrame>> GetByAsync(Expression<Func<TimeFrame, bool>> searchCriteria);
         Task<TimeFrame> AddTimeFrameAsync(TimeFrame timeFrame);
         Task<TimeFrame> UpdateTimeFrameAsync(TimeFrame timeFrame);
         Task<int> DeleteTimeFrameAsync(int id);
