@@ -19,20 +19,17 @@ namespace ClientsManager.WebAPI.Controllers
     public class TimeFramesController : ControllerBase
     {
         /// <summary>
-        /// ITimeFrameRepository for DI
+        /// IGenericRepository<TimeFrame> for DI
         /// </summary>
-        private ITimeFrameRepository _timeFrameRepository = null;
         private IGenericRepository<TimeFrame> _genericRepository;
 
         /// <summary>
         /// DI constructor injection of Respository
         /// </summary>
         /// <param name="timeFrameRepository">ITimeFrameRepository type</param>
-        public TimeFramesController(ITimeFrameRepository timeFrameRepository, IGenericRepository<TimeFrame> genericRepository)
+        public TimeFramesController(IGenericRepository<TimeFrame> genericRepository)
         {
-            _timeFrameRepository = timeFrameRepository;
             _genericRepository = genericRepository;
-
         }
 
         /// <summary>

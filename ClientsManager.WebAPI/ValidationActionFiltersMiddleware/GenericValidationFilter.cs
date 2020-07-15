@@ -12,7 +12,7 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
     {
         public void OnActionExecuting(ActionExecutingContext context)
         {
-            var param = context.ActionArguments.FirstOrDefault(p => p.Value is IEntity);
+            var param = context.ActionArguments.FirstOrDefault(p => p.Value is object);
 
             if (param.Value == null)
             {
