@@ -13,6 +13,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using ClientsManager.Data;
 using ClientsManager.WebAPI.ValidationActionFiltersMiddleware;
+using ClientsManager.WebAPI.ErrorHandlerMiddleware;
+using Microsoft.AspNetCore.Http;
 
 namespace ClientsManager.WebAPI
 {
@@ -36,6 +38,11 @@ namespace ClientsManager.WebAPI
             services.AddScoped<EmployeeIdValidator>();
 
             services.AddControllers();
+                //.ConfigureApiBehaviorOptions(options => 
+                //{
+                //    //Disable Automatic 400 statuscode error response
+                //    options.SuppressModelStateInvalidFilter = true;
+                //});
 
             //Get API Key from Secrets Manager
             _apiKey = _configuration["ServiceApiKey"];
@@ -48,22 +55,26 @@ namespace ClientsManager.WebAPI
             //Add Repositories DI dependencies 
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped<ITimeFrameRepository, TimeFrameRepository>();
-
-            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.ConfigureExceptionHandler();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-            else 
+            else
             {
                 //error middleware to catch and route errors when not in dev env
                 app.UseExceptionHandler("/error");
             }
+
+            //use custom extension of Exception Handler Middleware
+            //app.ConfigureExceptionHandler(logger);
+            app.ConfigureExceptionHandler();
 
             app.UseHttpsRedirection();
 
@@ -73,6 +84,11 @@ namespace ClientsManager.WebAPI
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapGet("/", async context =>
+                {
+                    await context.Response.WriteAsync("Welcome to ClientsManager API");
+                });
+
                 endpoints.MapControllers();
             });
         }

@@ -85,7 +85,7 @@ namespace ClientsManager.WebAPI.Controllers
         /// <param name="employee_id">Integer - TimeFrame employee_id identifier in DB</param>
         /// <returns>Task<ActionResult<IEnumerable<TimeFrame>>> - A list of TimeFrames</returns>
         //GET: api/TimeFrames/employee/1
-        [HttpGet("employee/{employee_id}")]
+        [HttpGet("employees/{employee_id}")]
         [ServiceFilter(typeof(EmployeeIdValidator))]
         public async Task<ActionResult<IEnumerable<TimeFrame>>> GetTimeFramesByEmployeeIdAsync(int employee_id)
         {

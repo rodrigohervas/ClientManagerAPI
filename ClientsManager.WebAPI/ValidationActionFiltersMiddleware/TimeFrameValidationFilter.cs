@@ -38,6 +38,12 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
                 return;
             }
 
+            if (timeFrame.Employee_Id.GetTypeCode() != TypeCode.Int32)
+            {
+                context.Result = new BadRequestObjectResult("Employee_Id must be a valid number");
+                return;
+            }
+
             //Validate Title
             if (String.IsNullOrEmpty(timeFrame.Title))
             {
