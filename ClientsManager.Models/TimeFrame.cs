@@ -14,6 +14,7 @@ namespace ClientsManager.Models
     {
         public int Id { get; set; }
 
+        //FK from Employee
         public int Employee_Id { get; set; }
 
         public string Title { get; set; }
@@ -25,5 +26,10 @@ namespace ClientsManager.Models
         public DateTime Start_DateTime { get; set; }
 
         public DateTime Finish_DateTime { get; set; }
+
+
+
+        //prop for relationship with Employee
+        public Employee Employee { get; set; }
     }
 }

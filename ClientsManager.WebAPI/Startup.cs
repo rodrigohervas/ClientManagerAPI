@@ -38,11 +38,6 @@ namespace ClientsManager.WebAPI
             services.AddScoped<EmployeeIdValidator>();
 
             services.AddControllers();
-                //.ConfigureApiBehaviorOptions(options => 
-                //{
-                //    //Disable Automatic 400 statuscode error response
-                //    options.SuppressModelStateInvalidFilter = true;
-                //});
 
             //Get API Key from Secrets Manager
             _apiKey = _configuration["ServiceApiKey"];
@@ -68,7 +63,7 @@ namespace ClientsManager.WebAPI
             }
             else
             {
-                //error middleware to catch and route errors when not in dev env
+                //error middleware
                 app.UseExceptionHandler("/error");
             }
 
