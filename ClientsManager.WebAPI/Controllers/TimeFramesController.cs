@@ -47,7 +47,7 @@ namespace ClientsManager.WebAPI.Controllers
 
                 if (!timeFrames.Any())
                 {
-                    return NotFound("No data was found");
+                    return NotFound("No timeframes were found");
                 }
 
                 return Ok(timeFrames);
@@ -155,7 +155,7 @@ namespace ClientsManager.WebAPI.Controllers
                 return NotFound("No TimeFrame was updated");
             }
 
-            var updatedTimeFrame = _genericRepository.GetOneByAsync(tf => tf.Id == timeFrame.Id);
+            var updatedTimeFrame = await _genericRepository.GetOneByAsync(tf => tf.Id == timeFrame.Id);
 
             return Ok(updatedTimeFrame);
         }

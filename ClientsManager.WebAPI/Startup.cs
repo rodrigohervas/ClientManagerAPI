@@ -15,6 +15,7 @@ using ClientsManager.Data;
 using ClientsManager.WebAPI.ValidationActionFiltersMiddleware;
 using ClientsManager.WebAPI.ErrorHandlerMiddleware;
 using Microsoft.AspNetCore.Http;
+using AutoMapper;
 
 namespace ClientsManager.WebAPI
 {
@@ -38,6 +39,9 @@ namespace ClientsManager.WebAPI
             services.AddScoped<EmployeeIdValidator>();
 
             services.AddControllers();
+
+            //Configure AutoMapper for POCO to DTO mapping
+            services.AddAutoMapper(typeof(Startup));
 
             //Get API Key from Secrets Manager
             _apiKey = _configuration["ServiceApiKey"];

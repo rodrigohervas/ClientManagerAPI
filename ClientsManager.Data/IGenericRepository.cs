@@ -13,6 +13,7 @@ namespace ClientsManager.Data
         Task<int> CountAsync();
         Task<IEnumerable<T>> GetByAsync(Expression<Func<T, bool>> searchCriteria);
         Task<T> GetOneByAsync(Expression<Func<T, bool>> searchCriteria);
+        Task<T> GetOneByWithRelatedDataAsync(Expression<Func<T, bool>> searchCriteria, Expression<Func<T, object>> includeCriteria);
         Task<int> UpdateTAsync(T obj);
     }
 }

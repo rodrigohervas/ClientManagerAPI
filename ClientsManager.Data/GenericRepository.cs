@@ -62,6 +62,15 @@ namespace ClientsManager.Data
             return await _context.Set<T>().Where(searchCriteria).FirstOrDefaultAsync();
         }
 
+
+        public async Task<T> GetOneByWithRelatedDataAsync(Expression<Func<T, bool>> searchCriteria, Expression<Func<T, object>> includeCriteria)
+        {
+            return await _context.Set<T>()
+                                        .Where(searchCriteria)
+                                        .Include(includeCriteria)
+                                        .FirstOrDefaultAsync();
+        }
+
         /// <summary>
         /// Adds an object of type T to the DB
         /// </summary>
