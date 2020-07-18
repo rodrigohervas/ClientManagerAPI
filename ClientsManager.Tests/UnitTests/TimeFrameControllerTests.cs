@@ -1,8 +1,11 @@
-﻿using ClientsManager.Data;
+﻿using AutoMapper;
+using ClientsManager.Data;
 using ClientsManager.Models;
 using ClientsManager.Tests.IntegrationTests;
 using ClientsManager.WebAPI;
+using ClientsManager.WebAPI.AutoMapperProfiles;
 using ClientsManager.WebAPI.Controllers;
+using ClientsManager.WebAPI.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Moq;
@@ -19,11 +22,18 @@ namespace ClientsManager.Tests.UnitTests
     {
         private readonly IEnumerable<TimeFrame> _timeFrames;
         private readonly Mock<IGenericRepository<TimeFrame>> _mockRepository;
+        private readonly IMapper _mapper;
+        
 
         public TimeFrameControllerTests()
         {
             _mockRepository = new Mock<IGenericRepository<TimeFrame>>();
             _timeFrames = TimeFrameData.GetTestTimeFrames();
+
+            //AutoMapper Configuration
+            var profiles = new AutoMapperProfiles();
+            var configuration = new MapperConfiguration(config => config.AddProfile(profiles));
+            _mapper = new Mapper(configuration);
         }
 
         //Task<ActionResult<IEnumerable<TimeFrame>>> GetAllTimeFramesAsync
@@ -33,9 +43,9 @@ namespace ClientsManager.Tests.UnitTests
             //specify the mockRepo return
             _mockRepository.Setup(repo => repo.GetAllAsync()).ReturnsAsync(_timeFrames);
 
-
             //instantiate the controller, and call the method
-            var controller = new TimeFramesController(_mockRepository.Object);
+            //var controller = new TimeFramesController(_mockRepository.Object, _mapper.Object);
+            var controller = new TimeFramesController(_mockRepository.Object, _mapper);
 
             //Call the SUT method
             var result = await controller.GetAllTimeFramesAsync();
@@ -45,7 +55,21 @@ namespace ClientsManager.Tests.UnitTests
             var actionResult = Assert.IsType<ActionResult<IEnumerable<TimeFrame>>>(result);
             var objResult = Assert.IsType<OkObjectResult>(result.Result);
             var timeFramesList = objResult.Value;
-            Assert.Equal(_timeFrames, timeFramesList);
+            IEnumerable<TimeFrame> dtos = _mapper.Map<IEnumerable<TimeFrame>>(timeFramesList);
+
+            var expected = _timeFrames.FirstOrDefault();
+            var actual = dtos.FirstOrDefault();
+
+            Assert.Equal(expected.Id, actual.Id);
+            Assert.Equal(expected.Title, actual.Title);
+            Assert.Equal(expected.Description, actual.Description);
+            Assert.Equal(expected.Price, actual.Price);
+            Assert.Equal(expected.Start_DateTime, actual.Start_DateTime);
+            Assert.Equal(expected.Finish_DateTime, actual.Finish_DateTime);
+
+            Assert.Equal(_timeFrames.Count(), dtos.Count());
+
+            //TODO: add FluentAssertions package to assert collections
         }
 
 
@@ -62,7 +86,7 @@ namespace ClientsManager.Tests.UnitTests
                                                     .ReturnsAsync(_timeFramesOfEmployee);
 
             //instantiate System Under Test
-            var controller = new TimeFramesController(_mockRepository.Object); ;
+            var controller = new TimeFramesController(_mockRepository.Object, _mapper); ;
 
             //call SUT method
             var actionResult = await controller.GetTimeFramesByEmployeeIdAsync(employee_id);
@@ -72,8 +96,22 @@ namespace ClientsManager.Tests.UnitTests
 
             //Assert object in actionresult
             var result = Assert.IsType<OkObjectResult>(actionResult.Result);
-            var actual = (IEnumerable<TimeFrame>)(result.Value);
-            Assert.Equal(_timeFramesOfEmployee, actual);
+            var actualTimeFrames = (IEnumerable<TimeFrameDTO>)(result.Value);
+            IEnumerable<TimeFrame> dtos = _mapper.Map<IEnumerable<TimeFrame>>(actualTimeFrames);
+
+            var expected = _timeFramesOfEmployee.FirstOrDefault();
+            var actual = dtos.FirstOrDefault();
+
+            Assert.Equal(expected.Id, actual.Id);
+            Assert.Equal(expected.Title, actual.Title);
+            Assert.Equal(expected.Description, actual.Description);
+            Assert.Equal(expected.Price, actual.Price);
+            Assert.Equal(expected.Start_DateTime, actual.Start_DateTime);
+            Assert.Equal(expected.Finish_DateTime, actual.Finish_DateTime);
+
+            Assert.Equal(_timeFramesOfEmployee.Count(), dtos.Count());
+
+            //TODO: add FluentAssertions package to assert collections
         }
 
 
@@ -89,7 +127,7 @@ namespace ClientsManager.Tests.UnitTests
             _mockRepository.Setup(repo => repo.GetOneByAsync(tf => tf.Id == id)).ReturnsAsync(timeFrame);
 
             //instantiate the controller, and call the method
-            var controller = new TimeFramesController(_mockRepository.Object);
+            var controller = new TimeFramesController(_mockRepository.Object, _mapper);
 
             //Call the SUT method
             //returns ActionResult<TimeFrame> type
@@ -101,11 +139,16 @@ namespace ClientsManager.Tests.UnitTests
             //convert ActionResult to OkObjectResult to get its Value: a TimeFrame type
             var result = Assert.IsType<OkObjectResult>(actionResult.Result);
             //get the ObjectResult.Value (the TimeFrame)
-            var actual = result.Value;
-            Assert.Equal(timeFrame, actual);
+            var actualTimeFrame = result.Value;
+            
+            TimeFrame actual = _mapper.Map<TimeFrame>(actualTimeFrame);
 
-            var resultTimeFrame = (TimeFrame)actual;
-            Assert.Equal(timeFrame.Id, resultTimeFrame.Id);
+            Assert.Equal(timeFrame.Id, actual.Id);
+            Assert.Equal(timeFrame.Title, actual.Title);
+            Assert.Equal(timeFrame.Description, actual.Description);
+            Assert.Equal(timeFrame.Price, actual.Price);
+            Assert.Equal(timeFrame.Start_DateTime, actual.Start_DateTime);
+            Assert.Equal(timeFrame.Finish_DateTime, actual.Finish_DateTime);
         }
 
         //Test public async Task<ActionResult<TimeFrame>> AddTimeFrameAsync(TimeFrame timeFrame)
@@ -129,7 +172,7 @@ namespace ClientsManager.Tests.UnitTests
 
 
             //instantiate the controller, passing the repo object
-            var controller = new TimeFramesController(_mockRepository.Object);
+            var controller = new TimeFramesController(_mockRepository.Object, _mapper);
 
             //Call the SUT method
             //returns ActionResult<TimeFrame> type
@@ -156,7 +199,7 @@ namespace ClientsManager.Tests.UnitTests
             _mockRepository.Setup(repo => repo.AddTAsync(null)).ReturnsAsync(0);
 
             //instantiate the controller, and call the method
-            var controller = new TimeFramesController(_mockRepository.Object);
+            var controller = new TimeFramesController(_mockRepository.Object, _mapper);
 
             //Call the SUT method
             //returns ActionResult<TimeFrame> type

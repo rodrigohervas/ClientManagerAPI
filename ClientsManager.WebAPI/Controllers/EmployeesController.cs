@@ -26,6 +26,10 @@ namespace ClientsManager.WebAPI.Controllers
         }
 
 
+        /// <summary>
+        /// Get all Employees
+        /// </summary>
+        /// <returns>Task<ActionResult<IEnumerable<Employee>>> - A list of all the Employees</returns>
         // GET: api/employees
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Employee>>> GetAllEmployeesAsync()
@@ -42,6 +46,11 @@ namespace ClientsManager.WebAPI.Controllers
             return Ok(employeeList);
         }
 
+        /// <summary>
+        /// Gets an Employee for a provided id
+        /// </summary>
+        /// <param name="id">int - the Employee id</param>
+        /// <returns>Task<ActionResult<Employee>> -  An Employee object</returns>
         // GET: api/employees/5
         [HttpGet("{id}")]
         [ServiceFilter(typeof(IdValidator))]
@@ -55,12 +64,19 @@ namespace ClientsManager.WebAPI.Controllers
                 return NotFound("No data was found for the id");
             }
 
-            return Ok(employee);
+            EmployeeWithTimeFramesDTO employeeTF = _mapper.Map<EmployeeWithTimeFramesDTO>(employee);
+
+            return Ok(employeeTF);
         }
 
+        /// <summary>
+        /// Gets a list of Employees for a provided employee type
+        /// </summary>
+        /// <param name="employeetype_id">int - The EmployeeType id</param>
+        /// <returns>Task<ActionResult<IEnumerable<Employee>>> - A List of Employees</returns>
         // GET: api/employees/employeetype/1
-        [HttpGet("/employeetype/{employeetype_id}")]
-        [ServiceFilter(typeof(IdValidator))]
+        [HttpGet("employeetype/{employeetype_id:int}")]
+        [ServiceFilter(typeof(EmployeeTypeIdValidator))]
         public async Task<ActionResult<IEnumerable<Employee>>> GetEmployeesByTypeAsync(int employeetype_id)
         {
             var employees = await _genericRepository.GetByAsync(employee => employee.EmployeeType_Id == employeetype_id);
@@ -70,13 +86,19 @@ namespace ClientsManager.WebAPI.Controllers
                 return NotFound("No Employees were found");
             }
 
-            return Ok(employees);
+            IEnumerable<EmployeeDTO> employeeList = _mapper.Map<IEnumerable<EmployeeDTO>>(employees);
+
+            return Ok(employeeList);
         }
 
 
-        // POST: api/employees/
-        [HttpPost("{Employee}")]
-        [ValidateAntiForgeryToken]
+        /// <summary>
+        /// Creates an Employee
+        /// </summary>
+        /// <param name="employee"> Employee - An Employee object</param>
+        /// <returns>Task<ActionResult<Employee>> - The created Employee</returns>
+        // POST: api/employees
+        [HttpPost]
         [ServiceFilter(typeof(EmployeeValidationFilter))]
         public async Task<ActionResult<Employee>> AddEmployeeAsync(Employee employee)
         {
@@ -91,14 +113,21 @@ namespace ClientsManager.WebAPI.Controllers
                                                         emp.Name == employee.Name && 
                                                         emp.Position == employee.Position);
 
-            return Created("", newEmployee);
+            EmployeeDTO employeeDto = _mapper.Map<EmployeeDTO>(newEmployee);
+
+            return Created("", employeeDto);
         }
 
-        
+
+        /// <summary>
+        /// Updates an existing Employee
+        /// </summary>
+        /// <param name="id"> int - the Employee id</param>
+        /// <param name="employee"> Employee - An Employee object</param>
+        /// <returns>Task<ActionResult<Employee>> - The updated Employee</returns>
         // PUT/PATCH: api/employees/id
-        [HttpPut("{id}")]
-        [HttpPatch("{id}")]
-        [ValidateAntiForgeryToken]
+        [HttpPut("{id:int}")]
+        [HttpPatch("{id:int}")]
         [ServiceFilter(typeof(EmployeeValidationFilter))]
         public async Task<ActionResult<Employee>> UpdateEmployeeAsync(int id, Employee employee)
         {
@@ -111,15 +140,20 @@ namespace ClientsManager.WebAPI.Controllers
 
             var updatedEmployee = await _genericRepository.GetOneByAsync(emp => emp.Id == employee.Id);
 
-            return Ok(updatedEmployee);
+            EmployeeDTO updatedEmployeeDto = _mapper.Map<EmployeeDTO>(updatedEmployee);
+
+            return Ok(updatedEmployeeDto);
         }
 
-        
+        /// <summary>
+        /// Deletes an existing Employee
+        /// </summary>
+        /// <param name="employee"> int - The Employee id</param>
+        /// <returns>Task<ActionResult<int>> - The number of Employees deleted</returns>
         // DELETE: employees/id
-        [HttpDelete("{id}")]
-        [ValidateAntiForgeryToken]
+        [HttpDelete("{id:int}")]
         [ServiceFilter(typeof(IdValidator))]
-        public async Task<ActionResult<Employee>> Delete(int id)
+        public async Task<ActionResult<int>> Delete(int id)
         {
             Employee employee = await _genericRepository.GetOneByAsync(emp => emp.Id == id);
 

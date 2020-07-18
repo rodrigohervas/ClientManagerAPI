@@ -8,12 +8,18 @@ using System.Threading.Tasks;
 
 namespace ClientsManager.WebAPI.AutoMapperProfiles
 {
-    public class EmployeeProfile: Profile
+    public class AutoMapperProfiles: Profile
     {
 
-        public EmployeeProfile()
+        public AutoMapperProfiles()
         {
             CreateMap<Employee, EmployeeDTO>();
+
+            CreateMap<TimeFrame, TimeFrameDTO>();
+
+            CreateMap<Employee, EmployeeWithTimeFramesDTO>();
+
+            CreateMap<TimeFrameDTO, TimeFrame>();
         }
     }
 }

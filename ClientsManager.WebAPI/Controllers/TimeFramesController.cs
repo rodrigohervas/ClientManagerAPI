@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using AutoMapper;
 using ClientsManager.Data;
 using ClientsManager.Models;
+using ClientsManager.WebAPI.DTOs;
 using ClientsManager.WebAPI.ValidationActionFiltersMiddleware;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,16 +23,20 @@ namespace ClientsManager.WebAPI.Controllers
         /// <summary>
         /// IGenericRepository<TimeFrame> for DI
         /// </summary>
-        private IGenericRepository<TimeFrame> _genericRepository;
+        private readonly IGenericRepository<TimeFrame> _genericRepository;
+        private readonly IMapper _mapper;
+
 
         /// <summary>
         /// DI constructor injection of Respository
         /// </summary>
         /// <param name="timeFrameRepository">ITimeFrameRepository type</param>
-        public TimeFramesController(IGenericRepository<TimeFrame> genericRepository)
+        public TimeFramesController(IGenericRepository<TimeFrame> genericRepository, IMapper mapper)
         {
             _genericRepository = genericRepository;
+            _mapper = mapper;
         }
+
 
         /// <summary>
         /// Async returns a list of all the available TimeFrames
@@ -50,7 +56,9 @@ namespace ClientsManager.WebAPI.Controllers
                     return NotFound("No timeframes were found");
                 }
 
-                return Ok(timeFrames);
+                IEnumerable<TimeFrameDTO> timeFramesDTO = _mapper.Map<IEnumerable<TimeFrameDTO>>(timeFrames);
+
+                return Ok(timeFramesDTO);
             }
             catch
             {
@@ -82,7 +90,7 @@ namespace ClientsManager.WebAPI.Controllers
         /// <param name="employee_id">Integer - TimeFrame employee_id identifier in DB</param>
         /// <returns>Task<ActionResult<IEnumerable<TimeFrame>>> - A list of TimeFrames</returns>
         //GET: api/TimeFrames/employee/1
-        [HttpGet("employees/{employee_id}")]
+        [HttpGet("employees/{employee_id:int}")]
         [ServiceFilter(typeof(EmployeeIdValidator))]
         public async Task<ActionResult<IEnumerable<TimeFrame>>> GetTimeFramesByEmployeeIdAsync(int employee_id)
         {
@@ -93,7 +101,9 @@ namespace ClientsManager.WebAPI.Controllers
                 return NotFound("No data was found for the employee");
             }
 
-            return Ok(timeFrames);
+            IEnumerable<TimeFrameDTO> timeFramesDTO = _mapper.Map<IEnumerable<TimeFrameDTO>>(timeFrames);
+
+            return Ok(timeFramesDTO);
         }
 
         /// <summary>
@@ -102,7 +112,7 @@ namespace ClientsManager.WebAPI.Controllers
         /// <param name="id">Integer - TimeFrame id identifier in DB</param>
         /// <returns>Task<ActionResult<TimeFrame>> - A TimeFrame corresponding to the TimeFrame id</returns>
         //GET: api/TimeFrames/4
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         [ServiceFilter(typeof(IdValidator))]
         public async Task<ActionResult<TimeFrame>> GetTimeFrameByIdAsync(int id)
         {
@@ -112,13 +122,15 @@ namespace ClientsManager.WebAPI.Controllers
                 return NotFound("No data was found for the id");
             }
 
-            return Ok(timeFrame);
+            TimeFrameDTO timeFrameDTO = _mapper.Map<TimeFrameDTO>(timeFrame);
+
+            return Ok(timeFrameDTO);
         }
 
         /// <summary>
         /// Async Creates a TimeFrame
         /// </summary>
-        /// <param name="timeFrame">A TimeFrame object</param>
+        /// <param name="timeFrame">TimeFrame - A TimeFrame object</param>
         /// <returns>Task<ActionResult<TimeFrame>> - The TimeFrame created</returns>
         [HttpPost()]
         [ServiceFilter(typeof(TimeFrameValidationFilter))]
@@ -135,16 +147,19 @@ namespace ClientsManager.WebAPI.Controllers
                                     tf.Title == timeFrame.Title &&
                                     tf.Employee_Id == timeFrame.Employee_Id);
 
-            return Created("", newTimeFrame);
+            TimeFrameDTO timeFrameDTO = _mapper.Map<TimeFrameDTO>(newTimeFrame);
+
+            return Created("", timeFrameDTO);
         }
 
         /// <summary>
         /// Async Updates an existing TimeFrame
         /// </summary>
+        /// <param name>int - The TimeFrame id</param>
         /// <param name="timeFrame">A TimeFrame object</param>
         /// Task<ActionResult<TimeFrame>> - The updated TimeFrame</returns>
-        [HttpPatch("{id}")]
-        [HttpPut("{id}")]
+        [HttpPatch("{id:int}")]
+        [HttpPut("{id:int}")]
         [ServiceFilter(typeof(TimeFrameValidationFilter))]
         public async Task<ActionResult<TimeFrame>> UpdateTimeFrameAsync(int id, TimeFrame timeFrame)
         {
@@ -157,7 +172,9 @@ namespace ClientsManager.WebAPI.Controllers
 
             var updatedTimeFrame = await _genericRepository.GetOneByAsync(tf => tf.Id == timeFrame.Id);
 
-            return Ok(updatedTimeFrame);
+            TimeFrameDTO timeFrameDTO = _mapper.Map<TimeFrameDTO>(updatedTimeFrame);
+
+            return Ok(timeFrameDTO);
         }
 
         /// <summary>
@@ -165,7 +182,7 @@ namespace ClientsManager.WebAPI.Controllers
         /// </summary>
         /// <param name="id">int - The TimeFrame Id</param>
         /// <returns>Task<ActionResult<int>> - The number of TimeFrames deleted</returns>
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         [ServiceFilter(typeof(IdValidator))]
         public async Task<ActionResult<int>> DeleteTimeFrameAsync(int id)
         {

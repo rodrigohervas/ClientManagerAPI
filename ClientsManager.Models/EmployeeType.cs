@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace ClientsManager.Models
 {
@@ -13,6 +14,8 @@ namespace ClientsManager.Models
 
 
         //Prop for relationship with Employee
+        //ignore the property for JSON serialization on returns, it's only for navigational purposes
+        [JsonIgnore]
         public ICollection<Employee> Employees { get; set; }
     }
 }

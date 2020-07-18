@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ClientsManager.WebAPI.DTOs
 {
-    public class EmployeeDTO
+    public class EmployeeWithTimeFramesDTO
     {
         public int Id { get; set; }
 
@@ -16,5 +16,7 @@ namespace ClientsManager.WebAPI.DTOs
         public int EmployeeType_Id { get; set; }
 
         public string Position { get; set; }
+
+        public ICollection<TimeFrameDTO> TimeFrames { get; set; }
     }
 }

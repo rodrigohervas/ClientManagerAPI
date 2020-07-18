@@ -12,7 +12,7 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
         public void OnActionExecuting(ActionExecutingContext context)
         {
             //get the action employeeType_id parameter
-            var queryStringId = context.ActionArguments["employeeType_id"] as int?;
+            var queryStringId = context.ActionArguments["employeetype_id"] as int?;
 
             //validate that the employeeType_id is not null/zero
             if (queryStringId == 0 || queryStringId == null)

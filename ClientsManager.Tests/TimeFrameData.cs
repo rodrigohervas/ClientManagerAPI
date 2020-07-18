@@ -1,4 +1,5 @@
 ﻿using ClientsManager.Models;
+using ClientsManager.WebAPI.DTOs;
 using System;
 using System.Collections;
 using System.Collections.Generic;

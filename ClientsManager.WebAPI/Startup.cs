@@ -34,9 +34,12 @@ namespace ClientsManager.WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             //register the custom action Validation Filters Middleware
+            services.AddScoped<GenericValidationFilter>();
             services.AddScoped<TimeFrameValidationFilter>();
             services.AddScoped<IdValidator>();
             services.AddScoped<EmployeeIdValidator>();
+            services.AddScoped<EmployeeTypeIdValidator>();
+            services.AddScoped<EmployeeValidationFilter>();
 
             services.AddControllers();
 
@@ -84,6 +87,11 @@ namespace ClientsManager.WebAPI
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapGet("/", async context =>
+                {
+                    await context.Response.WriteAsync("Welcome to ClientsManager API");
+                });
+
+                endpoints.MapGet("/api", async context =>
                 {
                     await context.Response.WriteAsync("Welcome to ClientsManager API");
                 });
