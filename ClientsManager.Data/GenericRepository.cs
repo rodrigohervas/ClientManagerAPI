@@ -62,7 +62,12 @@ namespace ClientsManager.Data
             return await _context.Set<T>().Where(searchCriteria).FirstOrDefaultAsync();
         }
 
-
+        /// <summary>
+        /// Gets an object of type T with its related dependent objects as defined in params searchCriteria and included criteria
+        /// </summary>
+        /// <param name="searchCriteria"></param>
+        /// <param name="includeCriteria"></param>
+        /// <returns></returns>
         public async Task<T> GetOneByWithRelatedDataAsync(Expression<Func<T, bool>> searchCriteria, Expression<Func<T, object>> includeCriteria)
         {
             return await _context.Set<T>()
