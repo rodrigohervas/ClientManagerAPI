@@ -26,6 +26,8 @@ namespace ClientsManager.WebAPI.AutoMapperProfiles
             CreateMap<Employee, EmployeeWithTimeFramesDTO>();
 
             CreateMap<TimeFrameDTO, TimeFrame>();
+
+            CreateMap<EmployeeType, EmployeeTypeDTO>();
         }
     }
 }

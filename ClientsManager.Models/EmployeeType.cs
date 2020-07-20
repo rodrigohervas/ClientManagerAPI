@@ -5,6 +5,9 @@ using System.Text.Json.Serialization;
 
 namespace ClientsManager.Models
 {
+    /// <summary>
+    /// EmployeeType entity
+    /// </summary>
     public class EmployeeType
     {
         public int Id { get; set; }

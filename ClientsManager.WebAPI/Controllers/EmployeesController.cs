@@ -29,10 +29,10 @@ namespace ClientsManager.WebAPI.Controllers
         /// <summary>
         /// Get all Employees
         /// </summary>
-        /// <returns>Task<ActionResult<IEnumerable<Employee>>> - A list of all the Employees</returns>
+        /// <returns>Task<ActionResult<IEnumerable<EmployeeDTO>>> - A list of all the Employees</returns>
         // GET: api/employees
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Employee>>> GetAllEmployeesAsync()
+        public async Task<ActionResult<IEnumerable<EmployeeDTO>>> GetAllEmployeesAsync()
         {
             var employees = await _genericRepository.GetAllAsync();
 
@@ -50,11 +50,11 @@ namespace ClientsManager.WebAPI.Controllers
         /// Gets an Employee for a provided id
         /// </summary>
         /// <param name="id">int - the Employee id</param>
-        /// <returns>Task<ActionResult<Employee>> -  An Employee object</returns>
+        /// <returns>Task<ActionResult<EmployeeDTO>> -  An Employee object</returns>
         // GET: api/employees/5
         [HttpGet("{id}")]
         [ServiceFilter(typeof(IdValidator))]
-        public async Task<ActionResult<Employee>> GetEmployeeByIdAsync(int id)
+        public async Task<ActionResult<EmployeeDTO>> GetEmployeeByIdAsync(int id)
         {
             var employee = await _genericRepository.GetOneByWithRelatedDataAsync(employee => employee.Id == id, 
                                                                                  employee => employee.TimeFrames);
@@ -73,11 +73,11 @@ namespace ClientsManager.WebAPI.Controllers
         /// Gets a list of Employees for a provided employee type
         /// </summary>
         /// <param name="employeetype_id">int - The EmployeeType id</param>
-        /// <returns>Task<ActionResult<IEnumerable<Employee>>> - A List of Employees</returns>
+        /// <returns>Task<ActionResult<IEnumerable<EmployeeDTO>>> - A List of Employees</returns>
         // GET: api/employees/employeetype/1
         [HttpGet("employeetype/{employeetype_id:int}")]
         [ServiceFilter(typeof(EmployeeTypeIdValidator))]
-        public async Task<ActionResult<IEnumerable<Employee>>> GetEmployeesByTypeAsync(int employeetype_id)
+        public async Task<ActionResult<IEnumerable<EmployeeDTO>>> GetEmployeesByTypeAsync(int employeetype_id)
         {
             var employees = await _genericRepository.GetByAsync(employee => employee.EmployeeType_Id == employeetype_id);
 
@@ -96,7 +96,7 @@ namespace ClientsManager.WebAPI.Controllers
         /// Creates an Employee
         /// </summary>
         /// <param name="employee"> Employee - An Employee object</param>
-        /// <returns>Task<ActionResult<Employee>> - The created Employee</returns>
+        /// <returns>Task<ActionResult<EmployeeDTO>> - The created Employee</returns>
         // POST: api/employees
         [HttpPost]
         [ServiceFilter(typeof(EmployeeValidationFilter))]
@@ -124,7 +124,7 @@ namespace ClientsManager.WebAPI.Controllers
         /// </summary>
         /// <param name="id"> int - the Employee id</param>
         /// <param name="employee"> Employee - An Employee object</param>
-        /// <returns>Task<ActionResult<Employee>> - The updated Employee</returns>
+        /// <returns>Task<ActionResult<EmployeeDTO>> - The updated Employee</returns>
         // PUT/PATCH: api/employees/id
         [HttpPut("{id:int}")]
         [HttpPatch("{id:int}")]

@@ -35,11 +35,12 @@ namespace ClientsManager.WebAPI
         {
             //register the custom action Validation Filters Middleware
             services.AddScoped<GenericValidationFilter>();
-            services.AddScoped<TimeFrameValidationFilter>();
             services.AddScoped<IdValidator>();
             services.AddScoped<EmployeeIdValidator>();
             services.AddScoped<EmployeeTypeIdValidator>();
             services.AddScoped<EmployeeValidationFilter>();
+            services.AddScoped<TimeFrameValidationFilter>();
+            services.AddScoped<EmployeeTypeValidationFilter>();
 
             services.AddControllers();
 

@@ -23,7 +23,7 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
                 return;
             }
 
-            //Validate Id exists if Request Method is "POST" 
+            //Validate Id exists if Request Method is not "POST" 
             var httpPostMethod = context.HttpContext.Request.Method;
             if (timeFrame.Id == 0 && httpPostMethod != "POST")
             {
