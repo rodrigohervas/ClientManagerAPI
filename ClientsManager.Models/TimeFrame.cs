@@ -31,8 +31,6 @@ namespace ClientsManager.Models
 
 
         //prop for relationship with Employee
-        //ignore the property for JSON serialization on returns, it's only for navigational purposes
-        //[JsonIgnore]
         public Employee Employee { get; set; }
     }
 }

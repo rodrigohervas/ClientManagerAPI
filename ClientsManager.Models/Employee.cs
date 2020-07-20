@@ -19,8 +19,6 @@ namespace ClientsManager.Models
 
 
         //Prop for relationship with EmployeeType
-        //ignore the property for JSON serialization on returns, it's only for navigational purposes
-        //[JsonIgnore]
         public EmployeeType EmployeeType { get; set; }
 
         //Prop for relationship with TimeFrame

@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace ClientsManager.WebAPI.DTOs
 {
+    /// <summary>
+    /// DTO class for a TimeFrame
+    /// </summary>
     public class TimeFrameDTO
     {
         public int Id { get; set; }
