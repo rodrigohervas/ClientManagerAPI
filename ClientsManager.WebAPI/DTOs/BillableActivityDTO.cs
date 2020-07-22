@@ -1,21 +1,19 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Diagnostics.CodeAnalysis;
-using System.Text.Json.Serialization;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace ClientsManager.Models
+namespace ClientsManager.WebAPI.DTOs
 {
     /// <summary>
-    /// TimeFrame entity
+    /// DTO class for a BillableActivity
     /// </summary>
-    public class TimeFrame
+    public class BillableActivityDTO
     {
         public int Id { get; set; }
 
-        //FK from Employee
+        public int Case_Id { get; set; }
+        
         public int Employee_Id { get; set; }
 
         public string Title { get; set; }
@@ -27,10 +25,5 @@ namespace ClientsManager.Models
         public DateTime Start_DateTime { get; set; }
 
         public DateTime Finish_DateTime { get; set; }
-
-
-
-        //prop for relationship with Employee
-        public Employee Employee { get; set; }
     }
 }

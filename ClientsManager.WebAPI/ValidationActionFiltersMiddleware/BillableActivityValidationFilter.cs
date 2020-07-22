@@ -9,92 +9,105 @@ using System.Threading.Tasks;
 
 namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
 {
-    public class TimeFrameValidationFilter : IActionFilter
+    public class BillableActivityValidationFilter : IActionFilter
     {
         public void OnActionExecuting(ActionExecutingContext context)
         {
-            //get the action TimeFrame parameter, the input of the action method
-            var timeFrame = context.ActionArguments["timeFrame"] as TimeFrame;
+            //get the action BillableActivity parameter, the input of the action method
+            var billableActivity = context.ActionArguments["billableActivity"] as BillableActivity;
             
-            //validate that TimeFrame is not null
-            if (timeFrame == null)
+            //validate that BillableActivity is not null
+            if (billableActivity == null)
             {
-                context.Result = new BadRequestObjectResult("TimeFrame is mandatory");
+                context.Result = new BadRequestObjectResult("BillableActivity is mandatory");
                 return;
             }
 
             //Validate Id exists if Request Method is not "POST" 
             var httpPostMethod = context.HttpContext.Request.Method;
-            if (timeFrame.Id == 0 && httpPostMethod != "POST")
+            if (billableActivity.Id == 0 && httpPostMethod != "POST")
             {
                 context.Result = new BadRequestObjectResult("Id is mandatory");
                 return;
             }
 
+            //validate Case_id
+            if (billableActivity.Case_Id == 0)
+            {
+                context.Result = new BadRequestObjectResult("Case_Id is mandatory");
+                return;
+            }
+
+            if (billableActivity.Case_Id.GetTypeCode() != TypeCode.Int32)
+            {
+                context.Result = new BadRequestObjectResult("Case_Id must be a valid number");
+                return;
+            }
+
             //validate Employee_id
-            if (timeFrame.Employee_Id == 0)
+            if (billableActivity.Employee_Id == 0)
             {
                 context.Result = new BadRequestObjectResult("Employee_Id is mandatory");
                 return;
             }
 
-            if (timeFrame.Employee_Id.GetTypeCode() != TypeCode.Int32)
+            if (billableActivity.Employee_Id.GetTypeCode() != TypeCode.Int32)
             {
                 context.Result = new BadRequestObjectResult("Employee_Id must be a valid number");
                 return;
             }
 
             //Validate Title
-            if (String.IsNullOrEmpty(timeFrame.Title))
+            if (String.IsNullOrEmpty(billableActivity.Title))
             {
                 context.Result = new BadRequestObjectResult("Title is mandatory");
                 return;
             }
 
             //Validate Description
-            if (String.IsNullOrEmpty(timeFrame.Description))
+            if (String.IsNullOrEmpty(billableActivity.Description))
             {
                 context.Result = new BadRequestObjectResult("Description is mandatory");
                 return;
             }
 
             //validate Price
-            if (timeFrame.Price == 0.0M)
+            if (billableActivity.Price == 0.0M)
             {
                 context.Result = new BadRequestObjectResult("Price is mandatory");
                 return;
             }
 
             //validate Price Range
-            if (timeFrame.Price < 0.1M)
+            if (billableActivity.Price < 0.1M)
             {
                 context.Result = new BadRequestObjectResult("Price must be more than zero");
                 return;
             }
 
             //validate Start_DateTime
-            if (String.IsNullOrEmpty(timeFrame.Start_DateTime.ToString()))
+            if (String.IsNullOrEmpty(billableActivity.Start_DateTime.ToString()))
             {
                 context.Result = new BadRequestObjectResult("Start_DateTime is mandatory");
                 return;
             }
 
-            if (timeFrame.Start_DateTime.Year < 2000)
+            if (billableActivity.Start_DateTime.Year < 2000)
             {
-                context.Result = new BadRequestObjectResult("Start_DateTime must not be before year 2000");
+                context.Result = new BadRequestObjectResult("Start_DateTime must be after year 2000");
                 return;
             }
 
             //validate Finish_DateTime
-            if (String.IsNullOrEmpty(timeFrame.Finish_DateTime.ToString()))
+            if (String.IsNullOrEmpty(billableActivity.Finish_DateTime.ToString()))
             {
                 context.Result = new BadRequestObjectResult("Finish_DateTime is mandatory");
                 return;
             }
 
-            if (timeFrame.Finish_DateTime.Year < 2000)
+            if (billableActivity.Finish_DateTime.Year < 2000)
             {
-                context.Result = new BadRequestObjectResult("Finish_DateTime must not be before year 2000  - from Validation Filter");
+                context.Result = new BadRequestObjectResult("Finish_DateTime must be after year 2000");
                 return;
             }
 

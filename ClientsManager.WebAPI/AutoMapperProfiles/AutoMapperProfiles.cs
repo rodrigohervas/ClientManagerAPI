@@ -21,11 +21,11 @@ namespace ClientsManager.WebAPI.AutoMapperProfiles
         {
             CreateMap<Employee, EmployeeDTO>();
 
-            CreateMap<TimeFrame, TimeFrameDTO>();
+            CreateMap<BillableActivity, BillableActivityDTO>();
 
-            CreateMap<Employee, EmployeeWithTimeFramesDTO>();
+            CreateMap<Employee, EmployeeWithBillableActivitiesDTO>();
 
-            CreateMap<TimeFrameDTO, TimeFrame>();
+            CreateMap<BillableActivityDTO, BillableActivity>();
 
             CreateMap<EmployeeType, EmployeeTypeDTO>();
         }

@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Text;
 
-namespace ClientsManager.WebAPI.DTOs
+namespace ClientsManager.Models
 {
-    /// <summary>
-    /// DTO class for a TimeFrame
-    /// </summary>
-    public class TimeFrameDTO
+    public class BillableActivity
     {
         public int Id { get; set; }
 
+        //FK for Case
+        public int Case_Id { get; set; }
+
+        //FK from Employee
         public int Employee_Id { get; set; }
 
         public string Title { get; set; }
@@ -23,5 +23,10 @@ namespace ClientsManager.WebAPI.DTOs
         public DateTime Start_DateTime { get; set; }
 
         public DateTime Finish_DateTime { get; set; }
+
+
+
+        //prop for relationship with Employee
+        public Employee Employee { get; set; }
     }
 }

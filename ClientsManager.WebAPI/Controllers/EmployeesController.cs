@@ -57,14 +57,14 @@ namespace ClientsManager.WebAPI.Controllers
         public async Task<ActionResult<EmployeeDTO>> GetEmployeeByIdAsync(int id)
         {
             var employee = await _genericRepository.GetOneByWithRelatedDataAsync(employee => employee.Id == id, 
-                                                                                 employee => employee.TimeFrames);
+                                                                                 employee => employee.BillableActivities);
 
             if (employee is null)
             {
                 return NotFound("No data was found for the id");
             }
 
-            EmployeeWithTimeFramesDTO employeeTF = _mapper.Map<EmployeeWithTimeFramesDTO>(employee);
+            EmployeeWithBillableActivitiesDTO employeeTF = _mapper.Map<EmployeeWithBillableActivitiesDTO>(employee);
 
             return Ok(employeeTF);
         }

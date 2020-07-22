@@ -8,12 +8,12 @@ namespace ClientsManager.Tests
     public static class TestDbSeeder
     {
         public static void SeedDB(ClientsManagerDBContext context) {
-            context.TimeFrames.AddRange(TimeFrameData.GetTestTimeFrames());
+            context.BillableActivities.AddRange(BillableActivityData.GetTestBillableActivities());
             context.SaveChanges();
         }
 
         public static void ReSeedDB(ClientsManagerDBContext context) {
-            context.TimeFrames.RemoveRange(TimeFrameData.GetTestTimeFrames());
+            context.BillableActivities.RemoveRange(BillableActivityData.GetTestBillableActivities());
             SeedDB(context);
         }
     }

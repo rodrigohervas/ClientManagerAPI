@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ClientsManager.Data.Configuration
+namespace ClientsManager.Data.EntityConfiguration
 {
     public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
     {
@@ -17,8 +17,8 @@ namespace ClientsManager.Data.Configuration
             //Keys and relationships
             builder.HasKey(e => e.Id); //PK
             builder
-                .HasMany<TimeFrame>(e => e.TimeFrames)
-                .WithOne(tf => tf.Employee); //Relationship with TimeFrame
+                .HasMany<BillableActivity>(e => e.BillableActivities)
+                .WithOne(tf => tf.Employee); //Relationship with BillableActivity
             builder
                 .HasOne(e => e.EmployeeType)
                 .WithMany(et => et.Employees) //Relationship with EmployeeType

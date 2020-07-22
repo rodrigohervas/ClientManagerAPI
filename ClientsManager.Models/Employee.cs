@@ -21,7 +21,7 @@ namespace ClientsManager.Models
         //Prop for relationship with EmployeeType
         public EmployeeType EmployeeType { get; set; }
 
-        //Prop for relationship with TimeFrame
-        public ICollection<TimeFrame> TimeFrames { get; set; }
+        //Prop for relationship with BillableActivity
+        public ICollection<BillableActivity> BillableActivities { get; set; }
     }
 }

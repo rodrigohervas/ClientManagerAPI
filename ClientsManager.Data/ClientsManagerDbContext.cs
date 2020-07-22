@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using ClientsManager.Models;
-using ClientsManager.Data.Configuration;
+using ClientsManager.Data.EntityConfiguration;
 
 namespace ClientsManager.Data
 {
@@ -22,7 +22,7 @@ namespace ClientsManager.Data
         }
 
         //DbSets: each DbSet represents a repository
-        public DbSet<TimeFrame> TimeFrames { get; set; }
+        public DbSet<BillableActivity> BillableActivities { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<EmployeeType> EmployeeTypes { get; set; }
 
@@ -32,8 +32,11 @@ namespace ClientsManager.Data
         /// <param name="modelBuilder">Model Builder to configure the seeding data</param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //TimeFrame Entity configuration
-            modelBuilder.ApplyConfiguration<TimeFrame>(new TimeFrameConfiguration());
+            //Get the entity configuration files form the same assembly where our DbContext lives at
+            //modelBuilder.ApplyConfigurationsFromAssembly(typeof(ClientsManagerDBContext).Assembly);
+
+            //BillableActivity Entity configuration
+            modelBuilder.ApplyConfiguration<BillableActivity>(new BillableActivityConfiguration());
 
             //Employee Entity configuration
             modelBuilder.ApplyConfiguration<Employee>(new EmployeeConfiguration());
@@ -41,9 +44,7 @@ namespace ClientsManager.Data
             //EmployeeType Entity configuration
             modelBuilder.ApplyConfiguration<EmployeeType>(new EmployeeTypeConfiguration());
 
-
-
-
+            
             //Seed DB Tables
             //DbContextSeeder.SeedDB(modelBuilder);
         }

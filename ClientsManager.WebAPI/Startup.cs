@@ -36,15 +36,16 @@ namespace ClientsManager.WebAPI
             //register the custom action Validation Filters Middleware
             services.AddScoped<GenericValidationFilter>();
             services.AddScoped<IdValidator>();
+            services.AddScoped<CaseIdValidator>();
             services.AddScoped<EmployeeIdValidator>();
             services.AddScoped<EmployeeTypeIdValidator>();
             services.AddScoped<EmployeeValidationFilter>();
-            services.AddScoped<TimeFrameValidationFilter>();
+            services.AddScoped<BillableActivityValidationFilter>();
             services.AddScoped<EmployeeTypeValidationFilter>();
 
             services.AddControllers();
 
-            //Configure AutoMapper for POCO to DTO mapping
+            //register AutoMapper for POCO to DTO mapping
             services.AddAutoMapper(typeof(Startup));
 
             //Get API Key from Secrets Manager
@@ -57,7 +58,6 @@ namespace ClientsManager.WebAPI
 
             //Add Repositories DI dependencies 
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-            services.AddScoped<ITimeFrameRepository, TimeFrameRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

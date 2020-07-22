@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 namespace ClientsManager.WebAPI.DTOs
 {
     /// <summary>
-    /// DTO class for an Employee with TimeFrames
+    /// DTO class for an Employee with BillableActivities
     /// </summary>
-    public class EmployeeWithTimeFramesDTO
+    public class EmployeeWithBillableActivitiesDTO
     {
         public int Id { get; set; }
 
@@ -19,6 +19,6 @@ namespace ClientsManager.WebAPI.DTOs
 
         public string Position { get; set; }
 
-        public ICollection<TimeFrameDTO> TimeFrames { get; set; }
+        public ICollection<BillableActivityDTO> BillableActivities { get; set; }
     }
 }

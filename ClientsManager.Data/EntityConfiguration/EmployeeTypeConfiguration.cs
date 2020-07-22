@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ClientsManager.Data.Configuration
+namespace ClientsManager.Data.EntityConfiguration
 {
     public class EmployeeTypeConfiguration : IEntityTypeConfiguration<EmployeeType>
     {

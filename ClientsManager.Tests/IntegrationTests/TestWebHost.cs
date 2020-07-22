@@ -50,11 +50,11 @@ namespace ClientsManager.Tests.IntegrationTests
                 //Add testing configured (InMemory) DbContext
                 services.AddDbContext<ClientsManagerDBContext>(options =>
                         options.UseInMemoryDatabase("TestDB")
-                        //options.UseSqlServer(config.ConnectionString["ConnectionString"])
+                               .EnableSensitiveDataLogging()
                 );
 
                 //Add Repos?
-                services.AddScoped<ITimeFrameRepository, TimeFrameRepository>();
+                services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
                 //Build service provider
                 var sp = services.BuildServiceProvider();
