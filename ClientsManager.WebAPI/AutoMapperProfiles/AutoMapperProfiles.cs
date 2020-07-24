@@ -28,6 +28,10 @@ namespace ClientsManager.WebAPI.AutoMapperProfiles
             CreateMap<BillableActivityDTO, BillableActivity>();
 
             CreateMap<EmployeeType, EmployeeTypeDTO>();
+
+            CreateMap<LegalCase, LegalCaseDTO>();
+
+            CreateMap<LegalCase, LegalCaseWithBillableActivitiesDTO>();
         }
     }
 }

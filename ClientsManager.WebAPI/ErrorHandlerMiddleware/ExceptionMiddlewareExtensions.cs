@@ -49,7 +49,7 @@ namespace ClientsManager.WebAPI.ErrorHandlerMiddleware
                             {
                                 StatusCode = context.Response.StatusCode,
                                 Message = "Internal Server Error",
-                                ErrorMessage = contextFeature.Error.Message
+                                InternalErrorMessage = contextFeature.Error.Message
                             }.ToString()
                             );
                     }

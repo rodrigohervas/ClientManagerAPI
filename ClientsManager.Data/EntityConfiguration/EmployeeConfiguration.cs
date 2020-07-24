@@ -14,26 +14,32 @@ namespace ClientsManager.Data.EntityConfiguration
             //Map Employee entity to table Employees
             builder.ToTable("Employees");
 
-            //Keys and relationships
+            //Map Primary Key
             builder.HasKey(e => e.Id); //PK
+
+            //Map Relationships
             builder
                 .HasMany<BillableActivity>(e => e.BillableActivities)
-                .WithOne(tf => tf.Employee); //Relationship with BillableActivity
+                .WithOne(ba => ba.Employee); //Relationship with BillableActivity
+            
             builder
                 .HasOne(e => e.EmployeeType)
                 .WithMany(et => et.Employees) //Relationship with EmployeeType
                 .HasForeignKey(e => e.EmployeeType_Id); //FK from EmployeeType
 
-            //properties
+            //Map Properties
             builder.Property(e => e.Id)
                 .IsRequired()
                 .HasColumnType<int>("int");
+            
             builder.Property(e => e.Name)
                 .IsRequired()
                 .HasColumnType<string>("nvarchar(max)");
+            
             builder.Property(e => e.EmployeeType_Id)
                 .IsRequired()
                 .HasColumnType<int>("int");
+            
             builder.Property(e => e.Position)
                 .IsRequired()
                 .HasColumnType<string>("nvarchar(max)");

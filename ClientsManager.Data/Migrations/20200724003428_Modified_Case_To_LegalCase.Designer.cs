@@ -4,14 +4,16 @@ using ClientsManager.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ClientsManager.Data.Migrations
 {
     [DbContext(typeof(ClientsManagerDBContext))]
-    partial class ClientsManagerDBContextModelSnapshot : ModelSnapshot
+    [Migration("20200724003428_Modified_Case_To_LegalCase")]
+    partial class Modified_Case_To_LegalCase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,6 +28,9 @@ namespace ClientsManager.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("Case_Id")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -35,9 +40,6 @@ namespace ClientsManager.Data.Migrations
 
                     b.Property<DateTime>("Finish_DateTime")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("LegalCase_Id")
-                        .HasColumnType("int");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
@@ -51,9 +53,9 @@ namespace ClientsManager.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Employee_Id");
+                    b.HasIndex("Case_Id");
 
-                    b.HasIndex("LegalCase_Id");
+                    b.HasIndex("Employee_Id");
 
                     b.ToTable("BillableActivities");
 
@@ -61,10 +63,10 @@ namespace ClientsManager.Data.Migrations
                         new
                         {
                             Id = 1,
+                            Case_Id = 1,
                             Description = "this is the Billable Activity 1",
                             Employee_Id = 1,
                             Finish_DateTime = new DateTime(2020, 6, 20, 16, 0, 0, 0, DateTimeKind.Unspecified),
-                            LegalCase_Id = 1,
                             Price = 200.50m,
                             Start_DateTime = new DateTime(2020, 6, 20, 9, 30, 0, 0, DateTimeKind.Unspecified),
                             Title = "Billable Activity 1"
@@ -72,10 +74,10 @@ namespace ClientsManager.Data.Migrations
                         new
                         {
                             Id = 2,
+                            Case_Id = 1,
                             Description = "this is the Billable Activity 2",
                             Employee_Id = 1,
                             Finish_DateTime = new DateTime(2020, 6, 20, 16, 0, 0, 0, DateTimeKind.Unspecified),
-                            LegalCase_Id = 1,
                             Price = 200.50m,
                             Start_DateTime = new DateTime(2020, 6, 20, 9, 30, 0, 0, DateTimeKind.Unspecified),
                             Title = "Billable Activity 2"
@@ -83,10 +85,10 @@ namespace ClientsManager.Data.Migrations
                         new
                         {
                             Id = 3,
+                            Case_Id = 1,
                             Description = "this is the Billable Activity 3",
                             Employee_Id = 2,
                             Finish_DateTime = new DateTime(2020, 6, 20, 16, 0, 0, 0, DateTimeKind.Unspecified),
-                            LegalCase_Id = 1,
                             Price = 300.50m,
                             Start_DateTime = new DateTime(2020, 6, 20, 9, 30, 0, 0, DateTimeKind.Unspecified),
                             Title = "Billable Activity 3"
@@ -94,10 +96,10 @@ namespace ClientsManager.Data.Migrations
                         new
                         {
                             Id = 4,
+                            Case_Id = 1,
                             Description = "this is the Billable Activity 4",
                             Employee_Id = 2,
                             Finish_DateTime = new DateTime(2020, 6, 20, 16, 0, 0, 0, DateTimeKind.Unspecified),
-                            LegalCase_Id = 1,
                             Price = 100.50m,
                             Start_DateTime = new DateTime(2020, 6, 20, 9, 30, 0, 0, DateTimeKind.Unspecified),
                             Title = "Billable Activity 4"
@@ -105,10 +107,10 @@ namespace ClientsManager.Data.Migrations
                         new
                         {
                             Id = 5,
+                            Case_Id = 2,
                             Description = "this is the Billable Activity 5",
                             Employee_Id = 2,
                             Finish_DateTime = new DateTime(2020, 6, 20, 16, 0, 0, 0, DateTimeKind.Unspecified),
-                            LegalCase_Id = 2,
                             Price = 250.50m,
                             Start_DateTime = new DateTime(2020, 6, 20, 9, 30, 0, 0, DateTimeKind.Unspecified),
                             Title = "Billable Activity 5"
@@ -116,10 +118,10 @@ namespace ClientsManager.Data.Migrations
                         new
                         {
                             Id = 6,
+                            Case_Id = 1,
                             Description = "this is the Billable Activity 6",
                             Employee_Id = 3,
                             Finish_DateTime = new DateTime(2020, 6, 20, 16, 0, 0, 0, DateTimeKind.Unspecified),
-                            LegalCase_Id = 1,
                             Price = 450.50m,
                             Start_DateTime = new DateTime(2020, 6, 20, 9, 30, 0, 0, DateTimeKind.Unspecified),
                             Title = "Billable Activity 6"
@@ -127,10 +129,10 @@ namespace ClientsManager.Data.Migrations
                         new
                         {
                             Id = 7,
+                            Case_Id = 1,
                             Description = "this is the Billable Activity 7",
                             Employee_Id = 3,
                             Finish_DateTime = new DateTime(2020, 6, 20, 16, 0, 0, 0, DateTimeKind.Unspecified),
-                            LegalCase_Id = 1,
                             Price = 400.50m,
                             Start_DateTime = new DateTime(2020, 6, 20, 9, 30, 0, 0, DateTimeKind.Unspecified),
                             Title = "Billable Activity 7"
@@ -138,10 +140,10 @@ namespace ClientsManager.Data.Migrations
                         new
                         {
                             Id = 8,
+                            Case_Id = 2,
                             Description = "this is the Billable Activity 8",
                             Employee_Id = 4,
                             Finish_DateTime = new DateTime(2020, 6, 20, 16, 0, 0, 0, DateTimeKind.Unspecified),
-                            LegalCase_Id = 2,
                             Price = 350.50m,
                             Start_DateTime = new DateTime(2020, 6, 20, 9, 30, 0, 0, DateTimeKind.Unspecified),
                             Title = "Billable Activity 8"
@@ -149,10 +151,10 @@ namespace ClientsManager.Data.Migrations
                         new
                         {
                             Id = 9,
+                            Case_Id = 2,
                             Description = "this is the Billable Activity 9",
                             Employee_Id = 4,
                             Finish_DateTime = new DateTime(2020, 6, 20, 16, 0, 0, 0, DateTimeKind.Unspecified),
-                            LegalCase_Id = 2,
                             Price = 250.50m,
                             Start_DateTime = new DateTime(2020, 6, 20, 9, 30, 0, 0, DateTimeKind.Unspecified),
                             Title = "Billable Activity 9"
@@ -160,10 +162,10 @@ namespace ClientsManager.Data.Migrations
                         new
                         {
                             Id = 10,
+                            Case_Id = 2,
                             Description = "this is the Billable Activity 10",
                             Employee_Id = 5,
                             Finish_DateTime = new DateTime(2020, 6, 20, 16, 0, 0, 0, DateTimeKind.Unspecified),
-                            LegalCase_Id = 2,
                             Price = 500.50m,
                             Start_DateTime = new DateTime(2020, 6, 20, 9, 30, 0, 0, DateTimeKind.Unspecified),
                             Title = "Billable Activity 10"
@@ -171,10 +173,10 @@ namespace ClientsManager.Data.Migrations
                         new
                         {
                             Id = 11,
+                            Case_Id = 1,
                             Description = "this is the Billable Activity 11",
                             Employee_Id = 5,
                             Finish_DateTime = new DateTime(2020, 6, 20, 16, 0, 0, 0, DateTimeKind.Unspecified),
-                            LegalCase_Id = 1,
                             Price = 100.50m,
                             Start_DateTime = new DateTime(2020, 6, 20, 9, 30, 0, 0, DateTimeKind.Unspecified),
                             Title = "Billable Activity 11"
@@ -182,10 +184,10 @@ namespace ClientsManager.Data.Migrations
                         new
                         {
                             Id = 12,
+                            Case_Id = 2,
                             Description = "this is the Billable Activity 12",
                             Employee_Id = 6,
                             Finish_DateTime = new DateTime(2020, 6, 20, 16, 0, 0, 0, DateTimeKind.Unspecified),
-                            LegalCase_Id = 2,
                             Price = 150.50m,
                             Start_DateTime = new DateTime(2020, 6, 20, 9, 30, 0, 0, DateTimeKind.Unspecified),
                             Title = "Billable Activity 12"
@@ -193,10 +195,10 @@ namespace ClientsManager.Data.Migrations
                         new
                         {
                             Id = 13,
+                            Case_Id = 2,
                             Description = "this is the Billable Activity 13",
                             Employee_Id = 6,
                             Finish_DateTime = new DateTime(2020, 6, 20, 16, 0, 0, 0, DateTimeKind.Unspecified),
-                            LegalCase_Id = 2,
                             Price = 300.50m,
                             Start_DateTime = new DateTime(2020, 6, 20, 9, 30, 0, 0, DateTimeKind.Unspecified),
                             Title = "Billable Activity 13"
@@ -398,15 +400,15 @@ namespace ClientsManager.Data.Migrations
 
             modelBuilder.Entity("ClientsManager.Models.BillableActivity", b =>
                 {
-                    b.HasOne("ClientsManager.Models.Employee", "Employee")
+                    b.HasOne("ClientsManager.Models.LegalCase", "Case")
                         .WithMany("BillableActivities")
-                        .HasForeignKey("Employee_Id")
+                        .HasForeignKey("Case_Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ClientsManager.Models.LegalCase", "LegalCase")
+                    b.HasOne("ClientsManager.Models.Employee", "Employee")
                         .WithMany("BillableActivities")
-                        .HasForeignKey("LegalCase_Id")
+                        .HasForeignKey("Employee_Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -423,7 +425,7 @@ namespace ClientsManager.Data.Migrations
             modelBuilder.Entity("ClientsManager.Models.LegalCase", b =>
                 {
                     b.HasOne("ClientsManager.Models.Client", "Client")
-                        .WithMany("LegalCases")
+                        .WithMany("Cases")
                         .HasForeignKey("Client_Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

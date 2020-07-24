@@ -32,13 +32,13 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
             }
 
             //validate Case_id
-            if (billableActivity.Case_Id == 0)
+            if (billableActivity.LegalCase_Id == 0)
             {
                 context.Result = new BadRequestObjectResult("Case_Id is mandatory");
                 return;
             }
 
-            if (billableActivity.Case_Id.GetTypeCode() != TypeCode.Int32)
+            if (billableActivity.LegalCase_Id.GetTypeCode() != TypeCode.Int32)
             {
                 context.Result = new BadRequestObjectResult("Case_Id must be a valid number");
                 return;

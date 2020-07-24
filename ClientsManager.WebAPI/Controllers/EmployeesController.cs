@@ -100,7 +100,7 @@ namespace ClientsManager.WebAPI.Controllers
         // POST: api/employees
         [HttpPost]
         [ServiceFilter(typeof(EmployeeValidationFilter))]
-        public async Task<ActionResult<Employee>> AddEmployeeAsync(Employee employee)
+        public async Task<ActionResult<EmployeeDTO>> AddEmployeeAsync(Employee employee)
         {
             var addResult = await _genericRepository.AddTAsync(employee);
 
@@ -129,18 +129,18 @@ namespace ClientsManager.WebAPI.Controllers
         [HttpPut("{id:int}")]
         [HttpPatch("{id:int}")]
         [ServiceFilter(typeof(EmployeeValidationFilter))]
-        public async Task<ActionResult<Employee>> UpdateEmployeeAsync(int id, Employee employee)
+        public async Task<ActionResult<EmployeeDTO>> UpdateEmployeeAsync(int id, Employee employee)
         {
-            var updateResult = await _genericRepository.UpdateTAsync(employee);
+            var employeeResult = await _genericRepository.GetOneByAsync(emp => emp.Id == employee.Id);
 
-            if (updateResult == 0)
+            if (employeeResult is null)
             {
                 return NotFound("No Employee was updated");
             }
 
-            var updatedEmployee = await _genericRepository.GetOneByAsync(emp => emp.Id == employee.Id);
+            var updateResult = await _genericRepository.UpdateTAsync(employee);
 
-            EmployeeDTO updatedEmployeeDto = _mapper.Map<EmployeeDTO>(updatedEmployee);
+            EmployeeDTO updatedEmployeeDto = _mapper.Map<EmployeeDTO>(employee);
 
             return Ok(updatedEmployeeDto);
         }

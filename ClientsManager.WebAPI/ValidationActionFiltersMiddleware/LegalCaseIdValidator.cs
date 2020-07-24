@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
 {
-    public class CaseIdValidator : IActionFilter
+    public class LegalCaseIdValidator : IActionFilter
     {
         public void OnActionExecuting(ActionExecutingContext context)
         {
-            //get the action employee_id parameter
-            var queryStringId = context.ActionArguments["case_id"] as int?;
+            //get the action case_id parameter
+            var queryStringId = context.ActionArguments["legalCase_id"] as int?;
 
             //validate that the case_id is not null/zero
             if (queryStringId == 0 || queryStringId == null)

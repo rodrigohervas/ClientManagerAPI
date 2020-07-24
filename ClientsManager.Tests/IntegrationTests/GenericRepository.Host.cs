@@ -38,8 +38,8 @@ namespace ClientsManager.Tests.IntegrationTests
             Assert.Contains(actual, ba => ba.Id == 2);
             Assert.Contains(actual, ba => ba.Id == 3);
             Assert.Contains(actual, ba => ba.Id == 6);
-            Assert.Contains(actual, ba => ba.Case_Id == 1);
-            Assert.Contains(actual, ba => ba.Case_Id == 2);
+            Assert.Contains(actual, ba => ba.LegalCase_Id == 1);
+            Assert.Contains(actual, ba => ba.LegalCase_Id == 2);
             Assert.Contains(actual, ba => ba.Employee_Id == 1);
             Assert.Contains(actual, ba => ba.Employee_Id == 2);
         }

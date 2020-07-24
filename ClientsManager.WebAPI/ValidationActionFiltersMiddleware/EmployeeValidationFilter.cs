@@ -14,7 +14,7 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
         public void OnActionExecuting(ActionExecutingContext context)
         {
             //get the action Employee parameter, the input of the action method
-            var employee = context.ActionArguments["employee"] as Employee;
+            Employee employee = context.ActionArguments["employee"] as Employee;
             
             //validate that Employee is not null
             if (employee == null)

@@ -92,7 +92,7 @@ namespace ClientsManager.WebAPI.Controllers
         //GET: api/billableactivities/employee/1
         [HttpGet("employees/{employee_id:int}")]
         [ServiceFilter(typeof(EmployeeIdValidator))]
-        public async Task<ActionResult<IEnumerable<BillableActivity>>> GetBillableActivitiesByEmployeeIdAsync(int employee_id)
+        public async Task<ActionResult<IEnumerable<BillableActivityDTO>>> GetBillableActivitiesByEmployeeIdAsync(int employee_id)
         {
             var billableActivities = await _genericRepository.GetByAsync(ba => ba.Employee_Id == employee_id);
 
@@ -109,14 +109,14 @@ namespace ClientsManager.WebAPI.Controllers
         /// <summary>
         /// Async returns a list of BillableActivities for a provided case_id
         /// </summary>
-        /// <param name="case_id">Integer - BillableActivity case_id identifier in DB</param>
+        /// <param name="legalCase_id">Integer - BillableActivity case_id identifier in DB</param>
         /// <returns>Task<ActionResult<IEnumerable<BillableActivity>>> - A list of BillableActivities</returns>
         //GET: api/billableactivities/case/1
-        [HttpGet("case/{case_id:int}")]
-        [ServiceFilter(typeof(CaseIdValidator))]
-        public async Task<ActionResult<IEnumerable<BillableActivity>>> GetBillableActivitiesByCaseIdAsync(int case_id)
+        [HttpGet("case/{legalCase_id:int}")]
+        [ServiceFilter(typeof(LegalCaseIdValidator))]
+        public async Task<ActionResult<IEnumerable<BillableActivityDTO>>> GetBillableActivitiesByLegalCaseIdAsync(int legalCase_id)
         {
-            var billableActivities = await _genericRepository.GetByAsync(ba => ba.Case_Id == case_id);
+            var billableActivities = await _genericRepository.GetByAsync(ba => ba.LegalCase_Id == legalCase_id);
 
             if (!billableActivities.Any())
             {
@@ -136,7 +136,7 @@ namespace ClientsManager.WebAPI.Controllers
         //GET: api/billableactivity/4
         [HttpGet("{id:int}")]
         [ServiceFilter(typeof(IdValidator))]
-        public async Task<ActionResult<BillableActivity>> GetBillableActivityByIdAsync(int id)
+        public async Task<ActionResult<BillableActivityDTO>> GetBillableActivityByIdAsync(int id)
         {
             var billableActivity = await _genericRepository.GetOneByAsync(ba => ba.Id == id);
 
@@ -156,7 +156,7 @@ namespace ClientsManager.WebAPI.Controllers
         /// <returns>Task<ActionResult<BillableActivity>> - The BillableActivity created</returns>
         [HttpPost()]
         [ServiceFilter(typeof(BillableActivityValidationFilter))]
-        public async Task<ActionResult<BillableActivity>> AddBillableActivityAsync(BillableActivity billableActivity)
+        public async Task<ActionResult<BillableActivityDTO>> AddBillableActivityAsync(BillableActivity billableActivity)
         {
             int created = await _genericRepository.AddTAsync(billableActivity);
 
@@ -168,7 +168,7 @@ namespace ClientsManager.WebAPI.Controllers
             var newBillableActivity = await _genericRepository.GetOneByAsync(ba =>
                                     ba.Title == billableActivity.Title &&
                                     ba.Employee_Id == billableActivity.Employee_Id && 
-                                    ba.Case_Id == billableActivity.Case_Id);
+                                    ba.LegalCase_Id == billableActivity.LegalCase_Id);
 
             BillableActivityDTO billableActivityDTO = _mapper.Map<BillableActivityDTO>(newBillableActivity);
 
@@ -184,18 +184,18 @@ namespace ClientsManager.WebAPI.Controllers
         [HttpPatch("{id:int}")]
         [HttpPut("{id:int}")]
         [ServiceFilter(typeof(BillableActivityValidationFilter))]
-        public async Task<ActionResult<BillableActivity>> UpdateBillableActivityAsync(int id, BillableActivity billableActivity)
+        public async Task<ActionResult<BillableActivityDTO>> UpdateBillableActivityAsync(int id, BillableActivity billableActivity)
         {
-            int updated = await _genericRepository.UpdateTAsync(billableActivity);
+            var billableActivityResult = await _genericRepository.GetOneByAsync(ba => ba.Id == billableActivity.Id);
 
-            if (updated == 0)
+            if (billableActivityResult is null)
             {
                 return NotFound("No Billable Activity was updated");
             }
-
-            var updatedBillableActivity = await _genericRepository.GetOneByAsync(ba => ba.Id == billableActivity.Id);
-
-            BillableActivityDTO billableActivityDTO = _mapper.Map<BillableActivityDTO>(updatedBillableActivity);
+            
+            int updated = await _genericRepository.UpdateTAsync(billableActivity);
+            
+            BillableActivityDTO billableActivityDTO = _mapper.Map<BillableActivityDTO>(billableActivity);
 
             return Ok(billableActivityDTO);
         }

@@ -9,8 +9,6 @@ using ClientsManager.WebAPI.DTOs;
 using ClientsManager.WebAPI.ValidationActionFiltersMiddleware;
 using Microsoft.AspNetCore.Mvc;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace ClientsManager.WebAPI.Controllers
 {
     [Route("api/[controller]")]
@@ -105,17 +103,17 @@ namespace ClientsManager.WebAPI.Controllers
         [ServiceFilter(typeof(EmployeeTypeValidationFilter))]
         public async Task<ActionResult<EmployeeTypeDTO>> UpdateEmployeeType(EmployeeType employeeType)
         {
-            var updateResult = await _genericRepository.UpdateTAsync(employeeType);
+            var employeeTypeResult = await _genericRepository.GetOneByAsync(et => et.Description == employeeType.Description &&
+                                                                          et.Id == employeeType.Id);
 
-            if (updateResult == 0)
+            if (employeeTypeResult is null)
             {
                 return NotFound("No EmployeeType was updated");
             }
-
-            var updatedEmployeeType = await _genericRepository.GetOneByAsync(et => et.Description == employeeType.Description && 
-                                                                          et.Id == employeeType.Id);
-
-            var employeeTypeDTO = _mapper.Map<EmployeeTypeDTO>(updatedEmployeeType);
+            
+            var updateResult = await _genericRepository.UpdateTAsync(employeeType);
+            
+            var employeeTypeDTO = _mapper.Map<EmployeeTypeDTO>(employeeType);
 
             return Ok(employeeTypeDTO);
         }

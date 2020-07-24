@@ -12,7 +12,7 @@ namespace ClientsManager.WebAPI.DTOs
     {
         public int Id { get; set; }
 
-        public int Case_Id { get; set; }
+        public int LegalCase_Id { get; set; }
         
         public int Employee_Id { get; set; }
 

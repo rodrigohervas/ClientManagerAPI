@@ -12,7 +12,7 @@ namespace ClientsManager.WebAPI.ErrorHandlerMiddleware
 
         public object Message { get; set; }
 
-        public object ErrorMessage { get; set; }
+        public object InternalErrorMessage { get; set; }
 
         /// <summary>
         /// Serialize to JSON

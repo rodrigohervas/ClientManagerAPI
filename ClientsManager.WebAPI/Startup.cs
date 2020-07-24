@@ -36,12 +36,17 @@ namespace ClientsManager.WebAPI
             //register the custom action Validation Filters Middleware
             services.AddScoped<GenericValidationFilter>();
             services.AddScoped<IdValidator>();
-            services.AddScoped<CaseIdValidator>();
+            services.AddScoped<LegalCaseIdValidator>();
             services.AddScoped<EmployeeIdValidator>();
             services.AddScoped<EmployeeTypeIdValidator>();
             services.AddScoped<EmployeeValidationFilter>();
             services.AddScoped<BillableActivityValidationFilter>();
             services.AddScoped<EmployeeTypeValidationFilter>();
+            services.AddScoped<ClientIdValidator>();
+            services.AddScoped<LegalCaseIdValidator>();
+            services.AddScoped<LegalCaseValidationFilter>();
+            //register QueryString params for Paging
+            services.AddScoped<QueryStringParamsValidator>();
 
             services.AddControllers();
 

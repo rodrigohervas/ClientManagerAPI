@@ -8,8 +8,8 @@ namespace ClientsManager.Models
     {
         public int Id { get; set; }
 
-        //FK for Case
-        public int Case_Id { get; set; }
+        //FK for LegalCase
+        public int LegalCase_Id { get; set; }
 
         //FK from Employee
         public int Employee_Id { get; set; }
@@ -28,5 +28,8 @@ namespace ClientsManager.Models
 
         //prop for relationship with Employee
         public Employee Employee { get; set; }
+
+        //prop for relationship with Case
+        public LegalCase LegalCase { get; set; }
     }
 }

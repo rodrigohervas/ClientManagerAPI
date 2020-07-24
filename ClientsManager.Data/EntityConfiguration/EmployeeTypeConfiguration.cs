@@ -14,16 +14,19 @@ namespace ClientsManager.Data.EntityConfiguration
             //Map EmployeeType entity to table EmployeeTypes
             builder.ToTable("EmployeeTypes");
 
-            //Keys and relationships
+            //Map Primary Key
             builder.HasKey(et => et.Id); //PK
+
+            //Map Relationships
             builder
                 .HasMany(et => et.Employees)
                 .WithOne(e => e.EmployeeType); //Relationship with Employee
 
-            //properties
+            //Map Properties
             builder.Property(et => et.Id)
                 .IsRequired()
                 .HasColumnType<int>("int");
+            
             builder.Property(et => et.Description)
                 .IsRequired()
                 .HasColumnType<string>("nvarchar(max)");

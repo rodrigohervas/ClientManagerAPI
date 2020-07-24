@@ -61,7 +61,7 @@ namespace ClientsManager.Tests.UnitTests
             var actual = dtos.FirstOrDefault();
 
             Assert.Equal(expected.Id, actual.Id);
-            Assert.Equal(expected.Case_Id, actual.Case_Id);
+            Assert.Equal(expected.LegalCase_Id, actual.LegalCase_Id);
             Assert.Equal(expected.Employee_Id, actual.Employee_Id);
             Assert.Equal(expected.Title, actual.Title);
             Assert.Equal(expected.Description, actual.Description);
@@ -105,7 +105,7 @@ namespace ClientsManager.Tests.UnitTests
             var actual = dtos.FirstOrDefault();
 
             Assert.Equal(expected.Id, actual.Id);
-            Assert.Equal(expected.Case_Id, actual.Case_Id);
+            Assert.Equal(expected.LegalCase_Id, actual.LegalCase_Id);
             Assert.Equal(expected.Employee_Id, actual.Employee_Id);
             Assert.Equal(expected.Title, actual.Title);
             Assert.Equal(expected.Description, actual.Description);
@@ -148,7 +148,7 @@ namespace ClientsManager.Tests.UnitTests
             BillableActivity actual = _mapper.Map<BillableActivity>(actualBillableActivity);
 
             Assert.Equal(billableActivity.Id, actual.Id);
-            Assert.Equal(billableActivity.Case_Id, actual.Case_Id);
+            Assert.Equal(billableActivity.LegalCase_Id, actual.LegalCase_Id);
             Assert.Equal(billableActivity.Employee_Id, actual.Employee_Id);
             Assert.Equal(billableActivity.Title, actual.Title);
             Assert.Equal(billableActivity.Description, actual.Description);
@@ -165,7 +165,7 @@ namespace ClientsManager.Tests.UnitTests
             var expectedBillableActivity = new BillableActivity
             {
                 Id = 1,
-                Case_Id = 1, 
+                LegalCase_Id = 1, 
                 Employee_Id = 1,
                 Title = "Billable Activity 1",
                 Description = "this is the Billable Activity 1",

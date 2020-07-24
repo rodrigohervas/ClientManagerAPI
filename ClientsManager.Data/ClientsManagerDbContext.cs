@@ -25,6 +25,8 @@ namespace ClientsManager.Data
         public DbSet<BillableActivity> BillableActivities { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<EmployeeType> EmployeeTypes { get; set; }
+        public DbSet<LegalCase> Cases { get; set;  }
+        public DbSet<Client> Clients { get; set; }
 
         /// <summary>
         /// Method that configures the Entity using Fluent API, and seeds the DB with initial data
@@ -44,9 +46,11 @@ namespace ClientsManager.Data
             //EmployeeType Entity configuration
             modelBuilder.ApplyConfiguration<EmployeeType>(new EmployeeTypeConfiguration());
 
-            
-            //Seed DB Tables
-            //DbContextSeeder.SeedDB(modelBuilder);
+            //Case entity configuration
+            modelBuilder.ApplyConfiguration<LegalCase>(new LegalCaseConfiguration());
+
+            //Client entity configuration
+            modelBuilder.ApplyConfiguration<Client>(new ClientConfiguration());
         }
     }
 }

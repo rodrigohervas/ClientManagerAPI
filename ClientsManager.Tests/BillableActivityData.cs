@@ -16,7 +16,7 @@ namespace ClientsManager.Tests
                 new BillableActivity
                 {
                     Id = 1,
-                    Case_Id = 1, 
+                    LegalCase_Id = 1, 
                     Employee_Id = 1,
                     Title = "BillableActivity 1",
                     Description = "this is the BillableActivity 1",
@@ -26,8 +26,8 @@ namespace ClientsManager.Tests
                 },
                 new BillableActivity
                 {
-                    Id = 2, 
-                    Case_Id = 1, 
+                    Id = 2,
+                    LegalCase_Id = 1, 
                     Employee_Id = 1,
                     Title = "BillableActivity 2",
                     Description = "this is the BillableActivity 2",
@@ -38,7 +38,7 @@ namespace ClientsManager.Tests
                 new BillableActivity
                 {
                     Id = 3,
-                    Case_Id = 2, 
+                    LegalCase_Id = 2, 
                     Employee_Id = 2,
                     Title = "BillableActivity 3",
                     Description = "this is the BillableActivity 3",

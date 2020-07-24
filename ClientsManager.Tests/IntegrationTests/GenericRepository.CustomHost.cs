@@ -41,8 +41,8 @@ namespace ClientsManager.Tests.IntegrationTests
             Assert.Contains(billableActivities, ba => ba.Id == 1);
             Assert.Contains(billableActivities, ba => ba.Id == 2);
             Assert.Contains(billableActivities, ba => ba.Id == 3);
-            Assert.Contains(billableActivities, ba => ba.Case_Id == 1);
-            Assert.Contains(billableActivities, ba => ba.Case_Id == 2);
+            Assert.Contains(billableActivities, ba => ba.LegalCase_Id == 1);
+            Assert.Contains(billableActivities, ba => ba.LegalCase_Id == 2);
             Assert.Contains(billableActivities, ba => ba.Employee_Id == 1);
             Assert.Contains(billableActivities, ba => ba.Employee_Id == 2);
         }

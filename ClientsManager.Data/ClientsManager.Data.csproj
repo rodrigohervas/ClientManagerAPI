@@ -13,6 +13,10 @@
     <Compile Remove="Migrations\20200716031846_InitialMigration.Designer.cs" />
     <Compile Remove="Migrations\20200716034139_Modified_Relationship_Data.cs" />
     <Compile Remove="Migrations\20200716034139_Modified_Relationship_Data.Designer.cs" />
+    <Compile Remove="Migrations\20200722235934_Added_Case_Entity.cs" />
+    <Compile Remove="Migrations\20200722235934_Added_Case_Entity.Designer.cs" />
+    <Compile Remove="Migrations\20200723000127_Added_Case_Entity.cs" />
+    <Compile Remove="Migrations\20200723000127_Added_Case_Entity.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

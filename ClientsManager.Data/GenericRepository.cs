@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ClientsManager.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +31,22 @@ namespace ClientsManager.Data
         /// <returns> Task<IEnumerable<T>> </returns>
         public async Task<IEnumerable<T>> GetAllAsync()
         {
-            return await _context.Set<T>().ToListAsync();
+            return await _context.Set<T>()
+                                    .AsNoTracking()
+                                    .ToListAsync();
+        }
+
+        /// <summary>
+        /// Gets a page of objects of type T
+        /// </summary>
+        /// <returns> Task<IEnumerable<T>> </returns>
+        public async Task<IEnumerable<T>> GetAllPagedAsync(Expression<Func<T, object>> orderCriteria, QueryStringParameters parameters)
+        {
+            return await _context.Set<T>()
+                                    .OrderBy(orderCriteria)
+                                    .Skip((parameters.pageNumber - 1) * parameters.pageSize)
+                                    .Take(parameters.pageSize)
+                                    .ToListAsync();
         }
 
         /// <summary>
@@ -39,7 +55,9 @@ namespace ClientsManager.Data
         /// <returns>Task<int> - A Task containing the number of objects of type T in the DB</returns>
         public async Task<int> CountAsync()
         {
-            return await _context.Set<T>().CountAsync();
+            return await _context.Set<T>()
+                                    .AsNoTracking()
+                                    .CountAsync();
         }
 
         /// <summary>
@@ -49,7 +67,10 @@ namespace ClientsManager.Data
         /// <returns>Task<IEnumerable<T>> - A list of objects of type T</returns>
         public async Task<IEnumerable<T>> GetByAsync(Expression<Func<T, bool>> searchCriteria)
         {
-            return await _context.Set<T>().Where(searchCriteria).ToListAsync();
+            return await _context.Set<T>()
+                                    .Where(searchCriteria)
+                                    .AsNoTracking()
+                                    .ToListAsync();
         }
 
         /// <summary>
@@ -59,7 +80,10 @@ namespace ClientsManager.Data
         /// <returns>Task<IEnumerable<T>> - A list of objects of type T</returns>
         public async Task<T> GetOneByAsync(Expression<Func<T, bool>> searchCriteria)
         {
-            return await _context.Set<T>().Where(searchCriteria).FirstOrDefaultAsync();
+            return await _context.Set<T>()
+                                    .Where(searchCriteria)
+                                    .AsNoTracking()
+                                    .FirstOrDefaultAsync();
         }
 
         /// <summary>
@@ -71,6 +95,7 @@ namespace ClientsManager.Data
         public async Task<T> GetOneByWithRelatedDataAsync(Expression<Func<T, bool>> searchCriteria, Expression<Func<T, object>> includeCriteria)
         {
             return await _context.Set<T>()
+                                        .AsNoTracking()
                                         .Where(searchCriteria)
                                         .Include(includeCriteria)
                                         .FirstOrDefaultAsync();
