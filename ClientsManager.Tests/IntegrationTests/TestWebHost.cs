@@ -74,7 +74,7 @@ namespace ClientsManager.Tests.IntegrationTests
 
                     try {
                         //Seed db for tests
-                        TestDbSeeder.SeedDB(context);
+                        BATestDbSeeder.SeedDB(context);
                     }
                     catch (Exception ex) {
                         //log any seeding errors

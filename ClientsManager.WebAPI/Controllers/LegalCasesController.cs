@@ -33,7 +33,7 @@ namespace ClientsManager.WebAPI.Controllers
         // GET: api/legalcases?pageNumber=2&pageSize=3
         [HttpGet]
         [ServiceFilter(typeof(QueryStringParamsValidator))]
-        public async Task<ActionResult<IEnumerable<LegalCase>>> GetAllLegalCases([FromQuery] QueryStringParameters parameters)
+        public async Task<ActionResult<IEnumerable<LegalCase>>> GetAllLegalCasesAsync([FromQuery] QueryStringParameters parameters)
         {
             var legalCases = await _genericRepository.GetAllPagedAsync(lc => lc.Client_Id, parameters);
 

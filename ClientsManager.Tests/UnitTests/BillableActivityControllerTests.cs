@@ -2,6 +2,7 @@
 using ClientsManager.Data;
 using ClientsManager.Models;
 using ClientsManager.Tests.IntegrationTests;
+using ClientsManager.Tests.TestData;
 using ClientsManager.WebAPI;
 using ClientsManager.WebAPI.AutoMapperProfiles;
 using ClientsManager.WebAPI.Controllers;
@@ -36,7 +37,7 @@ namespace ClientsManager.Tests.UnitTests
             _mapper = new Mapper(configuration);
         }
 
-        //Task<ActionResult<IEnumerable<BillableActivity>>> GetAllBillableActivitiesAsync
+        //GetAllBillableActivitiesAsync
         [Fact]
         public async void Should_Return_All_BillableActivities()
         {
@@ -44,7 +45,6 @@ namespace ClientsManager.Tests.UnitTests
             _mockRepository.Setup(repo => repo.GetAllAsync()).ReturnsAsync(_billableActivities);
 
             //instantiate the controller, and call the method
-            //var controller = new BillableActivitiesController(_mockRepository.Object, _mapper.Object);
             var controller = new BillableActivitiesController(_mockRepository.Object, _mapper);
 
             //Call the SUT method
@@ -75,7 +75,7 @@ namespace ClientsManager.Tests.UnitTests
         }
 
 
-        //Task<ActionResult<IEnumerable<BillableActivity>>> GetBillableActivitiesByEmployeeIdAsync(int employee_id)
+        //GetBillableActivitiesByEmployeeIdAsync(int employee_id)
         [Theory]
         [InlineData(2)]
         public async void Should_Return_All_BillableActivities_for_One_Employee(int employee_id)
@@ -119,7 +119,7 @@ namespace ClientsManager.Tests.UnitTests
         }
 
 
-        //Task<ActionResult<BillableActivity>> GetBillableActivityByIdAsync(int id)
+        //GetBillableActivityByIdAsync(int id)
         [Theory]
         [InlineData(1)]
         public async void Should_Return_One_BillableActivity(int id)
@@ -157,7 +157,7 @@ namespace ClientsManager.Tests.UnitTests
             Assert.Equal(billableActivity.Finish_DateTime, actual.Finish_DateTime);
         }
 
-        //Test public async Task<ActionResult<BillableActivity>> AddBillableActivityAsync(BillableActivity billableActivity)
+        //AddBillableActivityAsync(BillableActivity billableActivity)
         [Fact]
         public async void Should_Create_One_BillableActivity_201()
         {
@@ -199,7 +199,7 @@ namespace ClientsManager.Tests.UnitTests
         }
 
 
-        //Test public async Task<ActionResult<BillableActivity>> AddBillableActivityAsync(BillableActivity billableActivity)
+        //AddBillableActivityAsync(BillableActivity billableActivity)
         [Fact]
         public async void Should_Return_NotFound_404_When_Create_With_null_BillableActivity()
         {
@@ -227,9 +227,9 @@ namespace ClientsManager.Tests.UnitTests
             Assert.Equal(404, statusCode);
         }
 
-        //Test public async Task<ActionResult<BillableActivity>> UpdateBillableActivityAsync(int id, BillableActivity billableActivity)
+        //UpdateBillableActivityAsync(int id, BillableActivity billableActivity)
 
 
-        //Test public async Task<ActionResult<int>> DeleteBillableActivityAsync(int id)
+        //DeleteBillableActivityAsync(int id)
     }
 }

@@ -9,6 +9,7 @@ using System.Net.Http;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Newtonsoft.Json;
 using ClientsManager.WebAPI.DTOs;
+using ClientsManager.Tests.TestData;
 
 namespace ClientsManager.Tests.IntegrationTests
 {

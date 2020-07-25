@@ -1,11 +1,12 @@
 ﻿using ClientsManager.Data;
+using ClientsManager.Tests.TestData;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ClientsManager.Tests
+namespace ClientsManager.Tests.IntegrationTests
 {
-    public static class TestDbSeeder
+    public static class BATestDbSeeder
     {
         public static void SeedDB(ClientsManagerDBContext context) {
             context.BillableActivities.AddRange(BillableActivityData.GetTestBillableActivities());

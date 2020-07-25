@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ClientsManager.Tests
+namespace ClientsManager.Tests.TestData
 {
     public static class BillableActivityData
     { 
