@@ -153,7 +153,7 @@ namespace ClientsManager.WebAPI.Controllers
         [ServiceFilter(typeof(LegalCaseValidationFilter))]
         public async Task<ActionResult<LegalCaseDTO>> UpdateLegalCaseAsync([FromRoute] int id, [FromBody] LegalCase legalCase)
         {
-            var legalCaseResult = await _genericRepository.GetOneByAsync(lc => lc.Id == legalCase.Id);
+            LegalCase legalCaseResult = await _genericRepository.GetOneByAsync(lc => lc.Id == legalCase.Id);
 
             if (legalCaseResult is null)
             {
@@ -177,14 +177,14 @@ namespace ClientsManager.WebAPI.Controllers
         [ServiceFilter(typeof(IdValidator))]
         public async Task<ActionResult<int>> DeleteLegalCaseAsync([FromRoute] int id)
         {
-            LegalCase legalCase = await _genericRepository.GetOneByAsync(lc => lc.Id == id);
+            LegalCase legalCaseResult = await _genericRepository.GetOneByAsync(lc => lc.Id == id);
 
-            if (legalCase is null)
+            if (legalCaseResult is null)
             {
                 return NotFound("No Legal Case was found");
             }
 
-            int deletedLegalCases = await _genericRepository.DeleteTAsync(legalCase);
+            int deletedLegalCases = await _genericRepository.DeleteTAsync(legalCaseResult);
 
             return Ok(deletedLegalCases);
         }

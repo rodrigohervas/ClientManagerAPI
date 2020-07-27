@@ -39,7 +39,7 @@ namespace ClientsManager.Tests.UnitTests
 
         //GetAllBillableActivitiesAsync
         [Fact]
-        public async void Should_Return_All_BillableActivities()
+        public async void GetAllAsync_Returns_All_BillableActivities()
         {
             //specify the mockRepo return
             _mockRepository.Setup(repo => repo.GetAllAsync()).ReturnsAsync(_billableActivities);
@@ -78,7 +78,7 @@ namespace ClientsManager.Tests.UnitTests
         //GetBillableActivitiesByEmployeeIdAsync(int employee_id)
         [Theory]
         [InlineData(2)]
-        public async void Should_Return_All_BillableActivities_for_One_Employee(int employee_id)
+        public async void GetBillableActivitiesByEmployeeIdAsync_Returns_All_BillableActivities_for_One_Employee(int employee_id)
         {
             //gets all BillableActivities for one employee
             var _billableActivitiesOfEmployee = _billableActivities.Where(ba => ba.Employee_Id == employee_id);
@@ -122,7 +122,7 @@ namespace ClientsManager.Tests.UnitTests
         //GetBillableActivityByIdAsync(int id)
         [Theory]
         [InlineData(1)]
-        public async void Should_Return_One_BillableActivity(int id)
+        public async void GetBillableActivityByIdAsync_Returns_One_BillableActivity(int id)
         {
             //get the first TimeFrame
             var billableActivity = _billableActivities.FirstOrDefault<BillableActivity>();
@@ -159,7 +159,7 @@ namespace ClientsManager.Tests.UnitTests
 
         //AddBillableActivityAsync(BillableActivity billableActivity)
         [Fact]
-        public async void Should_Create_One_BillableActivity_201()
+        public async void AddBillableActivityAsync_Creates_One_BillableActivity_201()
         {
             //declare a BillableActivity
             var expectedBillableActivity = new BillableActivity
@@ -199,9 +199,9 @@ namespace ClientsManager.Tests.UnitTests
         }
 
 
-        //AddBillableActivityAsync(BillableActivity billableActivity)
+        //AddBillableActivityAsync(0)
         [Fact]
-        public async void Should_Return_NotFound_404_When_Create_With_null_BillableActivity()
+        public async void AddBillableActivityAsync_Returns_NotFound_404_When_Create_With_null_BillableActivity()
         {
             //specify the mockRepo return
             _mockRepository.Setup(repo => repo.AddTAsync(null)).ReturnsAsync(0);
