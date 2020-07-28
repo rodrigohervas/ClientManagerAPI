@@ -7,6 +7,7 @@ using ClientsManager.WebAPI;
 using ClientsManager.WebAPI.AutoMapperProfiles;
 using ClientsManager.WebAPI.Controllers;
 using ClientsManager.WebAPI.DTOs;
+using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Moq;
@@ -24,7 +25,7 @@ namespace ClientsManager.Tests.UnitTests
         private readonly IEnumerable<BillableActivity> _billableActivities;
         private readonly Mock<IGenericRepository<BillableActivity>> _mockRepository;
         private readonly IMapper _mapper;
-        
+
 
         public BillableActivityControllerTests()
         {
@@ -49,7 +50,7 @@ namespace ClientsManager.Tests.UnitTests
 
             //Call the SUT method
             var result = await controller.GetAllBillableActivitiesAsync();
-            
+
             //Assert the result
             Assert.NotNull(result);
             var actionResult = Assert.IsType<ActionResult<IEnumerable<BillableActivity>>>(result);
@@ -136,7 +137,7 @@ namespace ClientsManager.Tests.UnitTests
             //Call the SUT method
             //returns ActionResult<TimeFrame> type
             var actionResult = await controller.GetBillableActivityByIdAsync(id);
-            
+
             //Assert the result
             Assert.NotNull(actionResult);
 
@@ -159,13 +160,13 @@ namespace ClientsManager.Tests.UnitTests
 
         //AddBillableActivityAsync(BillableActivity billableActivity)
         [Fact]
-        public async void AddBillableActivityAsync_Creates_One_BillableActivity_201()
+        public async void AddBillableActivityAsync_Creates_One_BillableActivity_Returns_201_And_BA_Created()
         {
             //declare a BillableActivity
             var expectedBillableActivity = new BillableActivity
             {
                 Id = 1,
-                LegalCase_Id = 1, 
+                LegalCase_Id = 1,
                 Employee_Id = 1,
                 Title = "Billable Activity 1",
                 Description = "this is the Billable Activity 1",
@@ -173,10 +174,17 @@ namespace ClientsManager.Tests.UnitTests
                 Start_DateTime = new DateTime(2020, 06, 20, 9, 30, 00),
                 Finish_DateTime = new DateTime(2020, 06, 20, 16, 00, 00)
             };
+            BillableActivityDTO expectedBaDTO = _mapper.Map<BillableActivityDTO>(expectedBillableActivity);
 
-            //specify the mockRepo return
+            //set mockRepo return for Add action
             _mockRepository.Setup(repo => repo.AddTAsync(expectedBillableActivity)).ReturnsAsync(1);
 
+            //set repo return for getting the newly created object
+            _mockRepository.Setup(repo => repo.GetOneByAsync(ba =>
+                                    ba.Title == expectedBillableActivity.Title &&
+                                    ba.Employee_Id == expectedBillableActivity.Employee_Id &&
+                                    ba.LegalCase_Id == expectedBillableActivity.LegalCase_Id))
+                            .ReturnsAsync(expectedBillableActivity);
 
             //instantiate the controller, passing the repo object
             var controller = new BillableActivitiesController(_mockRepository.Object, _mapper);
@@ -185,17 +193,19 @@ namespace ClientsManager.Tests.UnitTests
             //returns ActionResult<BillableActivity> type
             var actionResult = await controller.AddBillableActivityAsync(expectedBillableActivity);
 
-            var test = actionResult.Result;
-            
+            //Get the int result from the posted ActionResult
+            var createdResult = actionResult.Result as CreatedResult;
+            var statusCode = createdResult.StatusCode;
+            BillableActivityDTO actualBaDTO = createdResult.Value as BillableActivityDTO;
+
             //Assert the result
             Assert.NotNull(actionResult);
 
-            //Get the int result from the posted ActionResult
-            var result = (CreatedResult)actionResult.Result;
-            var statusCode = result.StatusCode;
-
             //Validate the return is 1 BillableActivity created
             Assert.Equal(201, statusCode);
+
+            //Validate the actual BillableActivity
+            actualBaDTO.Should().BeEquivalentTo(expectedBaDTO, options => options.ComparingByMembers<BillableActivityDTO>());
         }
 
 
@@ -219,7 +229,7 @@ namespace ClientsManager.Tests.UnitTests
             var result = actionResult.Result as NotFoundObjectResult;
             var statusCode = result.StatusCode;
             var message = result.Value;
-            
+
             //Assert message
             Assert.Equal("No Billable Activity was created", message);
 
@@ -228,8 +238,174 @@ namespace ClientsManager.Tests.UnitTests
         }
 
         //UpdateBillableActivityAsync(int id, BillableActivity billableActivity)
+        [Fact]
+        public async void UpdateBillableActivityAsync_Updates_One_BillableActivity_Returns_200_And_BillableActivity_Updated()
+        {
+            //declare a BillableActivity
+            var expectedBillableActivity = new BillableActivity
+            {
+                Id = 1,
+                LegalCase_Id = 1,
+                Employee_Id = 1,
+                Title = "Billable Activity 1",
+                Description = "this is the Billable Activity 1",
+                Price = 120.50m,
+                Start_DateTime = new DateTime(2020, 06, 20, 9, 30, 00),
+                Finish_DateTime = new DateTime(2020, 06, 20, 16, 00, 00)
+            };
+            BillableActivityDTO expectedBaDTO = _mapper.Map<BillableActivityDTO>(expectedBillableActivity);
 
+            //set repo return for getting the object to update
+            _mockRepository.Setup(repo => repo.GetOneByAsync(ba => ba.Id == expectedBillableActivity.Id))
+                           .ReturnsAsync(expectedBillableActivity);
+
+            //set mockRepo return for Update action
+            _mockRepository.Setup(repo => repo.UpdateTAsync(expectedBillableActivity)).ReturnsAsync(1);
+
+            //instantiate the controller, passing the repo object
+            var controller = new BillableActivitiesController(_mockRepository.Object, _mapper);
+
+            //Call the SUT method
+            //returns ActionResult<BillableActivity> type
+            var actionResult = await controller.UpdateBillableActivityAsync(expectedBillableActivity.Id, expectedBillableActivity);
+
+            //Get the int result from the posted ActionResult
+            var okObjectResult = actionResult.Result as OkObjectResult;
+            var statusCode = okObjectResult.StatusCode;
+            BillableActivityDTO actualBaDTO = okObjectResult.Value as BillableActivityDTO;
+
+            //Assert the result
+            Assert.NotNull(actionResult);
+
+            //Validate StatusCode
+            Assert.Equal(200, statusCode);
+
+            //Validate the actual BillableActivity
+            actualBaDTO.Should().BeEquivalentTo(expectedBaDTO, options => options.ComparingByMembers<BillableActivityDTO>());
+        }
+
+        //update error
+        //UpdateBillableActivityAsync(int id, BillableActivity billableActivity)
+        [Fact]
+        public async void UpdateBillableActivityAsync_Returns_NotFound_404_When_Update_With_null_BillableActivity()
+        {
+            //declare a BillableActivity
+            BillableActivity expectedBillableActivity = null;
+            //
+            string expectedResponseMessage = "No Billable Activity was updated";
+
+            ///set mockRepo return for Update action
+            _mockRepository.Setup(repo => repo.UpdateTAsync(expectedBillableActivity)).ReturnsAsync(0);
+
+            //instantiate the controller, passing the repo object
+            var controller = new BillableActivitiesController(_mockRepository.Object, _mapper);
+
+            //Call the SUT method
+            //returns ActionResult<BillableActivity> type
+            var actionResult = await controller.UpdateBillableActivityAsync(1, expectedBillableActivity);
+
+            //Get the int result from the posted ActionResult
+            var notFoundObjectResult = actionResult.Result as NotFoundObjectResult;
+            var statusCode = notFoundObjectResult.StatusCode;
+            string actualResponseMessage = (string)notFoundObjectResult.Value;
+
+            //Assert the result
+            Assert.NotNull(actionResult);
+
+            //Validate the return status code
+            Assert.Equal(404, statusCode);
+
+            //Validate the actual BillableActivity
+            Assert.Equal(expectedResponseMessage, actualResponseMessage);
+        }
 
         //DeleteBillableActivityAsync(int id)
+        [Theory]
+        [InlineData(1)]
+        public async void DeleteBillableActivityAsync_Deletes_One_BillableActivity_And_Returns_Number_Of_Deletions(int id)
+        {
+            //declare a BillableActivity
+            var expectedBillableActivity = new BillableActivity
+            {
+                Id = 1,
+                LegalCase_Id = 1,
+                Employee_Id = 1,
+                Title = "Billable Activity 1",
+                Description = "this is the Billable Activity 1",
+                Price = 120.50m,
+                Start_DateTime = new DateTime(2020, 06, 20, 9, 30, 00),
+                Finish_DateTime = new DateTime(2020, 06, 20, 16, 00, 00)
+            };
+            BillableActivityDTO expectedBaDTO = _mapper.Map<BillableActivityDTO>(expectedBillableActivity);
+
+            //set repo return for getting the object to delete
+            _mockRepository.Setup(repo => repo.GetOneByAsync(ba => ba.Id == id))
+                           .ReturnsAsync(expectedBillableActivity);
+
+            //set mockRepo return for Delete action
+            _mockRepository.Setup(repo => repo.DeleteTAsync(expectedBillableActivity)).ReturnsAsync(1);
+
+            //instantiate the controller, passing the repo object
+            var controller = new BillableActivitiesController(_mockRepository.Object, _mapper);
+
+            //Call the controller method
+            var actionResult = await controller.DeleteBillableActivityAsync(id);
+
+            //Get the int result
+            var okObjectResult = actionResult.Result as OkObjectResult;
+            var statusCode = okObjectResult.StatusCode;
+            int actualDeleted = (int)okObjectResult.Value;
+
+            //Assert the result
+            Assert.NotNull(actionResult);
+
+            //Validate StatusCode
+            Assert.Equal(200, statusCode);
+
+            //Validate the number of BAs deleted
+            Assert.Equal(1, actualDeleted);
+        }
+
+
+        //delete error
+        //DeleteBillableActivityAsync(int id)
+        [Theory]
+        [InlineData(0)]
+        public async void DeleteBillableActivityAsync_Returns_NotFound_404_When_Delete_With_null_BillableActivity(int id)
+        {
+            //declare a BillableActivity
+            BillableActivity expectedBillableActivity = null;
+
+            //response error message:
+            string expectedResponseMessage = "No data was found for the id";
+
+            //set repo return for getting the object to delete
+            _mockRepository.Setup(repo => repo.GetOneByAsync(ba => ba.Id == id))
+                           .ReturnsAsync(expectedBillableActivity);
+
+            //set mockRepo return for Delete action
+            _mockRepository.Setup(repo => repo.DeleteTAsync(expectedBillableActivity)).ReturnsAsync(0);
+
+            //instantiate the controller, passing the repo object
+            var controller = new BillableActivitiesController(_mockRepository.Object, _mapper);
+
+            //Call the controller method
+            var actionResult = await controller.DeleteBillableActivityAsync(id);
+
+            //Get the int result
+            var notFoundObjectResult = actionResult.Result as NotFoundObjectResult;
+            var statusCode = notFoundObjectResult.StatusCode;
+            string actualResponseMessage = (string)notFoundObjectResult.Value;
+
+            //Assert the result
+            Assert.NotNull(actionResult);
+
+            //Validate StatusCode
+            Assert.Equal(404, statusCode);
+
+            //Validate the number of BAs deleted
+            Assert.Equal(expectedResponseMessage, actualResponseMessage);
+        }
+
     }
 }
