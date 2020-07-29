@@ -18,37 +18,39 @@ namespace ClientsManager.Data.EntityConfiguration
             builder.ToTable("LegalCases");
 
             //Map Primary Key field
-            builder.HasKey(c => c.Id);
+            builder.HasKey(lc => lc.Id);
 
             //Map Relationships
+            //one-to-many with Client
             builder
-                .HasOne(c => c.Client)
+                .HasOne(lc => lc.Client)
                 .WithMany(cl => cl.LegalCases) //Relationship with Client
-                .HasForeignKey(c => c.Client_Id); //FK from Client
+                .HasForeignKey(lc => lc.Client_Id); //FK from Client
 
+            //one-to-many with LegalCase
             builder
-                .HasMany(c => c.BillableActivities)
+                .HasMany(lc => lc.BillableActivities)
                 .WithOne(ba => ba.LegalCase) //Relationship with BillableActivity
                 .HasForeignKey(ba => ba.LegalCase_Id); //FK from LegalCase
 
             //Map Properties
-            builder.Property(c => c.Id)
+            builder.Property(lc => lc.Id)
                 .IsRequired()
                 .HasColumnType<int>("int");
             
-            builder.Property(c => c.Client_Id)
+            builder.Property(lc => lc.Client_Id)
                 .IsRequired()
                 .HasColumnType<int>("int");
 
-            builder.Property(c => c.Title)
+            builder.Property(lc => lc.Title)
                 .IsRequired()
                 .HasColumnType<string>("nvarchar(max)");
             
-            builder.Property(c => c.Description)
+            builder.Property(lc => lc.Description)
                 .IsRequired()
                 .HasColumnType<string>("nvarchar(max)");
             
-            builder.Property(c => c.TrustFund)
+            builder.Property(lc => lc.TrustFund)
                 .IsRequired()
                 .HasColumnType<decimal>("decimal(18,2)");
 

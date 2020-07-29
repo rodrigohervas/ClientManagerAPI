@@ -6,19 +6,22 @@ namespace ClientsManager.Models
 {
     public class Client
     {
-        //add props
         public int Id { get; set; }
 
         public string Name { get; set; }
 
         public string Description { get; set; }
 
-        
-        //prop for relationship with Case
+        public string Website { get; set; }
+
+
+        //Navigational property for relationship with LegalCase
         public ICollection<LegalCase> LegalCases { get; set; }
 
-        //TODO: add ICollection<Address> Addresses
+        //Navigational property for relationship with Contact
+        public ICollection<Contact> Contacts { get; set; }
 
-        //TODO: add ICollection<Contact> Contacts
+        //Navigational property for relationship with Address
+        public ICollection<Address> Addresses { get; set; }
     }
 }

@@ -17,21 +17,6 @@ namespace ClientsManager.Data.EntityConfiguration
             //Map Primary Key field
             builder.HasKey(c => c.Id);
 
-            //Map Relationships
-            builder
-                .HasMany(cl => cl.LegalCases)
-                .WithOne(c => c.Client); //Relationship with Case
-
-            //TODO: add one-to-many relationship with Contact
-            //builder
-            //    .HasMany(cl => cl.Contacts)
-            //    .WithOne(co => co.Client); //Relationship with Contact
-            
-            //TODO: add one-to-many relationship with Address
-            //builder
-            //    .HasMany(cl => cl.Adresses)
-            //    .WithOne(ad => ad.Client); //Relationship with Address
-
             //Map Properties
             builder.Property(c => c.Id)
                 .IsRequired()
@@ -45,6 +30,10 @@ namespace ClientsManager.Data.EntityConfiguration
                 .IsRequired()
                 .HasColumnType<string>("nvarchar(max)");
 
+            builder.Property(c => c.Website)
+                .IsRequired(false)
+                .HasColumnType<string>("nvarchar(350)");
+
             //Seed Table
             builder.HasData(
                 new Client() 
@@ -57,7 +46,8 @@ namespace ClientsManager.Data.EntityConfiguration
                 {
                     Id = 2,
                     Name = "Big Company LLC",
-                    Description = "Big Company LLC"
+                    Description = "Big Company LLC",
+                    Website = "https://www.bigcompanyllc.com"
                 });
         }
     }

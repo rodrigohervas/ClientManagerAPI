@@ -17,6 +17,8 @@
     <Compile Remove="Migrations\20200722235934_Added_Case_Entity.Designer.cs" />
     <Compile Remove="Migrations\20200723000127_Added_Case_Entity.cs" />
     <Compile Remove="Migrations\20200723000127_Added_Case_Entity.Designer.cs" />
+    <Compile Remove="Migrations\20200729230455_Added_Contact_And_Address_And_Changes.cs" />
+    <Compile Remove="Migrations\20200729230455_Added_Contact_And_Address_And_Changes.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

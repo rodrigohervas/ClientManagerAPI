@@ -4,14 +4,16 @@ using ClientsManager.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ClientsManager.Data.Migrations
 {
     [DbContext(typeof(ClientsManagerDBContext))]
-    partial class ClientsManagerDBContextModelSnapshot : ModelSnapshot
+    [Migration("20200729231948_Added_Contact_And_Address_And_Changes")]
+    partial class Added_Contact_And_Address_And_Changes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

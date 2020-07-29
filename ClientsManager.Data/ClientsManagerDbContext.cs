@@ -21,12 +21,15 @@ namespace ClientsManager.Data
 
         }
 
-        //DbSets: each DbSet represents a repository
+        //DbSets
         public DbSet<BillableActivity> BillableActivities { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<EmployeeType> EmployeeTypes { get; set; }
-        public DbSet<LegalCase> Cases { get; set;  }
+        public DbSet<LegalCase> LegalCases { get; set;  }
         public DbSet<Client> Clients { get; set; }
+        public DbSet<Address> Addresses { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
+
 
         /// <summary>
         /// Method that configures the Entity using Fluent API, and seeds the DB with initial data
@@ -51,6 +54,12 @@ namespace ClientsManager.Data
 
             //Client entity configuration
             modelBuilder.ApplyConfiguration<Client>(new ClientConfiguration());
+
+            //Address entity configuration
+            modelBuilder.ApplyConfiguration<Address>(new AddressConfiguration());
+
+            //Contact entity configuration
+            modelBuilder.ApplyConfiguration<Contact>(new ContactConfiguration());
         }
     }
 }
