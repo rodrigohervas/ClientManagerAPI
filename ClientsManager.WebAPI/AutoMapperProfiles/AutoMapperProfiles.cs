@@ -32,6 +32,12 @@ namespace ClientsManager.WebAPI.AutoMapperProfiles
             CreateMap<LegalCase, LegalCaseDTO>();
 
             CreateMap<LegalCase, LegalCaseWithBillableActivitiesDTO>();
+
+            CreateMap<Contact, ContactDTO>();
+
+            CreateMap<Contact, ContactWithAddressDTO>();
+
+            CreateMap<Address, AddressDTO>();
         }
     }
 }

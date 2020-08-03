@@ -45,6 +45,7 @@ namespace ClientsManager.WebAPI
             services.AddScoped<ClientIdValidator>();
             services.AddScoped<LegalCaseIdValidator>();
             services.AddScoped<LegalCaseValidationFilter>();
+            services.AddScoped<ContactValidationFilter>();
             //register QueryString params for Paging
             services.AddScoped<QueryStringParamsValidator>();
 
