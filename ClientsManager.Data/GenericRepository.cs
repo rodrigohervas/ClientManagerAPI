@@ -37,9 +37,16 @@ namespace ClientsManager.Data
         }
 
         /// <summary>
-        /// Gets a page of objects of type T
+        /// 
         /// </summary>
         /// <returns> Task<IEnumerable<T>> </returns>
+        ///
+        /// <summary>
+        /// Gets a page of objects of type T
+        /// </summary>
+        /// <param name="orderCriteria">Lambda expression with the OrderBy criteria</param>
+        /// <param name="parameters">QueryStringParameters object</param>
+        /// <returns>Task<IEnumerable<T>> - a list of objects of type T</returns>
         public async Task<IEnumerable<T>> GetAllPagedAsync(Expression<Func<T, object>> orderCriteria, QueryStringParameters parameters)
         {
             return await _context.Set<T>()
@@ -89,9 +96,9 @@ namespace ClientsManager.Data
         /// <summary>
         /// Gets an object of type T with its related dependent objects as defined in params searchCriteria and included criteria
         /// </summary>
-        /// <param name="searchCriteria"></param>
-        /// <param name="includeCriteria"></param>
-        /// <returns></returns>
+        /// <param name="searchCriteria">A lambda expression containing the search criteria<</param>
+        /// <param name="includeCriteria">A lambda expression containing the include criteria, for the related data<</param>
+        /// <returns>Task<T> - An object of type T, with its related data</returns>
         public async Task<T> GetOneByWithRelatedDataAsync(Expression<Func<T, bool>> searchCriteria, Expression<Func<T, object>> includeCriteria)
         {
             return await _context.Set<T>()

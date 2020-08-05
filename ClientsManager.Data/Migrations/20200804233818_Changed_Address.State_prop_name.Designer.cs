@@ -4,14 +4,16 @@ using ClientsManager.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ClientsManager.Data.Migrations
 {
     [DbContext(typeof(ClientsManagerDBContext))]
-    partial class ClientsManagerDBContextModelSnapshot : ModelSnapshot
+    [Migration("20200804233818_Changed_Address.State_prop_name")]
+    partial class Changed_AddressState_prop_name
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,7 +55,7 @@ namespace ClientsManager.Data.Migrations
 
                     b.HasIndex("Client_Id");
 
-                    b.ToTable("Addresses");
+                    b.ToTable("Address");
 
                     b.HasData(
                         new

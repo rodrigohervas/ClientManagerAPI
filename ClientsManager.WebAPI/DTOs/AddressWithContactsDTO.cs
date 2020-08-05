@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ClientsManager.WebAPI.DTOs
 {
-    public class AddressDTO
+    public class AddressWithContactsDTO
     {
         public int Id { get; set; }
 
@@ -20,5 +20,7 @@ namespace ClientsManager.WebAPI.DTOs
         public string ZipCode { get; set; }
 
         public string Country { get; set; }
+
+        public ICollection<ContactDTO> Contacts { get; set; }
     }
 }

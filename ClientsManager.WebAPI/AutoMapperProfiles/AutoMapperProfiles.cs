@@ -38,6 +38,16 @@ namespace ClientsManager.WebAPI.AutoMapperProfiles
             CreateMap<Contact, ContactWithAddressDTO>();
 
             CreateMap<Address, AddressDTO>();
+
+            CreateMap<Address, AddressWithContactsDTO>();
+
+            CreateMap<Client, ClientDTO>();
+
+            CreateMap<Client, ClientWithLegalCasesDTO>();
+
+            CreateMap<Client, ClientWithAddressesDTO>();
+
+            CreateMap<Client, ClientWithContactsDTO>();
         }
     }
 }

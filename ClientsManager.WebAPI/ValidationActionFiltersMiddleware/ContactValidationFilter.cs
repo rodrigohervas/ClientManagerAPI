@@ -12,7 +12,7 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
     {
         public void OnActionExecuting(ActionExecutingContext context)
         {
-            //get the LegalCase object from the context body
+            //get the Contact object from the context body
             Contact _contact = context.ActionArguments["contact"] as Contact;
 
             //validate that Contact is not null

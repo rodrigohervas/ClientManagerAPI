@@ -12,7 +12,7 @@ namespace ClientsManager.Data.EntityConfiguration
         public void Configure(EntityTypeBuilder<Address> builder)
         {
             //Map to table
-            builder.ToTable("Address");
+            builder.ToTable("Addresses");
 
             //Map Primary Key field
             builder.HasKey(a => a.Id);
@@ -42,10 +42,13 @@ namespace ClientsManager.Data.EntityConfiguration
                 .IsRequired()
                 .HasColumnType<string>("nvarchar(350)");
 
-            //string State
-            builder.Property(a => a.State)
+            builder.Property(a => a.StateProvince)
                 .IsRequired()
                 .HasColumnType<string>("nvarchar(75)");
+
+            builder.Property(a => a.ZipCode)
+                .IsRequired()
+                .HasColumnType<string>("nvarchar(15)");
 
             builder.Property(a => a.Country)
                 .IsRequired()
@@ -60,7 +63,8 @@ namespace ClientsManager.Data.EntityConfiguration
                     Client_Id = 1,
                     StreetNumber = "53 6th Drive",
                     City = "Silver Spring",
-                    State = "Maryland",
+                    StateProvince = "Maryland",
+                    ZipCode = "20811",
                     Country = "United States"
                 },
                 new Address()
@@ -69,7 +73,8 @@ namespace ClientsManager.Data.EntityConfiguration
                     Client_Id = 1,
                     StreetNumber = "11392 Mayer Point",
                     City = "Saint Joseph",
-                    State = "Missouri",
+                    StateProvince = "Missouri",
+                    ZipCode = "20812",
                     Country = "United States"
                 },
                 new Address()
@@ -78,7 +83,8 @@ namespace ClientsManager.Data.EntityConfiguration
                     Client_Id = 2,
                     StreetNumber = "58 Esch Center",
                     City = "Amarillo",
-                    State = "Texas",
+                    StateProvince = "Texas",
+                    ZipCode = "20813",
                     Country = "United States"
                 },
                 new Address()
@@ -87,7 +93,8 @@ namespace ClientsManager.Data.EntityConfiguration
                     Client_Id = 2,
                     StreetNumber = "8 Veith Circle",
                     City = "Austin",
-                    State = "Texas",
+                    StateProvince = "Texas",
+                    ZipCode = "20814",
                     Country = "United States"
                 },
                 new Address()
@@ -96,8 +103,19 @@ namespace ClientsManager.Data.EntityConfiguration
                     Client_Id = 2,
                     StreetNumber = "819 Golden Leaf Terrace",
                     City = "Evansville",
-                    State = "Indiana",
+                    StateProvince = "Indiana",
+                    ZipCode = "20815",
                     Country = "United States"
+                }, 
+                new Address()
+                {
+                    Id = 6,
+                    Client_Id = 2,
+                    StreetNumber = "Calle Lopez Masquez, 34",
+                    City = "Madrid",
+                    StateProvince = "Madrid",
+                    ZipCode = "28032",
+                    Country = "Spain"
                 });
 
         }

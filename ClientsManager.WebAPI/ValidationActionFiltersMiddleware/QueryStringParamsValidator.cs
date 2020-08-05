@@ -12,7 +12,7 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
     {
         public void OnActionExecuting(ActionExecutingContext context)
         {
-            //get the Case object from the context body
+            //get the QueryStringParameters object from the context body
             var queryStringParams = context.ActionArguments["parameters"] as QueryStringParameters;
             var pageNumber = queryStringParams.pageNumber;
             var pageSize = queryStringParams.pageSize;

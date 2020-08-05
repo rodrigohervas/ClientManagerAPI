@@ -57,7 +57,7 @@ namespace ClientsManager.WebAPI.Controllers
         //GET: api/contacts/client/1
         [HttpGet("client/{client_id:int}")]
         [ServiceFilter(typeof(ClientIdValidator))]
-        public async Task<ActionResult<IEnumerable<LegalCaseDTO>>> GetContactsByClientIdAsync([FromRoute] int client_id)
+        public async Task<ActionResult<IEnumerable<ContactDTO>>> GetContactsByClientIdAsync([FromRoute] int client_id)
         {
             var contacts = await _genericRepository.GetByAsync(co => co.Client_Id == client_id);
 
@@ -146,7 +146,7 @@ namespace ClientsManager.WebAPI.Controllers
         /// <summary>
         /// Updates a Contact for a provided Id
         /// </summary>
-        /// <param name="id">int - the LegalCase Id</param>
+        /// <param name="id">int - the Contact Id</param>
         /// <param name="contact">Contact - The Contact object to modify</param>
         /// <returns>Task<ActionResult<ContactDTO>> - The Contact object updated</returns>
         // PUT api/contacts/5
