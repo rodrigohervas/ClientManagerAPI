@@ -11,13 +11,12 @@ using System.Threading.Tasks;
 namespace ClientsManager.WebAPI.ErrorHandlerMiddleware
 {
     /// <summary>
-    /// Class that extends UseExceptionHandler middleware so a lambda expression can be provided to allow access 
-    /// to the error before returning the Http Response.
+    /// Class that extends UseExceptionHandler middleware for custom error handling before returning the Http Response.
     /// After access to the error this class implements two error handling features:
     /// 1. Error logging - PENDING TODO
     /// 2. Custom Http Response error message
     /// </summary>
-    public static class ExceptionMiddlewareExtensions
+    public static class ExceptionHandlerExtension
     {
         /// <summary>
         /// 

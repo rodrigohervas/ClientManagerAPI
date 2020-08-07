@@ -16,13 +16,16 @@ using ClientsManager.WebAPI.ValidationActionFiltersMiddleware;
 using ClientsManager.WebAPI.ErrorHandlerMiddleware;
 using Microsoft.AspNetCore.Http;
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using ClientsManager.WebAPI.JWTAuthentication;
 
 namespace ClientsManager.WebAPI
 {
     public class Startup
     {
         public IConfiguration _configuration { get; }
-        private string _apiKey = null;
         
         public Startup(IConfiguration configuration)
         {
@@ -33,6 +36,15 @@ namespace ClientsManager.WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //add cors handler
+            services.AddCors(options => {
+                options.AddPolicy("CorsPolicy", builder => builder
+                                                                .AllowAnyOrigin()
+                                                                .AllowAnyMethod()
+                                                                .AllowAnyHeader()
+                                                                .AllowCredentials());
+            });
+
             //register the custom action Validation Filters Middleware
             services.AddScoped<GenericValidationFilter>();
             services.AddScoped<IdValidator>();
@@ -56,9 +68,6 @@ namespace ClientsManager.WebAPI
             //register AutoMapper for POCO to DTO mapping
             services.AddAutoMapper(typeof(Startup));
 
-            //Get API Key from Secrets Manager
-            _apiKey = _configuration["ServiceApiKey"];
-
             //Add DbContext Middleware
             services.AddDbContext<ClientsManagerDBContext>(options =>
                 options.UseSqlServer(_configuration["connectionstring"])
@@ -66,6 +75,10 @@ namespace ClientsManager.WebAPI
 
             //Add Repositories DI dependencies 
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
+
+            //JWT Token authentication
+            services.AddJWTokenAuthentication(_configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -83,13 +96,15 @@ namespace ClientsManager.WebAPI
                 app.UseExceptionHandler("/error");
             }
 
-            //use custom extension of Exception Handler Middleware
+            //add Exception Handler Middleware
             //app.ConfigureExceptionHandler(logger);
             app.ConfigureExceptionHandler();
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
