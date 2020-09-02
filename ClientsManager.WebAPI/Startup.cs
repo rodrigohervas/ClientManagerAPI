@@ -19,7 +19,9 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using ClientsManager.WebAPI.JWTAuthentication;
+using ClientsManager.WebAPI.Authentication;
+using Microsoft.AspNetCore.Authentication.AzureAD.UI;
+using Microsoft.IdentityModel.Logging;
 
 namespace ClientsManager.WebAPI
 {
@@ -36,13 +38,16 @@ namespace ClientsManager.WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //Make details available only for devlopment
+            IdentityModelEventSource.ShowPII = true;
+
             //add cors handler
             services.AddCors(options => {
-                options.AddPolicy("CorsPolicy", builder => builder
-                                                                .AllowAnyOrigin()
-                                                                .AllowAnyMethod()
-                                                                .AllowAnyHeader()
-                                                                .AllowCredentials());
+            options.AddPolicy("CorsPolicy", builder => builder
+                                                            .AllowAnyOrigin()
+                                                            .AllowAnyMethod()
+                                                            .AllowAnyHeader());
+                                                                //.AllowCredentials());
             });
 
             //register the custom action Validation Filters Middleware
@@ -70,15 +75,18 @@ namespace ClientsManager.WebAPI
 
             //Add DbContext Middleware
             services.AddDbContext<ClientsManagerDBContext>(options =>
-                options.UseSqlServer(_configuration["connectionstring"])
+                options.UseSqlServer(_configuration["ConnectionStrings:ClientsManagerDBConnectionString"])
             );
 
             //Add Repositories DI dependencies 
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
 
-            //JWT Token authentication
-            services.AddJWTokenAuthentication(_configuration);
+            //JWT Token authentication configuration
+            //services.AddJWTokenAuthentication(_configuration);
+
+            //Azure AD authentication configuration
+            services.AddAzureADAuthentication(_configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -103,6 +111,10 @@ namespace ClientsManager.WebAPI
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors("CorsPolicy");
+
+            app.UseCookiePolicy();
 
             app.UseAuthentication();
 

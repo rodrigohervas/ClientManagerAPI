@@ -10,6 +10,7 @@ using ClientsManager.WebAPI.ValidationActionFiltersMiddleware;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace ClientsManager.WebAPI.Controllers
 {
@@ -20,11 +21,13 @@ namespace ClientsManager.WebAPI.Controllers
     {
         private readonly IGenericRepository<Client> _genericRepository;
         private readonly IMapper _mapper;
+        private readonly ILogger<ClientsController> _logger;
 
-        public ClientsController(IGenericRepository<Client> genericRepository, IMapper mapper)
+        public ClientsController(IGenericRepository<Client> genericRepository, IMapper mapper, ILogger<ClientsController> logger)
         {
             _genericRepository = genericRepository;
             _mapper = mapper;
+            _logger = logger;
         }
 
         /// <summary>
@@ -42,7 +45,9 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (!clients.Any())
             {
+                _logger.LogError("ClientsController.GetAllClientsAync - No Clients where Found");
                 return NotFound("No Clients where found");
+                
             }
 
             IEnumerable<ClientDTO> clientsDTO = _mapper.Map<IEnumerable<ClientDTO>>(clients);
@@ -65,6 +70,7 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (client is null)
             {
+                _logger.LogError("ClientsController.GetClientByIdAsync - No data was found");
                 return NotFound("No data was found");
             }
 
