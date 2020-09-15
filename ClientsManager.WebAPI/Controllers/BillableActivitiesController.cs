@@ -10,6 +10,7 @@ using ClientsManager.WebAPI.DTOs;
 using ClientsManager.WebAPI.ValidationActionFiltersMiddleware;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace ClientsManager.WebAPI.Controllers
 {
@@ -25,34 +26,38 @@ namespace ClientsManager.WebAPI.Controllers
         /// </summary>
         private readonly IGenericRepository<BillableActivity> _genericRepository;
         private readonly IMapper _mapper;
-
+        private readonly ILogger _logger;
 
         /// <summary>
         /// DI constructor injection of Respository
         /// </summary>
         /// <param name="genericRepository"> GenericRepository object</param>
         /// <param name="mapper">AutoMapper Imapper object</param>
-        public BillableActivitiesController(IGenericRepository<BillableActivity> genericRepository, IMapper mapper)
+        public BillableActivitiesController(IGenericRepository<BillableActivity> genericRepository, IMapper mapper, ILogger<BillableActivitiesController> logger)
         {
             _genericRepository = genericRepository;
             _mapper = mapper;
+            _logger = logger;
         }
 
 
         /// <summary>
-        /// Async returns a list of all the available BillableActivities
+        /// Async returns a list of all the available BillableActivities for the paging parameters
         /// </summary>
+        /// <param name="parameters">Paging parameters</param>
         /// <returns>Task<ActionResult<IEnumerable<BillableActivity>>> - A list of all the BillableActivities</returns>
-        //GET: api/billableactivities
+        //GET: api/billableactivities?pageNumber=2&pageSize=3
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<BillableActivity>>> GetAllBillableActivitiesAsync()
+        [ServiceFilter(typeof(QueryStringParamsValidator))]
+        public async Task<ActionResult<IEnumerable<BillableActivity>>> GetAllBillableActivitiesAsync([FromQuery] QueryStringParameters parameters)
         {
             try
             {
-                var billableActivities = await _genericRepository.GetAllAsync();
+                var billableActivities = await _genericRepository.GetAllPagedAsync(ba => ba.LegalCase_Id, parameters);
 
                 if (!billableActivities.Any())
                 {
+                    _logger.LogError($"BillableActivitiesController.GetAllBillableActivitiesAsync: No billable activities were found for pageNumber {parameters.pageNumber} and pageSize {parameters.pageSize}");
                     return NotFound("No billable activities were found");
                 }
 
@@ -78,6 +83,7 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (billableActivitiesNumber == 0)
             {
+                _logger.LogError($"BillableActivitiesController.CountBillableActivities: No billable activities available");
                 return NotFound("No billable activities available");
             }
 
@@ -98,6 +104,7 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (!billableActivities.Any())
             {
+                _logger.LogError($"BillableActivitiesController.GetBillableActivitiesByEmployeeIdAsync: No data was found for the employee with employee_id {employee_id}");
                 return NotFound("No data was found for the employee");
             }
 
@@ -120,6 +127,7 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (!billableActivities.Any())
             {
+                _logger.LogError($"BillableActivitiesController.GetBillableActivitiesByLegalCaseIdAsync: No data was found for the case with legalCase_id {legalCase_id}");
                 return NotFound("No data was found for the case");
             }
 
@@ -141,6 +149,7 @@ namespace ClientsManager.WebAPI.Controllers
             var billableActivity = await _genericRepository.GetOneByAsync(ba => ba.Id == id);
 
             if (billableActivity is null) {
+                _logger.LogError($"BillableActivitiesController.GetBillableActivityByIdAsync: No data was found for the id {id}");
                 return NotFound("No data was found for the id");
             }
 
@@ -162,6 +171,7 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (created == 0)
             {
+                _logger.LogError($"BillableActivitiesController.AddBillableActivityAsync: No Billable Activity was created for billableActivity {billableActivity}");
                 return NotFound("No Billable Activity was created");
             }
 
@@ -190,6 +200,7 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (billableActivityResult is null)
             {
+                _logger.LogError($"BillableActivitiesController.UpdateBillableActivityAsync: No Billable Activity was updated for id {id} and billableActivity {billableActivity}");
                 return NotFound("No Billable Activity was updated");
             }
             
@@ -213,6 +224,7 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (billableActivity is null)
             {
+                _logger.LogError($"BillableActivitiesController.DeleteBillableActivityAsync: No data was found for the id {id}");
                 return NotFound("No data was found for the id");
             }
 
