@@ -9,6 +9,7 @@ using ClientsManager.WebAPI.DTOs;
 using ClientsManager.WebAPI.ValidationActionFiltersMiddleware;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace ClientsManager.WebAPI.Controllers
 {
@@ -18,11 +19,13 @@ namespace ClientsManager.WebAPI.Controllers
     {
         private readonly IGenericRepository<Address> _genericRepository;
         private readonly IMapper _mapper;
+        private readonly ILogger _logger;
 
-        public AddressesController(IGenericRepository<Address> genericRepository, IMapper mapper)
+        public AddressesController(IGenericRepository<Address> genericRepository, IMapper mapper, ILogger<AddressesController> logger)
         {
             _genericRepository = genericRepository;
             _mapper = mapper;
+            _logger = logger;
         }
 
         /// <summary>
@@ -40,6 +43,7 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (!addresses.Any())
             {
+                _logger.LogError($"AddressesController.GetAllAddressesAsync: No Addresses where found for pageNumber {parameters.pageNumber} and pageSize {parameters.pageSize}");
                 return NotFound("No Addresses where found");
             }
 
@@ -63,6 +67,7 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (!addresses.Any())
             {
+                _logger.LogError($"AddressesController.GetAddressesByClientIdAsync: No data was found for the client with client_id {client_id}");
                 return NotFound("No data was found for the client");
             }
 
@@ -85,6 +90,7 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (address is null)
             {
+                _logger.LogError($"AddressesController.GetAddressByIdAsync: No data was found for the id {id}");
                 return NotFound("No data was found");
             }
 
@@ -108,6 +114,7 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (addressWithDetails is null)
             {
+                _logger.LogError($"AddressesController.GetAddressByIdWithContactsAsync: No data was found for id {id}");
                 return NotFound("No data was found");
             }
 
@@ -130,6 +137,7 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (created == 0)
             {
+                _logger.LogError($"AddressesController.AddAddressAsync: No Address was created for address {address}");
                 return NotFound("No Address was created");
             }
 
@@ -160,6 +168,7 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (addressResult is null)
             {
+                _logger.LogError($"AddressesController.UpdateAddressAsync: No Address was updated for id {id} and Address {address}");
                 return NotFound("No Address was updated");
             }
 
@@ -184,6 +193,7 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (addressResult is null)
             {
+                _logger.LogError($"AddressesController.DeleteAddressAsync: No Address was found for id {id}");
                 return NotFound("No Address was found");
             }
 
