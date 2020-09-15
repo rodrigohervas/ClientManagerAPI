@@ -9,6 +9,7 @@ using ClientsManager.WebAPI.DTOs;
 using ClientsManager.WebAPI.ValidationActionFiltersMiddleware;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace ClientsManager.WebAPI.Controllers
 {
@@ -18,26 +19,31 @@ namespace ClientsManager.WebAPI.Controllers
     {
         private readonly IGenericRepository<Employee> _genericRepository;
         private readonly IMapper _mapper;
+        private readonly ILogger _logger;
 
-        public EmployeesController(IGenericRepository<Employee> genericRepository, IMapper mapper)
+        public EmployeesController(IGenericRepository<Employee> genericRepository, IMapper mapper, ILogger<EmployeesController> logger)
         {
             _genericRepository = genericRepository;
             _mapper = mapper;
+            _logger = logger;
         }
 
 
         /// <summary>
-        /// Get all Employees
+        /// Get all Employees for the paging parameters
         /// </summary>
+        /// <param name="parameters">Paging parameters</param>
         /// <returns>Task<ActionResult<IEnumerable<EmployeeDTO>>> - A list of all the Employees</returns>
-        // GET: api/employees
+        // GET: api/employees?pageNumber=2&pageSize=3
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<EmployeeDTO>>> GetAllEmployeesAsync()
+        [ServiceFilter(typeof(QueryStringParamsValidator))]
+        public async Task<ActionResult<IEnumerable<EmployeeDTO>>> GetAllEmployeesAsync([FromQuery] QueryStringParameters parameters)
         {
-            var employees = await _genericRepository.GetAllAsync();
+            var employees = await _genericRepository.GetAllPagedAsync(em => em.EmployeeType, parameters);
 
             if (!employees.Any())
             {
+                _logger.LogError($"EmployeesController.GetAllEmployeesAsync: No Employees were found for the pageNumber {parameters.pageNumber} and pageSize {parameters.pageSize}");
                 return NotFound("No Employees were found");
             }
 
@@ -61,7 +67,8 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (employee is null)
             {
-                return NotFound("No data was found for the id");
+                _logger.LogError($"EmployeesController.GetEmployeeByIdAsync: No data was found for the id {id}");
+                return NotFound("No data was found");
             }
 
             EmployeeWithBillableActivitiesDTO employeeTF = _mapper.Map<EmployeeWithBillableActivitiesDTO>(employee);
@@ -72,17 +79,18 @@ namespace ClientsManager.WebAPI.Controllers
         /// <summary>
         /// Gets a list of Employees for a provided employee type
         /// </summary>
-        /// <param name="employeetype_id">int - The EmployeeType id</param>
+        /// <param name="employeeType_id">int - The EmployeeType id</param>
         /// <returns>Task<ActionResult<IEnumerable<EmployeeDTO>>> - A List of Employees</returns>
         // GET: api/employees/employeetype/1
         [HttpGet("employeetype/{employeetype_id:int}")]
         [ServiceFilter(typeof(EmployeeTypeIdValidator))]
-        public async Task<ActionResult<IEnumerable<EmployeeDTO>>> GetEmployeesByTypeAsync(int employeetype_id)
+        public async Task<ActionResult<IEnumerable<EmployeeDTO>>> GetEmployeesByTypeAsync(int employeeType_id)
         {
-            var employees = await _genericRepository.GetByAsync(employee => employee.EmployeeType_Id == employeetype_id);
+            var employees = await _genericRepository.GetByAsync(employee => employee.EmployeeType_Id == employeeType_id);
 
             if (!employees.Any())
             {
+                _logger.LogError($"EmployeesController.GetEmployeesByTypeAsync: No Employees were found for the employeeType_id {employeeType_id}");
                 return NotFound("No Employees were found");
             }
 
@@ -106,6 +114,7 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (addResult == 0)
             {
+                _logger.LogError($"EmployeesController.AddEmployeeAsync: No Employee was created for the employee {employee}");
                 return NotFound("No Employee was created");
             }
 
@@ -135,6 +144,7 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (employeeResult is null)
             {
+                _logger.LogError($"EmployeesController.UpdateEmployeeAsync: No Employee was updated for id {id} and employee {employee}");
                 return NotFound("No Employee was updated");
             }
 
@@ -153,12 +163,13 @@ namespace ClientsManager.WebAPI.Controllers
         // DELETE: employees/id
         [HttpDelete("{id:int}")]
         [ServiceFilter(typeof(IdValidator))]
-        public async Task<ActionResult<int>> Delete(int id)
+        public async Task<ActionResult<int>> DeleteEmployeeAsync(int id)
         {
             Employee employee = await _genericRepository.GetOneByAsync(emp => emp.Id == id);
 
             if (employee is null)
             {
+                _logger.LogError($"EmployeesController.DeleteEmployeeAsync: No Employee was found for the provided id {id}");
                 return NotFound("No Employee was found for the provided id");
             }
 
