@@ -9,6 +9,7 @@ using ClientsManager.WebAPI.DTOs;
 using ClientsManager.WebAPI.ValidationActionFiltersMiddleware;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace ClientsManager.WebAPI.Controllers
 {
@@ -18,11 +19,14 @@ namespace ClientsManager.WebAPI.Controllers
     {
         private readonly IGenericRepository<Contact> _genericRepository;
         private readonly IMapper _mapper;
+        private readonly ILogger _logger;
 
-        public ContactsController(IGenericRepository<Contact> genericRepository, IMapper mapper)
+
+        public ContactsController(IGenericRepository<Contact> genericRepository, IMapper mapper, ILogger<ContactsController> logger)
         {
             _genericRepository = genericRepository;
             _mapper = mapper;
+            _logger = logger;
         }
 
         /// <summary>
@@ -40,6 +44,7 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (!contacts.Any())
             {
+                _logger.LogError($"ContactsController.GetAllContactsAsync: No contacts were found for pageNumber {parameters.pageNumber} and pageSize {parameters.pageSize}");
                 return NotFound("No Contacts where found");
             }
 
@@ -63,6 +68,7 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (!contacts.Any())
             {
+                _logger.LogError($"ContactsController.GetContactsByClientIdAsync: No data was found for the client with client_id {client_id}");
                 return NotFound("No data was found for the client");
             }
 
@@ -85,6 +91,7 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (contact is null)
             {
+                _logger.LogError($"ContactsController.GetContactByIdAsync: No data was found for id {id}");
                 return NotFound("No data was found");
             }
 
@@ -108,6 +115,7 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (contactWithDetails is null)
             {
+                _logger.LogError($"ContactsController.GetContactByIdWithDetailsAsync: No data was found for id {id}");
                 return NotFound("No data was found");
             }
 
@@ -130,6 +138,7 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (created == 0)
             {
+                _logger.LogError($"ContactsController.AddContactAsync: No Contact was created for contact {contact}");
                 return NotFound("No Contact was created");
             }
 
@@ -160,6 +169,7 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (contactResult is null)
             {
+                _logger.LogError($"ContactsController.UpdateContactAsync: No Contact was updated for id {id} and contact {contact}");
                 return NotFound("No Contact was updated");
             }
 
@@ -184,6 +194,7 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (contactResult is null)
             {
+                _logger.LogError($"ContactsController.DeleteContactAsync: No Contact was found for id {id}");
                 return NotFound("No Contact was found");
             }
 
