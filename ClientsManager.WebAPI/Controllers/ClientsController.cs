@@ -21,7 +21,7 @@ namespace ClientsManager.WebAPI.Controllers
     {
         private readonly IGenericRepository<Client> _genericRepository;
         private readonly IMapper _mapper;
-        private readonly ILogger<ClientsController> _logger;
+        private readonly ILogger _logger;
 
         public ClientsController(IGenericRepository<Client> genericRepository, IMapper mapper, ILogger<ClientsController> logger)
         {
@@ -45,7 +45,7 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (!clients.Any())
             {
-                _logger.LogError("ClientsController.GetAllClientsAync - No Clients where Found");
+                _logger.LogError($"ClientsController.GetAllClientsAync: No Clients where Found for pageNumber: {parameters.pageNumber} and pageSize: {parameters.pageSize}");
                 return NotFound("No Clients where found");
                 
             }
@@ -70,7 +70,7 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (client is null)
             {
-                _logger.LogError("ClientsController.GetClientByIdAsync - No data was found");
+                _logger.LogError("ClientsController.GetClientByIdAsync: No data was found");
                 return NotFound("No data was found");
             }
 
@@ -94,6 +94,7 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (clientWithDetails is null)
             {
+                _logger.LogError($"ClientsController.GetClientByIdWithLegalCasesAsync: No data was found for id {id}");
                 return NotFound("No data was found");
             }
 
@@ -117,6 +118,7 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (clientWithDetails is null)
             {
+                _logger.LogError($"ClientsController.GetClientByIdWithAddressesAsync: No data was found for id {id}");
                 return NotFound("No data was found");
             }
 
@@ -140,6 +142,7 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (clientWithDetails is null)
             {
+                _logger.LogError($"ClientsController.GetClientByIdWithContactsAsync: No data was found for id {id}");
                 return NotFound("No data was found");
             }
 
@@ -162,6 +165,7 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (created == 0)
             {
+                _logger.LogError($"ClientsController.AddClientAsync: No Client was created for client {client}");
                 return NotFound("No Client was created");
             }
 
@@ -192,6 +196,7 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (clientResult is null)
             {
+                _logger.LogError($"ClientsController.UpdateClientAsync: No Client was updated for id {id} and client {client}");
                 return NotFound("No Client was updated");
             }
 
@@ -216,6 +221,7 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (clientResult is null)
             {
+                _logger.LogError($"ClientsController.GetClientByIdAsync: No Client was found for id {id}");
                 return NotFound("No Client was found");
             }
 
