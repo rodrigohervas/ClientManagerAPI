@@ -7,6 +7,7 @@ using ClientsManager.WebAPI.Controllers;
 using ClientsManager.WebAPI.DTOs;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,7 @@ namespace ClientsManager.Tests.UnitTests
         private readonly LegalCasesController _controller;
         private readonly IMapper _mapper;
         private readonly IEnumerable<LegalCase> _legalCases;
+        private readonly ILogger<LegalCasesController> _logger;
 
         public LegalCaseControllerTests()
         {
@@ -30,10 +32,11 @@ namespace ClientsManager.Tests.UnitTests
             var profiles = new AutoMapperProfiles();
             var configuration = new MapperConfiguration(config => config.AddProfile(profiles));
             _mapper = new Mapper(configuration);
+            _logger = new Logger<LegalCasesController>(new LoggerFactory());
 
             //Repo and Controller initialization
             _mockRepository = new Mock<IGenericRepository<LegalCase>>();
-            _controller = new LegalCasesController(_mockRepository.Object, _mapper);
+            _controller = new LegalCasesController(_mockRepository.Object, _mapper, _logger);
 
             //Load LegalCases Test Data
             _legalCases = LegalCasesData.GetLegalCases();
