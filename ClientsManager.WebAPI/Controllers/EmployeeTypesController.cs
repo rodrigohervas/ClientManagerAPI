@@ -8,6 +8,7 @@ using ClientsManager.Models;
 using ClientsManager.WebAPI.DTOs;
 using ClientsManager.WebAPI.ValidationActionFiltersMiddleware;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace ClientsManager.WebAPI.Controllers
 {
@@ -17,11 +18,13 @@ namespace ClientsManager.WebAPI.Controllers
     {
         private readonly IGenericRepository<EmployeeType> _genericRepository;
         private readonly IMapper _mapper;
+        private readonly ILogger _logger;
 
-        public EmployeeTypesController(IGenericRepository<EmployeeType> genericRepository, IMapper mapper)
+        public EmployeeTypesController(IGenericRepository<EmployeeType> genericRepository, IMapper mapper, ILogger<EmployeeTypesController> logger)
         {
             _genericRepository = genericRepository;
             _mapper = mapper;
+            _logger = logger;
         }
 
 
@@ -29,7 +32,7 @@ namespace ClientsManager.WebAPI.Controllers
         /// Gets all EmployeeTypes
         /// </summary>
         /// <returns>Task<ActionResult<IEnumerable<EmployeeTypeDTO>>> - A list of all the EmployeeTypes</returns>
-        // GET: api/employeetypes
+        // GET: api/employeetypes?pageNumber=2&pageSize=3
         [HttpGet]
         public async Task<ActionResult<IEnumerable<EmployeeTypeDTO>>> GetAllEmployeeTypesAsync()
         {
@@ -37,6 +40,7 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (!employeeTypeList.Any())
             {
+                _logger.LogError($"EmployeeTypesController.GetAllEmployeeTypesAsync: No EmployeeTypes were found");
                 return NotFound("No EmployeeTypes were found");
             }
 
@@ -59,7 +63,8 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (employeeType is null)
             {
-                return NotFound("No data was found for the id");
+                _logger.LogError($"EmployeeTypesController.GetEmployeeTypeByIdAsync: No data was found for the id {id}");
+                return NotFound("No data was found");
             }
 
             EmployeeTypeDTO employeeTypeDTO = _mapper.Map<EmployeeTypeDTO>(employeeType);
@@ -81,6 +86,7 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (addResult == 0)
             {
+                _logger.LogError($"EmployeeTypesController.AddEmployeeType: No EmployeeType was created for employeeType {employeeType}");
                 return NotFound("No EmployeeType was created");
             }
 
@@ -108,6 +114,7 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (employeeTypeResult is null)
             {
+                _logger.LogError($"EmployeeTypesController.UpdateEmployeeType: No EmployeeType was updated for employeeType {employeeType}");
                 return NotFound("No EmployeeType was updated");
             }
             
@@ -133,6 +140,7 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (employeeType is null)
             {
+                _logger.LogError($"EmployeeTypesController.DeleteEmployeeType: No EmployeeType was found for the provided id {id}");
                 return NotFound("No EmployeeType was found for the provided id");
             }
 
