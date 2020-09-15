@@ -14,6 +14,16 @@ namespace ClientsManager.Tests.IntegrationTests
     {
         private readonly WebApplicationFactory<Startup> _factory;
 
+        //url with paging
+        private static string url = "/api/billableactivities";
+        public static IEnumerable<object[]> PagingParameters =>
+        new List<object[]>
+        {
+            //pageNumber = 1
+            //pageSize = 10
+            new object[] { url, 1, 10 }
+        };
+
         public GenericRepositoryHost(WebApplicationFactory<Startup> factory)
         {
             _factory = factory;
@@ -21,14 +31,14 @@ namespace ClientsManager.Tests.IntegrationTests
 
         //public async Task<IEnumerable<BillableActivity>> GetAllBillableActivitiesAsync()
         [Theory]
-        [InlineData("/api/billableactivities")]
-        public async Task Should_Get_All_BillableActivities(string url)
+        [MemberData(nameof(PagingParameters))]
+        public async Task GetAllBillableActivitiesAsync_Returns_All_BillableActivities_Paged(string url, int pageNumber, int pageSize)
         {
             //Arrange
             var httpClient = _factory.CreateClient();
 
             //Act
-            var billableActivities = await httpClient.GetAsync(url);
+            var billableActivities = await httpClient.GetAsync($"{url}?pageNumber={pageNumber}&pageSize={pageSize}");
 
             var serializedResponse = await billableActivities.Content.ReadAsStringAsync();
             var actual = JsonConvert.DeserializeObject<IEnumerable<BillableActivity>>(serializedResponse);

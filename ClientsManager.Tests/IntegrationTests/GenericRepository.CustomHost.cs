@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Newtonsoft.Json;
 using ClientsManager.WebAPI.DTOs;
 using ClientsManager.Tests.TestData;
+using Microsoft.Extensions.Logging;
+using System.Net;
 
 namespace ClientsManager.Tests.IntegrationTests
 {
@@ -21,6 +23,16 @@ namespace ClientsManager.Tests.IntegrationTests
         private readonly TestWebHost<Startup> _host;
         private readonly IEnumerable<BillableActivity> _billableActivities;
 
+        //url with paging
+        private static string url = "/api/billableactivities";
+        public static IEnumerable<object[]> PagingParameters =>
+        new List<object[]>
+        {
+            //pageNumber = 1
+            //pageSize = 10
+            new object[] { url, 1, 10 }
+        };
+
         public GenericRepositoryCustomHost(TestWebHost<Startup> host)
         {
             _host = host;
@@ -28,24 +40,28 @@ namespace ClientsManager.Tests.IntegrationTests
             _billableActivities = BillableActivityData.GetTestBillableActivities();
         }
 
+        
+
         //public async Task<IEnumerable<BillableActivity>> GetAllBillableActivitiesAsync()
         [Theory]
-        [InlineData("/api/billableactivities")]
-        public async Task Should_Return__List_Of_BillableActivities(string url)
+        [MemberData(nameof(PagingParameters))]
+        public async Task GetAllBillableActivitiesAsync_Returns_All_BillableActivities_Paged(string url, int pageNumber, int pageSize)
         {
-            var actual = await _client.GetAsync(url);
+            var response = await _client.GetAsync($"{url}?pageNumber={pageNumber}&pageSize={pageSize}");
             var expected = _billableActivities;
 
-            var result = await actual.Content.ReadAsStringAsync();
-            var billableActivities = JsonConvert.DeserializeObject<IEnumerable<BillableActivity>>(result);
+            var serializedResponse = await response.Content.ReadAsStringAsync();
+            var billableActivitiesResult = JsonConvert.DeserializeObject<IEnumerable<BillableActivity>>(serializedResponse);
 
-            Assert.Contains(billableActivities, ba => ba.Id == 1);
-            Assert.Contains(billableActivities, ba => ba.Id == 2);
-            Assert.Contains(billableActivities, ba => ba.Id == 3);
-            Assert.Contains(billableActivities, ba => ba.LegalCase_Id == 1);
-            Assert.Contains(billableActivities, ba => ba.LegalCase_Id == 2);
-            Assert.Contains(billableActivities, ba => ba.Employee_Id == 1);
-            Assert.Contains(billableActivities, ba => ba.Employee_Id == 2);
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            Assert.Contains(billableActivitiesResult, ba => ba.Id == 1);
+            Assert.Contains(billableActivitiesResult, ba => ba.Id == 2);
+            Assert.Contains(billableActivitiesResult, ba => ba.Id == 3);
+            Assert.Contains(billableActivitiesResult, ba => ba.LegalCase_Id == 1);
+            Assert.Contains(billableActivitiesResult, ba => ba.LegalCase_Id == 2);
+            Assert.Contains(billableActivitiesResult, ba => ba.Employee_Id == 1);
+            Assert.Contains(billableActivitiesResult, ba => ba.Employee_Id == 2);
         }
 
         //public async Task<IEnumerable<BillableActivity>> GetBillableActivitiesByEmployeeIdAsync(int employee_id)
