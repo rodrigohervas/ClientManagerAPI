@@ -8,6 +8,7 @@ using ClientsManager.Models;
 using ClientsManager.WebAPI.DTOs;
 using ClientsManager.WebAPI.ValidationActionFiltersMiddleware;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace ClientsManager.WebAPI.Controllers
 {
@@ -17,11 +18,13 @@ namespace ClientsManager.WebAPI.Controllers
     {
         private readonly IGenericRepository<LegalCase> _genericRepository;
         private readonly IMapper _mapper;
+        private readonly ILogger _logger;
 
-        public LegalCasesController(IGenericRepository<LegalCase> genericRepository, IMapper mapper)
+        public LegalCasesController(IGenericRepository<LegalCase> genericRepository, IMapper mapper, ILogger<LegalCasesController> logger)
         {
             _genericRepository = genericRepository;
             _mapper = mapper;
+            _logger = logger;
         }
 
         /// <summary>
@@ -39,6 +42,7 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (!legalCases.Any())
             {
+                _logger.LogError($"LegalCasesController.GetAllLegalCasesAsync: No Cases where found for pageNumber {parameters.pageNumber} and pageSize {parameters.pageSize}");
                 return NotFound("No Cases where found");
             }
 
@@ -61,6 +65,7 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (!legalCases.Any())
             {
+                _logger.LogError($"LegalCasesController.GetLegalCasesByClientIdAsync: No data was found for the client with client_id {client_id}");
                 return NotFound("No data was found for the client");
             }
 
@@ -83,6 +88,7 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (legalCase is null)
             {
+                _logger.LogError($"LegalCasesController.GetLegalCaseByIdAsync: No data was found for id {id}");
                 return NotFound("No data was found");
             }
 
@@ -106,6 +112,7 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (legalCaseWithDetails is null)
             {
+                _logger.LogError($"LegalCasesController.GetLegalCaseByIdWithDetailsAsync: No data was found for id {id}");
                 return NotFound("No data was found");
             }
 
@@ -128,6 +135,7 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (created == 0)
             {
+                _logger.LogError($"LegalCasesController.AddLegalCaseAsync: No Legal Case was created for legalCase {legalCase}");
                 return NotFound("No Legal Case was created");
             }
 
@@ -157,6 +165,7 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (legalCaseResult is null)
             {
+                _logger.LogError($"LegalCasesController.UpdateLegalCaseAsync: No Legal Case was updated for id {id} and legalCase {legalCase}");
                 return NotFound("No Legal Case was updated");
             }
             
@@ -181,6 +190,7 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (legalCaseResult is null)
             {
+                _logger.LogError($"LegalCasesController.DeleteLegalCaseAsync: No Legal Case was found for id {id}");
                 return NotFound("No Legal Case was found");
             }
 
