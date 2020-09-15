@@ -90,23 +90,19 @@ namespace ClientsManager.WebAPI
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> _logger)
         {
-            app.ConfigureExceptionHandler();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                _logger.LogInformation("Development Environment");
             }
-            else
+            else 
             {
-                //error middleware
-                app.UseExceptionHandler("/error");
+                //hook Exception Handler middleware extension to the pipeline
+                app.UseExceptionHandlerExtension(_logger);
             }
-
-            //add Exception Handler Middleware
-            //app.ConfigureExceptionHandler(logger);
-            app.ConfigureExceptionHandler();
+                        
 
             app.UseHttpsRedirection();
 
