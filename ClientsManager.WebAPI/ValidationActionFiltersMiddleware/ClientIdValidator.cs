@@ -16,6 +16,7 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
         {
             _logger = logger;
         }
+
         public void OnActionExecuting(ActionExecutingContext context)
         {
             //get the action client_id parameter

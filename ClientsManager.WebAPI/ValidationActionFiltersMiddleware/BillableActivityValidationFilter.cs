@@ -1,6 +1,7 @@
 ﻿using ClientsManager.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,13 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
 {
     public class BillableActivityValidationFilter : IActionFilter
     {
+        private readonly ILogger _logger;
+
+        public BillableActivityValidationFilter(ILogger<BillableActivityValidationFilter> logger)
+        {
+            _logger = logger;
+        }
+
         public void OnActionExecuting(ActionExecutingContext context)
         {
             //get the action BillableActivity parameter, the input of the action method
@@ -19,6 +27,7 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
             //validate that BillableActivity is not null
             if (billableActivity == null)
             {
+                _logger.LogError($"BillableActivityValidationFilter: BillableActivity is mandatory. Value Received: {billableActivity}");
                 context.Result = new BadRequestObjectResult("BillableActivity is mandatory");
                 return;
             }
@@ -27,6 +36,7 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
             var httpPostMethod = context.HttpContext.Request.Method;
             if (billableActivity.Id == 0 && httpPostMethod != "POST")
             {
+                _logger.LogError($"BillableActivityValidationFilter: Id is mandatory. Value Received: {billableActivity.Id}");
                 context.Result = new BadRequestObjectResult("Id is mandatory");
                 return;
             }
@@ -34,25 +44,29 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
             //validate Case_id
             if (billableActivity.LegalCase_Id == 0)
             {
-                context.Result = new BadRequestObjectResult("Case_Id is mandatory");
+                _logger.LogError($"BillableActivityValidationFilter: LegalCase_Id is mandatory. Value Received: {billableActivity.LegalCase_Id}");
+                context.Result = new BadRequestObjectResult("LegalCase_Id is mandatory");
                 return;
             }
 
             if (billableActivity.LegalCase_Id.GetTypeCode() != TypeCode.Int32)
             {
-                context.Result = new BadRequestObjectResult("Case_Id must be a valid number");
+                _logger.LogError($"BillableActivityValidationFilter: LegalCase_Id must be a valid number. Value Received: {billableActivity.LegalCase_Id}");
+                context.Result = new BadRequestObjectResult("LegalCase_Id must be a valid number");
                 return;
             }
 
             //validate Employee_id
             if (billableActivity.Employee_Id == 0)
             {
+                _logger.LogError($"BillableActivityValidationFilter: Employee_Id is mandatory. Value Received: {billableActivity.Employee_Id}");
                 context.Result = new BadRequestObjectResult("Employee_Id is mandatory");
                 return;
             }
 
             if (billableActivity.Employee_Id.GetTypeCode() != TypeCode.Int32)
             {
+                _logger.LogError($"BillableActivityValidationFilter: Employee_Id must be a valid number. Value Received: {billableActivity.Employee_Id}");
                 context.Result = new BadRequestObjectResult("Employee_Id must be a valid number");
                 return;
             }
@@ -60,6 +74,7 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
             //Validate Title
             if (String.IsNullOrEmpty(billableActivity.Title))
             {
+                _logger.LogError($"BillableActivityValidationFilter: Title is mandatory. Value Received: {billableActivity.Title}");
                 context.Result = new BadRequestObjectResult("Title is mandatory");
                 return;
             }
@@ -67,6 +82,7 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
             //Validate Description
             if (String.IsNullOrEmpty(billableActivity.Description))
             {
+                _logger.LogError($"BillableActivityValidationFilter: Description is mandatory. Value Received: {billableActivity.Description}");
                 context.Result = new BadRequestObjectResult("Description is mandatory");
                 return;
             }
@@ -74,6 +90,7 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
             //validate Price
             if (billableActivity.Price == 0.0M)
             {
+                _logger.LogError($"BillableActivityValidationFilter: Price is mandatory. Value Received: {billableActivity.Price}");
                 context.Result = new BadRequestObjectResult("Price is mandatory");
                 return;
             }
@@ -81,6 +98,7 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
             //validate Price Range
             if (billableActivity.Price < 0.1M)
             {
+                _logger.LogError($"BillableActivityValidationFilter: Price must be more than zero. Value Received: {billableActivity.Price}");
                 context.Result = new BadRequestObjectResult("Price must be more than zero");
                 return;
             }
@@ -88,12 +106,14 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
             //validate Start_DateTime
             if (String.IsNullOrEmpty(billableActivity.Start_DateTime.ToString()))
             {
+                _logger.LogError($"BillableActivityValidationFilter: Start_DateTime is mandatory. Value Received: {billableActivity.Start_DateTime}");
                 context.Result = new BadRequestObjectResult("Start_DateTime is mandatory");
                 return;
             }
 
             if (billableActivity.Start_DateTime.Year < 2000)
             {
+                _logger.LogError($"BillableActivityValidationFilter: Start_DateTime must be after year 2000. Value Received: {billableActivity.Start_DateTime}");
                 context.Result = new BadRequestObjectResult("Start_DateTime must be after year 2000");
                 return;
             }
@@ -101,12 +121,14 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
             //validate Finish_DateTime
             if (String.IsNullOrEmpty(billableActivity.Finish_DateTime.ToString()))
             {
+                _logger.LogError($"BillableActivityValidationFilter: Finish_DateTime is mandatory. Value Received: {billableActivity.Finish_DateTime}");
                 context.Result = new BadRequestObjectResult("Finish_DateTime is mandatory");
                 return;
             }
 
             if (billableActivity.Finish_DateTime.Year < 2000)
             {
+                _logger.LogError($"BillableActivityValidationFilter: Finish_DateTime must be after year 2000. Value Received: {billableActivity.Finish_DateTime}");
                 context.Result = new BadRequestObjectResult("Finish_DateTime must be after year 2000");
                 return;
             }
@@ -114,7 +136,9 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
             //validate the ModelState
             if (!context.ModelState.IsValid)
             {
+                _logger.LogError($"BillableActivityValidationFilter: ModelState is invalid");
                 context.Result = new BadRequestObjectResult("from Validation Filter: " + context.ModelState);
+                return;
             }
         }
         public void OnActionExecuted(ActionExecutedContext context)
