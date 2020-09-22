@@ -45,7 +45,16 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (!clients.Any())
             {
-                _logger.LogError($"ClientsController.GetAllClientsAync: No Clients where Found for pageNumber: {parameters.pageNumber} and pageSize: {parameters.pageSize}");
+                var logData = new
+                {
+                    Parameters = parameters,
+                    Action = ControllerContext.ActionDescriptor.DisplayName,
+                    Verb = HttpContext.Request.Method,
+                    EndpointPath = HttpContext.Request.Path.Value,
+                    User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
+                };
+                _logger.LogError("No Clients where found for Parameters {parameters}. Data: {@logData}", parameters, logData);
+                
                 return NotFound("No Clients where found");
                 
             }
@@ -66,11 +75,22 @@ namespace ClientsManager.WebAPI.Controllers
         [ServiceFilter(typeof(IdValidator))]
         public async Task<ActionResult<ClientDTO>> GetClientByIdAsync([FromRoute] int id)
         {
+            var req = HttpContext.Request;
+            var user = HttpContext.User;
+
             Client client = await _genericRepository.GetOneByAsync(cl => cl.Id == id);
 
             if (client is null)
             {
-                _logger.LogError("ClientsController.GetClientByIdAsync: No data was found");
+                var logData = new { 
+                    Id = id, 
+                    Action = ControllerContext.ActionDescriptor.DisplayName,
+                    Verb = HttpContext.Request.Method,
+                    EndpointPath = HttpContext.Request.Path.Value, 
+                    User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
+                };
+                _logger.LogError("No Clients where found for Id {id}. Data: {@logData}", id, logData);
+                
                 return NotFound("No data was found");
             }
 
@@ -94,7 +114,16 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (clientWithDetails is null)
             {
-                _logger.LogError($"ClientsController.GetClientByIdWithLegalCasesAsync: No data was found for id {id}");
+                var logData = new
+                {
+                    Id = id,
+                    Action = ControllerContext.ActionDescriptor.DisplayName,
+                    Verb = HttpContext.Request.Method,
+                    EndpointPath = HttpContext.Request.Path.Value,
+                    User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
+                };
+                _logger.LogError("No Client was found for Id {id}. Data: {@logData}", id, logData);
+
                 return NotFound("No data was found");
             }
 
@@ -118,7 +147,16 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (clientWithDetails is null)
             {
-                _logger.LogError($"ClientsController.GetClientByIdWithAddressesAsync: No data was found for id {id}");
+                var logData = new
+                {
+                    Id = id,
+                    Action = ControllerContext.ActionDescriptor.DisplayName,
+                    Verb = HttpContext.Request.Method,
+                    EndpointPath = HttpContext.Request.Path.Value,
+                    User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
+                };
+                _logger.LogError("No Client was found for Id {id}. Data: {@logData}", id, logData);
+
                 return NotFound("No data was found");
             }
 
@@ -142,7 +180,17 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (clientWithDetails is null)
             {
-                _logger.LogError($"ClientsController.GetClientByIdWithContactsAsync: No data was found for id {id}");
+                var logData = new
+                {
+                    Id = id,
+                    Action = ControllerContext.ActionDescriptor.DisplayName,
+                    Verb = HttpContext.Request.Method,
+                    EndpointPath = HttpContext.Request.Path.Value,
+                    User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
+                };
+
+                _logger.LogError("No Client was found for Id {id}. Data: {@logData}", id, logData);
+
                 return NotFound("No data was found");
             }
 
@@ -165,7 +213,16 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (created == 0)
             {
-                _logger.LogError($"ClientsController.AddClientAsync: No Client was created for client {client}");
+                var logData = new
+                {
+                    Client = client,
+                    Action = ControllerContext.ActionDescriptor.DisplayName,
+                    Verb = HttpContext.Request.Method,
+                    EndpointPath = HttpContext.Request.Path.Value,
+                    User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
+                };
+                _logger.LogError("No Client was created for Client {@client}. Data: {@logData}", client, logData);
+
                 return NotFound("No Client was created");
             }
 
@@ -196,7 +253,17 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (clientResult is null)
             {
-                _logger.LogError($"ClientsController.UpdateClientAsync: No Client was updated for id {id} and client {client}");
+                var logData = new
+                {
+                    Id = id, 
+                    Client = client,
+                    Action = ControllerContext.ActionDescriptor.DisplayName,
+                    Verb = HttpContext.Request.Method,
+                    EndpointPath = HttpContext.Request.Path.Value,
+                    User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
+                };
+                _logger.LogError("No Client was updated for Id {id} and Client {@client}. Data: {@logData}", id, client, logData);
+
                 return NotFound("No Client was updated");
             }
 
@@ -221,7 +288,16 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (clientResult is null)
             {
-                _logger.LogError($"ClientsController.GetClientByIdAsync: No Client was found for id {id}");
+                var logData = new
+                {
+                    Id = id,
+                    Action = ControllerContext.ActionDescriptor.DisplayName,
+                    Verb = HttpContext.Request.Method,
+                    EndpointPath = HttpContext.Request.Path.Value,
+                    User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
+                };
+                _logger.LogError("No Client was found for Id {id}. Data: {@logData}", id, logData);
+
                 return NotFound("No Client was found");
             }
 

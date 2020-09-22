@@ -40,8 +40,8 @@ namespace ClientsManager.WebAPI.ErrorHandlerMiddleware
                     var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
                     if (contextFeature != null)
                     {
-                        //log the error
-                        _logger.LogError($"There was an exception: {contextFeature.Error}");
+                        var error = contextFeature.Error;
+                        _logger.LogError("There was an exception: {error}", error);
 
                         //write the Http Response body, using ErrorDetails class
                         await context.Response.WriteAsync(
