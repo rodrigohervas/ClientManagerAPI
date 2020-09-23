@@ -41,7 +41,7 @@ namespace ClientsManager.WebAPI.ErrorHandlerMiddleware
                     if (contextFeature != null)
                     {
                         var error = contextFeature.Error;
-                        _logger.LogError("There was an exception: {error}", error);
+                        _logger.LogError("ExceptionHandler - There was an exception: {error}", error);
 
                         //write the Http Response body, using ErrorDetails class
                         await context.Response.WriteAsync(
