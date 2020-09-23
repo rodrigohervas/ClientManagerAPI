@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace ClientsManager.WebAPI.Authentication
 {
-    public static class AADAuthenticationExtension
+    public static class AddAuthenticationExtension
     {
         public static IServiceCollection AddAzureADAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
@@ -27,19 +28,19 @@ namespace ClientsManager.WebAPI.Authentication
             services.Configure<JwtBearerOptions>(AzureADDefaults.JwtBearerAuthenticationScheme, options =>
             {
                 options.Authority += "/v2.0";
-                
+
                 options.Audience = APIApplicationIdUri;
-                
+
                 options.TokenValidationParameters.ValidateIssuer = true;
                 options.TokenValidationParameters.ValidIssuer = APIApplicationIdUri;
-                
+
                 options.TokenValidationParameters.ValidateAudience = true;
-                options.TokenValidationParameters.ValidAudiences = new List<string>() 
-                { 
-                    ClientAudience, 
-                    APIAudience 
+                options.TokenValidationParameters.ValidAudiences = new List<string>()
+                {
+                ClientAudience,
+                APIAudience
                 };
-                
+
                 options.TokenValidationParameters.ValidateLifetime = true;
             });
 
