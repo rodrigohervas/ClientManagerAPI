@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ClientsManager.WebAPI.ErrorHandlerExtension
+namespace ClientsManager.WebAPI.ErrorHandlingMiddleware
 {
     public class ErrorDetails
     {
