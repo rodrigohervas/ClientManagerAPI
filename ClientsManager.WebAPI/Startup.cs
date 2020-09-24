@@ -1,39 +1,30 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
+using ClientsManager.Data;
+using ClientsManager.WebAPI.Authentication;
+using ClientsManager.WebAPI.ErrorHandlerMiddleware;
+using ClientsManager.WebAPI.ValidationActionFiltersMiddleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using ClientsManager.Data;
-using ClientsManager.WebAPI.ValidationActionFiltersMiddleware;
-using ClientsManager.WebAPI.ErrorHandlerMiddleware;
-using Microsoft.AspNetCore.Http;
-using AutoMapper;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using ClientsManager.WebAPI.Authentication;
-using Microsoft.AspNetCore.Authentication.AzureAD.UI;
 using Microsoft.IdentityModel.Logging;
+using Serilog;
 
 namespace ClientsManager.WebAPI
 {
     public class Startup
     {
         public IConfiguration _configuration { get; }
-        
+
         public Startup(IConfiguration configuration)
         {
             _configuration = configuration;
         }
-               
+
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -42,12 +33,13 @@ namespace ClientsManager.WebAPI
             IdentityModelEventSource.ShowPII = true;
 
             //add cors handler
-            services.AddCors(options => {
-            options.AddPolicy("CorsPolicy", builder => builder
-                                                            .AllowAnyOrigin()
-                                                            .AllowAnyMethod()
-                                                            .AllowAnyHeader());
-                                                                //.AllowCredentials());
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy", builder => builder
+                                                                .AllowAnyOrigin()
+                                                                .AllowAnyMethod()
+                                                                .AllowAnyHeader());
+                //.AllowCredentials());
             });
 
             //register the custom action Validation Filters Middleware
@@ -65,6 +57,7 @@ namespace ClientsManager.WebAPI
             services.AddScoped<ContactValidationFilter>();
             services.AddScoped<AddressValidationFilter>();
             services.AddScoped<ClientValidationFilter>();
+
             //register QueryStringParamsValidator for Paging
             services.AddScoped<QueryStringParamsValidator>();
 
@@ -80,30 +73,32 @@ namespace ClientsManager.WebAPI
 
             //Add Repositories DI dependencies 
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-
-
-            //JWT Token authentication configuration
+            
+            //Default JWT Bearer Token authentication configuration
             //services.AddJWTokenAuthentication(_configuration);
 
-            //Azure AD authentication configuration
+            //Azure AD JWT Bearer Token authentication configuration
             services.AddAzureADAuthentication(_configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> _logger)
         {
-            //if (env.IsDevelopment())
-            //{
-            //    app.UseDeveloperExceptionPage();
-            //    _logger.LogInformation("Development Environment");
-            //}
-            //else
-            //{
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+                _logger.LogInformation("Development Environment");
+            }
+            else
+            {
                 //hook Exception Handler middleware extension to the pipeline
                 app.UseExceptionHandlerExtension(_logger);
-            //}
+            }
 
             app.UseHttpsRedirection();
+
+            //Route logging through Serilog
+            app.UseSerilogRequestLogging();
 
             app.UseRouting();
 

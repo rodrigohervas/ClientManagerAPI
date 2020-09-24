@@ -36,6 +36,7 @@ project.lock.json
 project.fragment.lock.json
 artifacts/
 
+
 # ASP.NET Scaffolding
 ScaffoldingReadMe.txt
 
@@ -155,5 +156,6 @@ paket-files/
 
 # Local History for Visual Studio
 .localhistory/
-/ClientsManager.Logs/log-20200922.json
-/ClientsManager.Logs/log-20200921.json
+
+# Log files folder
+ClientsManager.Logs/

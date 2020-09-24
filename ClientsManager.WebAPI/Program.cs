@@ -16,25 +16,24 @@ namespace ClientsManager.WebAPI
     {
         public static void Main(string[] args)
         {
-            //read config from appsettings.json
+            //get config from appsettings.json and secrets.json
             var serilogConfiguration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddUserSecrets<Startup>(true, reloadOnChange: true) //to read secrets.connectionString from appsettings.json
                 .Build();
 
-            //create Serilog Logger object
+            //create Serilog Logger object, using serilogConfiguration
             Log.Logger = new LoggerConfiguration()
                 .ReadFrom.Configuration(serilogConfiguration)
                 .CreateLogger();
 
+            //Add Serilog self-logging
             Serilog.Debugging.SelfLog.Enable(msg => Debug.WriteLine(msg));
-
-            //TODO: delete for deployment
-            var conf = serilogConfiguration.GetSection("Serilog:WriteTo:3:Args:connectionString").Value;
-            Log.Information($"CONFIG for SQL Server:::: {@conf}", conf);
 
             try
             {
+                //Build and Run the app host
                 Log.Information("ClientsManager API is Starting up");
                 CreateHostBuilder(args).Build().Run();
                 Log.Information("ClientsManager API has Started up successfully");
@@ -45,13 +44,14 @@ namespace ClientsManager.WebAPI
             }
             finally
             {
+                //close Log object and flush its memory
                 Log.CloseAndFlush();
             }
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .UseSerilog() //log all events using Serilog
+                .UseSerilog() //set Serilog as the logging provider
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();

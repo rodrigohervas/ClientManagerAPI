@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,6 +50,20 @@ namespace ClientsManager.WebAPI.Authentication
                 };
 
                 options.TokenValidationParameters.ValidateLifetime = true;
+
+                options.Events = new JwtBearerEvents
+                {
+                    OnAuthenticationFailed = context => {
+                        var logData = new
+                        {
+                            Verb = context.Request.Method,
+                            EndpointPath = context.Request.Path.Value,
+                            exception = context.Exception
+                        };
+                        Log.Error($"Authentication Failed: {context.Exception.Message}. Data: {@logData}", context.Exception.Message, logData);
+                        return Task.CompletedTask;
+                    }
+                };
             });
 
             return services;
@@ -84,6 +99,20 @@ namespace ClientsManager.WebAPI.Authentication
                             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)), 
                                                         
                             RequireExpirationTime = true
+                        };
+
+                        options.Events = new JwtBearerEvents
+                        {
+                            OnAuthenticationFailed = context => {
+                                var logData = new
+                                {
+                                    Verb = context.Request.Method,
+                                    EndpointPath = context.Request.Path.Value,
+                                    exception = context.Exception
+                                };
+                                Log.Error($"Authentication Failed: {context.Exception.Message}. Data: {@logData}", context.Exception.Message, logData);
+                                return Task.CompletedTask;
+                            }
                         };
                     });
 
