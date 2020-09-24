@@ -1,7 +1,7 @@
 using AutoMapper;
 using ClientsManager.Data;
 using ClientsManager.WebAPI.Authentication;
-using ClientsManager.WebAPI.ErrorHandlerMiddleware;
+using ClientsManager.WebAPI.ErrorHandlingMiddleware;
 using ClientsManager.WebAPI.ValidationActionFiltersMiddleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

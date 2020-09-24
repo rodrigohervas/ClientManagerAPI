@@ -8,7 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace ClientsManager.WebAPI.ErrorHandlerMiddleware
+namespace ClientsManager.WebAPI.ErrorHandlingMiddleware
 {
     /// <summary>
     /// Class that extends UseExceptionHandler middleware for custom error handling before returning the Http Response, 
