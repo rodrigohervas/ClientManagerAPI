@@ -53,7 +53,7 @@ namespace ClientsManager.WebAPI.Controllers
                     EndpointPath = HttpContext.Request.Path.Value,
                     User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
                 };
-                _logger.LogError("No Addresses where found for Parameters {parameters}. Data: {@logData}", parameters, logData);
+                _logger.LogInformation("No Addresses where found for Parameters {parameters}. Data: {@logData}", parameters, logData);
 
                 return NotFound("No Addresses where found");
             }
@@ -86,7 +86,7 @@ namespace ClientsManager.WebAPI.Controllers
                     EndpointPath = HttpContext.Request.Path.Value,
                     User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
                 };
-                _logger.LogError("No Address was found for the client with client_id {client_id}. Data: {@logData}", client_id, logData);
+                _logger.LogInformation("No Address was found for the client with client_id {client_id}. Data: {@logData}", client_id, logData);
 
                 return NotFound("No data was found for the client");
             }
@@ -118,7 +118,7 @@ namespace ClientsManager.WebAPI.Controllers
                     EndpointPath = HttpContext.Request.Path.Value,
                     User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
                 };
-                _logger.LogError("No Address was found for the id {id}. Data: {@logData}", id, logData);
+                _logger.LogInformation("No Address was found for the id {id}. Data: {@logData}", id, logData);
 
                 return NotFound("No data was found");
             }
@@ -151,7 +151,7 @@ namespace ClientsManager.WebAPI.Controllers
                     EndpointPath = HttpContext.Request.Path.Value,
                     User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
                 };
-                _logger.LogError("No Address was found for the id {id}. Data: {@logData}", id, logData);
+                _logger.LogInformation("No Address was found for the id {id}. Data: {@logData}", id, logData);
 
                 return NotFound("No address was found");
             }
@@ -183,7 +183,7 @@ namespace ClientsManager.WebAPI.Controllers
                     EndpointPath = HttpContext.Request.Path.Value,
                     User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
                 };
-                _logger.LogError("No Address was created for the address {address}. Data: {@logData}", address, logData);
+                _logger.LogInformation("No Address was created for the address {address}. Data: {@logData}", address, logData);
                 
                 return NotFound("No Address was created");
             }
@@ -224,7 +224,7 @@ namespace ClientsManager.WebAPI.Controllers
                     EndpointPath = HttpContext.Request.Path.Value,
                     User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
                 };
-                _logger.LogError("No Address was updated for id {id} and address {address}. Data: {@logData}", id, address, logData);
+                _logger.LogInformation("No Address was updated for id {id} and address {address}. Data: {@logData}", id, address, logData);
                 
                 return NotFound("No Address was updated");
             }
@@ -258,7 +258,7 @@ namespace ClientsManager.WebAPI.Controllers
                     EndpointPath = HttpContext.Request.Path.Value,
                     User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
                 };
-                _logger.LogError("No Address was found for the id {id}. Data: {@logData}", id, logData);
+                _logger.LogInformation("No Address was found for the id {id}. Data: {@logData}", id, logData);
 
                 return NotFound("No Address was found");
             }

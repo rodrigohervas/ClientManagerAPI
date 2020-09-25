@@ -53,7 +53,7 @@ namespace ClientsManager.WebAPI.Controllers
                     EndpointPath = HttpContext.Request.Path.Value,
                     User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
                 };
-                _logger.LogError("No Clients where found for Parameters {parameters}. Data: {@logData}", parameters, logData);
+                _logger.LogInformation("No Clients where found for Parameters {parameters}. Data: {@logData}", parameters, logData);
                 
                 return NotFound("No Clients where found");
                 
@@ -89,8 +89,8 @@ namespace ClientsManager.WebAPI.Controllers
                     EndpointPath = HttpContext.Request.Path.Value, 
                     User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
                 };
-                _logger.LogError("No Clients where found for Id {id}. Data: {@logData}", id, logData);
-                
+                _logger.LogInformation("No Clients where found for Id {id}. Data: {@logData}", id, logData);
+
                 return NotFound("No data was found");
             }
 
@@ -122,7 +122,7 @@ namespace ClientsManager.WebAPI.Controllers
                     EndpointPath = HttpContext.Request.Path.Value,
                     User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
                 };
-                _logger.LogError("No Client was found for Id {id}. Data: {@logData}", id, logData);
+                _logger.LogInformation("No Client was found for Id {id}. Data: {@logData}", id, logData);
 
                 return NotFound("No data was found");
             }
@@ -155,7 +155,7 @@ namespace ClientsManager.WebAPI.Controllers
                     EndpointPath = HttpContext.Request.Path.Value,
                     User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
                 };
-                _logger.LogError("No Client was found for Id {id}. Data: {@logData}", id, logData);
+                _logger.LogInformation("No Client was found for Id {id}. Data: {@logData}", id, logData);
 
                 return NotFound("No data was found");
             }
@@ -189,7 +189,7 @@ namespace ClientsManager.WebAPI.Controllers
                     User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
                 };
 
-                _logger.LogError("No Client was found for Id {id}. Data: {@logData}", id, logData);
+                _logger.LogInformation("No Client was found for Id {id}. Data: {@logData}", id, logData);
 
                 return NotFound("No data was found");
             }
@@ -221,7 +221,7 @@ namespace ClientsManager.WebAPI.Controllers
                     EndpointPath = HttpContext.Request.Path.Value,
                     User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
                 };
-                _logger.LogError("No Client was created for Client {@client}. Data: {@logData}", client, logData);
+                _logger.LogInformation("No Client was created for Client {@client}. Data: {@logData}", client, logData);
 
                 return NotFound("No Client was created");
             }
@@ -262,7 +262,7 @@ namespace ClientsManager.WebAPI.Controllers
                     EndpointPath = HttpContext.Request.Path.Value,
                     User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
                 };
-                _logger.LogError("No Client was updated for Id {id} and Client {@client}. Data: {@logData}", id, client, logData);
+                _logger.LogInformation("No Client was updated for Id {id} and Client {@client}. Data: {@logData}", id, client, logData);
 
                 return NotFound("No Client was updated");
             }
@@ -296,7 +296,7 @@ namespace ClientsManager.WebAPI.Controllers
                     EndpointPath = HttpContext.Request.Path.Value,
                     User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
                 };
-                _logger.LogError("No Client was found for Id {id}. Data: {@logData}", id, logData);
+                _logger.LogInformation("No Client was found for Id {id}. Data: {@logData}", id, logData);
 
                 return NotFound("No Client was found");
             }
