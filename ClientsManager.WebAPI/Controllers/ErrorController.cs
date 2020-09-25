@@ -13,6 +13,7 @@ namespace ClientsManager.WebAPI.Controllers
         /// Error method to catch exceptions and send a response with the exception details
         /// </summary>
         /// <returns>IActionResult: a ProblemDetails response with the exception information </returns>
+        [HttpGet]
         [Route("/error")]
         public IActionResult Error()
         {

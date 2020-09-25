@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Logging;
+using Microsoft.OpenApi.Models;
 using Serilog;
 
 namespace ClientsManager.WebAPI
@@ -39,7 +40,7 @@ namespace ClientsManager.WebAPI
                                                                 .AllowAnyOrigin()
                                                                 .AllowAnyMethod()
                                                                 .AllowAnyHeader());
-                //.AllowCredentials());
+                                                                //.AllowCredentials());
             });
 
             //register the custom action Validation Filters Middleware
@@ -66,7 +67,7 @@ namespace ClientsManager.WebAPI
             //register AutoMapper for POCO to DTO mapping
             services.AddAutoMapper(typeof(Startup));
 
-            //Add DbContext Middleware
+            //Register DbContext Middleware
             services.AddDbContext<ClientsManagerDBContext>(options =>
                 options.UseSqlServer(_configuration["ConnectionStrings:ClientsManagerDBConnectionString"])
             );
@@ -74,11 +75,22 @@ namespace ClientsManager.WebAPI
             //Add Repositories DI dependencies 
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             
-            //Default JWT Bearer Token authentication configuration
+            //Configure Default JWT Bearer Token authentication
             //services.AddJWTokenAuthentication(_configuration);
 
-            //Azure AD JWT Bearer Token authentication configuration
+            //Configure Azure AD JWT Bearer Token authentication
             services.AddAzureADAuthentication(_configuration);
+
+            //Register Swagger Documentation
+            services.AddSwaggerGen(swg =>
+            {
+                swg.SwaggerDoc(_configuration["Swagger:ApiVersion"],
+                                new OpenApiInfo
+                                {
+                                    Title = _configuration["Swagger:ApiTitle"],
+                                    Version = _configuration["Swagger:ApiVersion"]
+                                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -109,6 +121,15 @@ namespace ClientsManager.WebAPI
             app.UseAuthentication();
 
             app.UseAuthorization();
+
+            //Add Swagger middleware
+            app.UseSwagger();
+
+            //Add Swagger UI Middleware
+            app.UseSwaggerUI( swg => {
+                swg.SwaggerEndpoint(_configuration["Swagger:SwaggerUIEndpoint"],
+                                    $"{(_configuration["Swagger:ApiTitle"])} {(_configuration["Swagger:ApiVersion"])}");
+            });
 
             app.UseEndpoints(endpoints =>
             {
