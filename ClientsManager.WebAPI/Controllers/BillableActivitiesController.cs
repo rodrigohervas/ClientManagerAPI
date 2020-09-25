@@ -8,6 +8,7 @@ using ClientsManager.Data;
 using ClientsManager.Models;
 using ClientsManager.WebAPI.DTOs;
 using ClientsManager.WebAPI.ValidationActionFiltersMiddleware;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -19,6 +20,7 @@ namespace ClientsManager.WebAPI.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class BillableActivitiesController : ControllerBase
     {
         /// <summary>
@@ -57,7 +59,16 @@ namespace ClientsManager.WebAPI.Controllers
 
                 if (!billableActivities.Any())
                 {
-                    _logger.LogError($"BillableActivitiesController.GetAllBillableActivitiesAsync: No billable activities were found for pageNumber {parameters.pageNumber} and pageSize {parameters.pageSize}");
+                    var logData = new
+                    {
+                        Parameters = parameters,
+                        Action = ControllerContext.ActionDescriptor.DisplayName,
+                        Verb = HttpContext.Request.Method,
+                        EndpointPath = HttpContext.Request.Path.Value,
+                        User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
+                    };
+                    _logger.LogError("No BillableActivities where found for Parameters {parameters}. Data: {@logData}", parameters, logData);
+                                        
                     return NotFound("No billable activities were found");
                 }
 
@@ -83,7 +94,15 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (billableActivitiesNumber == 0)
             {
-                _logger.LogError($"BillableActivitiesController.CountBillableActivities: No billable activities available");
+                var logData = new
+                {
+                    Action = ControllerContext.ActionDescriptor.DisplayName,
+                    Verb = HttpContext.Request.Method,
+                    EndpointPath = HttpContext.Request.Path.Value,
+                    User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
+                };
+                _logger.LogError("No BillableActivities available. Data: {@logData}", logData);
+
                 return NotFound("No billable activities available");
             }
 
@@ -104,7 +123,16 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (!billableActivities.Any())
             {
-                _logger.LogError($"BillableActivitiesController.GetBillableActivitiesByEmployeeIdAsync: No data was found for the employee with employee_id {employee_id}");
+                var logData = new
+                {
+                    Employee_Id = employee_id,
+                    Action = ControllerContext.ActionDescriptor.DisplayName,
+                    Verb = HttpContext.Request.Method,
+                    EndpointPath = HttpContext.Request.Path.Value,
+                    User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
+                };
+                _logger.LogError("No BillableActivities where found for the employee_id {employee_id}. Data: {@logData}", employee_id, logData);
+
                 return NotFound("No data was found for the employee");
             }
 
@@ -127,7 +155,16 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (!billableActivities.Any())
             {
-                _logger.LogError($"BillableActivitiesController.GetBillableActivitiesByLegalCaseIdAsync: No data was found for the case with legalCase_id {legalCase_id}");
+                var logData = new
+                {
+                    LegalCase_Id = legalCase_id,
+                    Action = ControllerContext.ActionDescriptor.DisplayName,
+                    Verb = HttpContext.Request.Method,
+                    EndpointPath = HttpContext.Request.Path.Value,
+                    User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
+                };
+                _logger.LogError("No BillableActivities where found for the LegalCase with legalCase_id {legalCase_id}. Data: {@logData}", legalCase_id, logData);
+                
                 return NotFound("No data was found for the case");
             }
 
@@ -149,8 +186,17 @@ namespace ClientsManager.WebAPI.Controllers
             var billableActivity = await _genericRepository.GetOneByAsync(ba => ba.Id == id);
 
             if (billableActivity is null) {
-                _logger.LogError($"BillableActivitiesController.GetBillableActivityByIdAsync: No data was found for the id {id}");
-                return NotFound("No data was found for the id");
+                var logData = new
+                {
+                    Id = id,
+                    Action = ControllerContext.ActionDescriptor.DisplayName,
+                    Verb = HttpContext.Request.Method,
+                    EndpointPath = HttpContext.Request.Path.Value,
+                    User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
+                };
+                _logger.LogError("No BillableActivity was found for the LegalCase with id {id}. Data: {@logData}", id, logData);
+                
+                return NotFound("No Billable Activity was found");
             }
 
             BillableActivityDTO billableActivityDTO = _mapper.Map<BillableActivityDTO>(billableActivity);
@@ -171,7 +217,16 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (created == 0)
             {
-                _logger.LogError($"BillableActivitiesController.AddBillableActivityAsync: No Billable Activity was created for billableActivity {billableActivity}");
+                var logData = new
+                {
+                    NewBillableActivity = billableActivity,
+                    Action = ControllerContext.ActionDescriptor.DisplayName,
+                    Verb = HttpContext.Request.Method,
+                    EndpointPath = HttpContext.Request.Path.Value,
+                    User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
+                };
+                _logger.LogError("No BillableActivity was created for {billableActivity}. Data: {@logData}", billableActivity, logData);
+
                 return NotFound("No Billable Activity was created");
             }
 
@@ -200,7 +255,17 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (billableActivityResult is null)
             {
-                _logger.LogError($"BillableActivitiesController.UpdateBillableActivityAsync: No Billable Activity was updated for id {id} and billableActivity {billableActivity}");
+                var logData = new
+                {
+                    Id = id,
+                    NewBillableActivity = billableActivity,
+                    Action = ControllerContext.ActionDescriptor.DisplayName,
+                    Verb = HttpContext.Request.Method,
+                    EndpointPath = HttpContext.Request.Path.Value,
+                    User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
+                };
+                _logger.LogError("No BillableActivity was updated for id {id} and BillableActivity {billableActivity}. Data: {@logData}", id, billableActivity, logData);
+                
                 return NotFound("No Billable Activity was updated");
             }
             
@@ -224,7 +289,17 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (billableActivity is null)
             {
-                _logger.LogError($"BillableActivitiesController.DeleteBillableActivityAsync: No data was found for the id {id}");
+                var logData = new
+                {
+                    Id = id,
+                    NewBillableActivity = billableActivity,
+                    Action = ControllerContext.ActionDescriptor.DisplayName,
+                    Verb = HttpContext.Request.Method,
+                    EndpointPath = HttpContext.Request.Path.Value,
+                    User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
+                };
+                _logger.LogError("No BillableActivity was found for id {id}. Data: {@logData}", id, logData);
+                
                 return NotFound("No data was found for the id");
             }
 
