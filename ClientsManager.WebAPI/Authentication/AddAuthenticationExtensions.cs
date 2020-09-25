@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,6 +34,7 @@ namespace ClientsManager.WebAPI.Authentication
             var ClientAudience = configuration["AzureAd:ClientAudience"];
             var APIAudience = configuration["AzureAd:APIAudience"];
             
+            //define validation parameters
             services.Configure<JwtBearerOptions>(AzureADDefaults.JwtBearerAuthenticationScheme, options =>
             {
                 options.Authority += "/v2.0";
@@ -51,16 +53,37 @@ namespace ClientsManager.WebAPI.Authentication
 
                 options.TokenValidationParameters.ValidateLifetime = true;
 
+                options.SaveToken = true;
+
                 options.Events = new JwtBearerEvents
                 {
+                    //OnMessageReceived = context => {
+
+                    //    //var tokenHeader = context.Request.Headers.First(h => h.Key == "Authorization");
+                    //    var check = context.Request.Headers.ContainsKey("Authorization");
+                    //    if (context.Request.Headers.ContainsKey("Authorization"))
+                    //    {
+                    //        var tokenHeader = context.Request.Headers.First(h => h.Key == "Authorization");
+                    //        var length = tokenHeader.Value.ToString().Length;
+                    //        var token = tokenHeader.Value.ToString().Substring(7);
+                    //        Log.Information($"TOKEN: {tokenHeader.Value}", tokenHeader.Value);
+                    //    }
+
+                    //    return Task.CompletedTask;
+                    //}, 
+
                     OnAuthenticationFailed = context => {
+
+                        //var token = context.Request.Headers.First(h => h.Key == "Authorization").Value;
+
                         var logData = new
                         {
                             Verb = context.Request.Method,
                             EndpointPath = context.Request.Path.Value,
                             exception = context.Exception
                         };
-                        Log.Error($"Authentication Failed: {context.Exception.Message}. Data: {@logData}", context.Exception.Message, logData);
+                        Log.Information($"Authentication Failed: {context.Exception.Message}. Data: {@logData}", context.Exception.Message, logData);
+
                         return Task.CompletedTask;
                     }
                 };
@@ -110,7 +133,7 @@ namespace ClientsManager.WebAPI.Authentication
                                     EndpointPath = context.Request.Path.Value,
                                     exception = context.Exception
                                 };
-                                Log.Error($"Authentication Failed: {context.Exception.Message}. Data: {@logData}", context.Exception.Message, logData);
+                                Log.Information($"Authentication Failed: {context.Exception.Message}. Data: {@logData}", context.Exception.Message, logData);
                                 return Task.CompletedTask;
                             }
                         };
