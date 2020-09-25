@@ -7,6 +7,7 @@ using ClientsManager.Data;
 using ClientsManager.Models;
 using ClientsManager.WebAPI.DTOs;
 using ClientsManager.WebAPI.ValidationActionFiltersMiddleware;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -15,6 +16,7 @@ namespace ClientsManager.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class AddressesController : ControllerBase
     {
         private readonly IGenericRepository<Address> _genericRepository;
@@ -43,7 +45,16 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (!addresses.Any())
             {
-                _logger.LogError($"AddressesController.GetAllAddressesAsync: No Addresses where found for pageNumber {parameters.pageNumber} and pageSize {parameters.pageSize}");
+                var logData = new
+                {
+                    Parameters = parameters,
+                    Action = ControllerContext.ActionDescriptor.DisplayName,
+                    Verb = HttpContext.Request.Method,
+                    EndpointPath = HttpContext.Request.Path.Value,
+                    User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
+                };
+                _logger.LogError("No Addresses where found for Parameters {parameters}. Data: {@logData}", parameters, logData);
+
                 return NotFound("No Addresses where found");
             }
 
@@ -67,7 +78,16 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (!addresses.Any())
             {
-                _logger.LogError($"AddressesController.GetAddressesByClientIdAsync: No data was found for the client with client_id {client_id}");
+                var logData = new
+                {
+                    Client_Id = client_id,
+                    Action = ControllerContext.ActionDescriptor.DisplayName,
+                    Verb = HttpContext.Request.Method,
+                    EndpointPath = HttpContext.Request.Path.Value,
+                    User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
+                };
+                _logger.LogError("No Address was found for the client with client_id {client_id}. Data: {@logData}", client_id, logData);
+
                 return NotFound("No data was found for the client");
             }
 
@@ -90,7 +110,16 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (address is null)
             {
-                _logger.LogError($"AddressesController.GetAddressByIdAsync: No data was found for the id {id}");
+                var logData = new
+                {
+                    Id = id,
+                    Action = ControllerContext.ActionDescriptor.DisplayName,
+                    Verb = HttpContext.Request.Method,
+                    EndpointPath = HttpContext.Request.Path.Value,
+                    User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
+                };
+                _logger.LogError("No Address was found for the id {id}. Data: {@logData}", id, logData);
+
                 return NotFound("No data was found");
             }
 
@@ -114,8 +143,17 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (addressWithDetails is null)
             {
-                _logger.LogError($"AddressesController.GetAddressByIdWithContactsAsync: No data was found for id {id}");
-                return NotFound("No data was found");
+                var logData = new
+                {
+                    Id = id,
+                    Action = ControllerContext.ActionDescriptor.DisplayName,
+                    Verb = HttpContext.Request.Method,
+                    EndpointPath = HttpContext.Request.Path.Value,
+                    User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
+                };
+                _logger.LogError("No Address was found for the id {id}. Data: {@logData}", id, logData);
+
+                return NotFound("No address was found");
             }
 
             AddressWithContactsDTO addressWithContactsDTO = _mapper.Map<AddressWithContactsDTO>(addressWithDetails);
@@ -137,7 +175,16 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (created == 0)
             {
-                _logger.LogError($"AddressesController.AddAddressAsync: No Address was created for address {address}");
+                var logData = new
+                {
+                    Address = address,
+                    Action = ControllerContext.ActionDescriptor.DisplayName,
+                    Verb = HttpContext.Request.Method,
+                    EndpointPath = HttpContext.Request.Path.Value,
+                    User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
+                };
+                _logger.LogError("No Address was created for the address {address}. Data: {@logData}", address, logData);
+                
                 return NotFound("No Address was created");
             }
 
@@ -168,7 +215,17 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (addressResult is null)
             {
-                _logger.LogError($"AddressesController.UpdateAddressAsync: No Address was updated for id {id} and Address {address}");
+                var logData = new
+                {
+                    Id = id,
+                    NewAdress = address, 
+                    Action = ControllerContext.ActionDescriptor.DisplayName,
+                    Verb = HttpContext.Request.Method,
+                    EndpointPath = HttpContext.Request.Path.Value,
+                    User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
+                };
+                _logger.LogError("No Address was updated for id {id} and address {address}. Data: {@logData}", id, address, logData);
+                
                 return NotFound("No Address was updated");
             }
 
@@ -193,7 +250,16 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (addressResult is null)
             {
-                _logger.LogError($"AddressesController.DeleteAddressAsync: No Address was found for id {id}");
+                var logData = new
+                {
+                    Id = id,
+                    Action = ControllerContext.ActionDescriptor.DisplayName,
+                    Verb = HttpContext.Request.Method,
+                    EndpointPath = HttpContext.Request.Path.Value,
+                    User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
+                };
+                _logger.LogError("No Address was found for the id {id}. Data: {@logData}", id, logData);
+
                 return NotFound("No Address was found");
             }
 
