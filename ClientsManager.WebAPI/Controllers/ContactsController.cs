@@ -7,6 +7,7 @@ using ClientsManager.Data;
 using ClientsManager.Models;
 using ClientsManager.WebAPI.DTOs;
 using ClientsManager.WebAPI.ValidationActionFiltersMiddleware;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -15,6 +16,7 @@ namespace ClientsManager.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ContactsController : ControllerBase
     {
         private readonly IGenericRepository<Contact> _genericRepository;
@@ -44,7 +46,16 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (!contacts.Any())
             {
-                _logger.LogError($"ContactsController.GetAllContactsAsync: No contacts were found for pageNumber {parameters.pageNumber} and pageSize {parameters.pageSize}");
+                var logData = new
+                {
+                    Parameters = parameters,
+                    Action = ControllerContext.ActionDescriptor.DisplayName,
+                    Verb = HttpContext.Request.Method,
+                    EndpointPath = HttpContext.Request.Path.Value,
+                    User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
+                };
+                _logger.LogInformation("No Contacts where found for Parameters {parameters}. Data: {@logData}", parameters, logData);
+
                 return NotFound("No Contacts where found");
             }
 
@@ -68,8 +79,17 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (!contacts.Any())
             {
-                _logger.LogError($"ContactsController.GetContactsByClientIdAsync: No data was found for the client with client_id {client_id}");
-                return NotFound("No data was found for the client");
+                var logData = new
+                {
+                    Client_Id = client_id,
+                    Action = ControllerContext.ActionDescriptor.DisplayName,
+                    Verb = HttpContext.Request.Method,
+                    EndpointPath = HttpContext.Request.Path.Value,
+                    User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
+                };
+                _logger.LogInformation("No Contacts where found for Client_Id {client_id}. Data: {@logData}", client_id, logData);
+
+                return NotFound("No contacts where found for the client");
             }
 
             IEnumerable<ContactDTO> contactsDTO = _mapper.Map<IEnumerable<ContactDTO>>(contacts);
@@ -91,7 +111,16 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (contact is null)
             {
-                _logger.LogError($"ContactsController.GetContactByIdAsync: No data was found for id {id}");
+                var logData = new
+                {
+                    Id = id,
+                    Action = ControllerContext.ActionDescriptor.DisplayName,
+                    Verb = HttpContext.Request.Method,
+                    EndpointPath = HttpContext.Request.Path.Value,
+                    User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
+                };
+                _logger.LogInformation("No Contact was found for Id {id}. Data: {@logData}", id, logData);
+
                 return NotFound("No data was found");
             }
 
@@ -115,7 +144,17 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (contactWithDetails is null)
             {
-                _logger.LogError($"ContactsController.GetContactByIdWithDetailsAsync: No data was found for id {id}");
+                var logData = new
+                {
+                    Id = id,
+                    Action = ControllerContext.ActionDescriptor.DisplayName,
+                    Verb = HttpContext.Request.Method,
+                    EndpointPath = HttpContext.Request.Path.Value,
+                    User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
+                };
+                _logger.LogInformation("No Contact was found for Id {id}. Data: {@logData}", id, logData);
+
+                _logger.LogInformation($"ContactsController.GetContactByIdWithDetailsAsync: No data was found for id {id}");
                 return NotFound("No data was found");
             }
 
@@ -138,9 +177,20 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (created == 0)
             {
-                _logger.LogError($"ContactsController.AddContactAsync: No Contact was created for contact {contact}");
+                var logData = new
+                {
+                    Contact = contact,
+                    Action = ControllerContext.ActionDescriptor.DisplayName,
+                    Verb = HttpContext.Request.Method,
+                    EndpointPath = HttpContext.Request.Path.Value,
+                    User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
+                };
+                _logger.LogInformation("No Contact was created for Contact {@contact}. Data: {@logData}", contact, logData);
+
                 return NotFound("No Contact was created");
             }
+
+            _logger.LogInformation("Contact was created for Contact {@contact}.", contact);
 
             var newContact = await _genericRepository.GetOneByAsync(co =>
                                                                         co.Client_Id == contact.Client_Id &&
@@ -169,7 +219,17 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (contactResult is null)
             {
-                _logger.LogError($"ContactsController.UpdateContactAsync: No Contact was updated for id {id} and contact {contact}");
+                var logData = new
+                {
+                    Id = id, 
+                    Contact = contact,
+                    Action = ControllerContext.ActionDescriptor.DisplayName,
+                    Verb = HttpContext.Request.Method,
+                    EndpointPath = HttpContext.Request.Path.Value,
+                    User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
+                };
+                _logger.LogInformation("No Contact was updated for Id {id} and  Contact {@contact}. Data: {@logData}", id, contact, logData);
+
                 return NotFound("No Contact was updated");
             }
 
@@ -194,7 +254,17 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (contactResult is null)
             {
-                _logger.LogError($"ContactsController.DeleteContactAsync: No Contact was found for id {id}");
+                var logData = new
+                {
+                    Id = id,
+                    Action = ControllerContext.ActionDescriptor.DisplayName,
+                    Verb = HttpContext.Request.Method,
+                    EndpointPath = HttpContext.Request.Path.Value,
+                    User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
+                };
+                _logger.LogInformation("No Contact was found for Id {id}. Data: {@logData}", id, logData);
+
+                _logger.LogInformation($"ContactsController.DeleteContactAsync: No Contact was found for id {id}");
                 return NotFound("No Contact was found");
             }
 
