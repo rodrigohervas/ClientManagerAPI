@@ -71,7 +71,7 @@ namespace ClientsManager.WebAPI.Controllers
         // GET: api/employees/5
         [HttpGet("{id}")]
         [ServiceFilter(typeof(IdValidator))]
-        public async Task<ActionResult<EmployeeDTO>> GetEmployeeByIdAsync(int id)
+        public async Task<ActionResult<EmployeeDTO>> GetEmployeeByIdAsync([FromRoute] int id)
         {
             var employee = await _genericRepository.GetOneByWithRelatedDataAsync(employee => employee.Id == id, 
                                                                                  employee => employee.BillableActivities);
@@ -104,7 +104,7 @@ namespace ClientsManager.WebAPI.Controllers
         // GET: api/employees/employeetype/1
         [HttpGet("employeetype/{employeetype_id:int}")]
         [ServiceFilter(typeof(EmployeeTypeIdValidator))]
-        public async Task<ActionResult<IEnumerable<EmployeeDTO>>> GetEmployeesByTypeAsync(int employeeType_id)
+        public async Task<ActionResult<IEnumerable<EmployeeDTO>>> GetEmployeesByTypeAsync([FromRoute] int employeeType_id)
         {
             var employees = await _genericRepository.GetByAsync(employee => employee.EmployeeType_Id == employeeType_id);
 
@@ -137,7 +137,7 @@ namespace ClientsManager.WebAPI.Controllers
         // POST: api/employees
         [HttpPost]
         [ServiceFilter(typeof(EmployeeValidationFilter))]
-        public async Task<ActionResult<EmployeeDTO>> AddEmployeeAsync(Employee employee)
+        public async Task<ActionResult<EmployeeDTO>> AddEmployeeAsync([FromBody] Employee employee)
         {
             var addResult = await _genericRepository.AddTAsync(employee);
 
@@ -176,7 +176,7 @@ namespace ClientsManager.WebAPI.Controllers
         [HttpPut("{id:int}")]
         [HttpPatch("{id:int}")]
         [ServiceFilter(typeof(EmployeeValidationFilter))]
-        public async Task<ActionResult<EmployeeDTO>> UpdateEmployeeAsync(int id, Employee employee)
+        public async Task<ActionResult<EmployeeDTO>> UpdateEmployeeAsync([FromRoute] int id, [FromBody] Employee employee)
         {
             var employeeResult = await _genericRepository.GetOneByAsync(emp => emp.Id == employee.Id);
 
@@ -211,7 +211,7 @@ namespace ClientsManager.WebAPI.Controllers
         // DELETE: employees/id
         [HttpDelete("{id:int}")]
         [ServiceFilter(typeof(IdValidator))]
-        public async Task<ActionResult<int>> DeleteEmployeeAsync(int id)
+        public async Task<ActionResult<int>> DeleteEmployeeAsync([FromRoute] int id)
         {
             Employee employee = await _genericRepository.GetOneByAsync(emp => emp.Id == id);
 
