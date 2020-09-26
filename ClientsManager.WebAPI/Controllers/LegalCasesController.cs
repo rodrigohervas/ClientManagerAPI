@@ -7,6 +7,7 @@ using ClientsManager.Data;
 using ClientsManager.Models;
 using ClientsManager.WebAPI.DTOs;
 using ClientsManager.WebAPI.ValidationActionFiltersMiddleware;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -14,6 +15,7 @@ namespace ClientsManager.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class LegalCasesController : ControllerBase
     {
         private readonly IGenericRepository<LegalCase> _genericRepository;
@@ -42,7 +44,16 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (!legalCases.Any())
             {
-                _logger.LogError($"LegalCasesController.GetAllLegalCasesAsync: No Cases where found for pageNumber {parameters.pageNumber} and pageSize {parameters.pageSize}");
+                var logData = new
+                {
+                    Parameters = parameters,
+                    Action = ControllerContext.ActionDescriptor.DisplayName,
+                    Verb = HttpContext.Request.Method,
+                    EndpointPath = HttpContext.Request.Path.Value,
+                    User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
+                };
+                _logger.LogInformation("No LegalCases were found for Parameters {parameters}. Data: {@logData}", parameters, logData);
+
                 return NotFound("No Cases where found");
             }
 
@@ -65,7 +76,16 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (!legalCases.Any())
             {
-                _logger.LogError($"LegalCasesController.GetLegalCasesByClientIdAsync: No data was found for the client with client_id {client_id}");
+                var logData = new
+                {
+                    Client_id = client_id,
+                    Action = ControllerContext.ActionDescriptor.DisplayName,
+                    Verb = HttpContext.Request.Method,
+                    EndpointPath = HttpContext.Request.Path.Value,
+                    User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
+                };
+                _logger.LogInformation("No LegalCases were found for Client_id {client_id}. Data: {@logData}", client_id, logData);
+
                 return NotFound("No data was found for the client");
             }
 
@@ -88,7 +108,16 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (legalCase is null)
             {
-                _logger.LogError($"LegalCasesController.GetLegalCaseByIdAsync: No data was found for id {id}");
+                var logData = new
+                {
+                    Id = id,
+                    Action = ControllerContext.ActionDescriptor.DisplayName,
+                    Verb = HttpContext.Request.Method,
+                    EndpointPath = HttpContext.Request.Path.Value,
+                    User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
+                };
+                _logger.LogInformation("No LegalCases were found for Id {id}. Data: {@logData}", id, logData);
+
                 return NotFound("No data was found");
             }
 
@@ -112,6 +141,16 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (legalCaseWithDetails is null)
             {
+                var logData = new
+                {
+                    Id = id,
+                    Action = ControllerContext.ActionDescriptor.DisplayName,
+                    Verb = HttpContext.Request.Method,
+                    EndpointPath = HttpContext.Request.Path.Value,
+                    User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
+                };
+                _logger.LogInformation("No LegalCases were found for Id {id}. Data: {@logData}", id, logData);
+
                 _logger.LogError($"LegalCasesController.GetLegalCaseByIdWithDetailsAsync: No data was found for id {id}");
                 return NotFound("No data was found");
             }
@@ -135,7 +174,16 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (created == 0)
             {
-                _logger.LogError($"LegalCasesController.AddLegalCaseAsync: No Legal Case was created for legalCase {legalCase}");
+                var logData = new
+                {
+                    LegalCase = legalCase,
+                    Action = ControllerContext.ActionDescriptor.DisplayName,
+                    Verb = HttpContext.Request.Method,
+                    EndpointPath = HttpContext.Request.Path.Value,
+                    User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
+                };
+                _logger.LogInformation("No LegalCase was created for Legalcase {@legalCase}. Data: {@logData}", legalCase, logData);
+
                 return NotFound("No Legal Case was created");
             }
 
@@ -165,7 +213,17 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (legalCaseResult is null)
             {
-                _logger.LogError($"LegalCasesController.UpdateLegalCaseAsync: No Legal Case was updated for id {id} and legalCase {legalCase}");
+                var logData = new
+                {
+                    Id= id,
+                    LegalCase = legalCase,
+                    Action = ControllerContext.ActionDescriptor.DisplayName,
+                    Verb = HttpContext.Request.Method,
+                    EndpointPath = HttpContext.Request.Path.Value,
+                    User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
+                };
+                _logger.LogInformation("No LegalCase was updated for Id {id} and Legalcase {@legalCase}. Data: {@logData}", id, legalCase, logData);
+
                 return NotFound("No Legal Case was updated");
             }
             
@@ -190,7 +248,16 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (legalCaseResult is null)
             {
-                _logger.LogError($"LegalCasesController.DeleteLegalCaseAsync: No Legal Case was found for id {id}");
+                var logData = new
+                {
+                    Id = id,
+                    Action = ControllerContext.ActionDescriptor.DisplayName,
+                    Verb = HttpContext.Request.Method,
+                    EndpointPath = HttpContext.Request.Path.Value,
+                    User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
+                };
+                _logger.LogInformation("No LegalCase was found for Id {id}. Data: {@logData}", id, logData);
+
                 return NotFound("No Legal Case was found");
             }
 
