@@ -27,7 +27,7 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
             //validate that Employee is not null
             if (employee == null)
             {
-                _logger.LogError($"EmployeeValidationFilter: Employee is mandatory. Value Received: {employee}");
+                _logger.LogInformation($"EmployeeValidationFilter: Employee is mandatory. Value Received: {employee}");
                 context.Result = new BadRequestObjectResult("Employee is mandatory");
                 return;
             }
@@ -36,7 +36,7 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
             var httpPostMethod = context.HttpContext.Request.Method;
             if (employee.Id == 0 && httpPostMethod != "POST")
             {
-                _logger.LogError($"EmployeeValidationFilter: Id is mandatory. Value Received: {employee.Id}");
+                _logger.LogInformation($"EmployeeValidationFilter: Id is mandatory. Value Received: {employee.Id}");
                 context.Result = new BadRequestObjectResult("Id is mandatory");
                 return;
             }
@@ -44,7 +44,7 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
             //Validate Name
             if (String.IsNullOrEmpty(employee.Name))
             {
-                _logger.LogError($"EmployeeValidationFilter: Name is mandatory. Value Received: {employee.Name}");
+                _logger.LogInformation($"EmployeeValidationFilter: Name is mandatory. Value Received: {employee.Name}");
                 context.Result = new BadRequestObjectResult("Name is mandatory");
                 return;
             }
@@ -52,14 +52,14 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
             //validate EmployeeType_id
             if (employee.EmployeeType_Id == 0)
             {
-                _logger.LogError($"EmployeeValidationFilter: EmployeeType_Id is mandatory. Value Received: {employee.EmployeeType_Id}");
+                _logger.LogInformation($"EmployeeValidationFilter: EmployeeType_Id is mandatory. Value Received: {employee.EmployeeType_Id}");
                 context.Result = new BadRequestObjectResult("EmployeeType_Id is mandatory");
                 return;
             }
 
             if (employee.EmployeeType_Id.GetTypeCode() != TypeCode.Int32)
             {
-                _logger.LogError($"EmployeeValidationFilter: EmployeeType_Id must be a valid number. Value Received: {employee.EmployeeType_Id}");
+                _logger.LogInformation($"EmployeeValidationFilter: EmployeeType_Id must be a valid number. Value Received: {employee.EmployeeType_Id}");
                 context.Result = new BadRequestObjectResult("EmployeeType_Id must be a valid number");
                 return;
             }
@@ -67,7 +67,7 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
             //Validate Position
             if (String.IsNullOrEmpty(employee.Position))
             {
-                _logger.LogError($"EmployeeValidationFilter: Position is mandatory. Value Received: {employee.Position}");
+                _logger.LogInformation($"EmployeeValidationFilter: Position is mandatory. Value Received: {employee.Position}");
                 context.Result = new BadRequestObjectResult("Position is mandatory");
                 return;
             }
@@ -75,7 +75,7 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
             //validate the ModelState
             if (!context.ModelState.IsValid)
             {
-                _logger.LogError($"EmployeeValidationFilter: ModelState is invalid");
+                _logger.LogInformation($"EmployeeValidationFilter: ModelState is invalid");
                 context.Result = new BadRequestObjectResult(context.ModelState);
                 return;
             }

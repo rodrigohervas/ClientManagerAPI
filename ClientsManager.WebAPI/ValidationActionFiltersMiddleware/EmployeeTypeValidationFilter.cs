@@ -27,7 +27,7 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
             //validate that EmployeeType is not null
             if (employeeType == null)
             {
-                _logger.LogError($"EmployeeTypeValidationFilter: EmployeeType is mandatory. Value Received: {employeeType}");
+                _logger.LogInformation($"EmployeeTypeValidationFilter: EmployeeType is mandatory. Value Received: {employeeType}");
                 context.Result = new BadRequestObjectResult("EmployeeType is mandatory");
                 return;
             }
@@ -36,7 +36,7 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
             var httpPostMethod = context.HttpContext.Request.Method;
             if (employeeType.Id == 0 && httpPostMethod != "POST")
             {
-                _logger.LogError($"EmployeeTypeValidationFilter: Id is mandatory. Value Received: {employeeType.Id}");
+                _logger.LogInformation($"EmployeeTypeValidationFilter: Id is mandatory. Value Received: {employeeType.Id}");
                 context.Result = new BadRequestObjectResult("Id is mandatory");
                 return;
             }
@@ -44,7 +44,7 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
             //Validate Description
             if (String.IsNullOrEmpty(employeeType.Description))
             {
-                _logger.LogError($"EmployeeTypeValidationFilter: Description is mandatory. Value Received: {employeeType.Description}");
+                _logger.LogInformation($"EmployeeTypeValidationFilter: Description is mandatory. Value Received: {employeeType.Description}");
                 context.Result = new BadRequestObjectResult("Description is mandatory");
                 return;
             }
@@ -52,7 +52,7 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
             //validate the ModelState
             if (!context.ModelState.IsValid)
             {
-                _logger.LogError($"EmployeeTypeValidationFilter: ModelState is invalid");
+                _logger.LogInformation($"EmployeeTypeValidationFilter: ModelState is invalid");
                 context.Result = new BadRequestObjectResult(context.ModelState);
                 return;
             }

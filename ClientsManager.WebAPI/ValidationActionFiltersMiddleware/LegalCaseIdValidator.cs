@@ -25,7 +25,7 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
             //validate that the case_id is not null/zero
             if (queryStringId == 0 || queryStringId == null)
             {
-                _logger.LogError($"LegalCaseIdValidator: Case_id is mandatory. Value received: {queryStringId}");
+                _logger.LogInformation($"LegalCaseIdValidator: Case_id is mandatory. Value received: {queryStringId}");
                 context.Result = new BadRequestObjectResult("Case_id is mandatory");
                 return;
             }

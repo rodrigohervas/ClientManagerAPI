@@ -25,7 +25,7 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
             //validate that the Id is not null/zero
             if (queryStringId == 0 || queryStringId == null)
             {
-                _logger.LogError($"IdValidator: Id is mandatory. Value received: {queryStringId}");
+                _logger.LogInformation($"IdValidator: Id is mandatory. Value received: {queryStringId}");
                 context.Result = new BadRequestObjectResult("Id is mandatory");
                 return;
             }

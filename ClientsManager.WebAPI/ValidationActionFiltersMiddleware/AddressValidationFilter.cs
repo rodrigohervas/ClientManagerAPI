@@ -26,7 +26,7 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
             //validate that Address is not null
             if (_address == null)
             {
-                _logger.LogError($"AddressValidationFilter: Address is mandatory. Value Received: {_address}");
+                _logger.LogInformation($"AddressValidationFilter: Address is mandatory. Value Received: {_address}");
                 context.Result = new BadRequestObjectResult("Address is mandatory");
                 return;
             }
@@ -35,7 +35,7 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
             var httpPostMethod = context.HttpContext.Request.Method;
             if (_address.Id == 0 && httpPostMethod != "POST")
             {
-                _logger.LogError($"AddressValidationFilter: Id is mandatory. Value Received: {_address.Id}");
+                _logger.LogInformation($"AddressValidationFilter: Id is mandatory. Value Received: {_address.Id}");
                 context.Result = new BadRequestObjectResult("Id is mandatory");
                 return;
             }
@@ -43,14 +43,14 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
             //validate Client_id
             if (_address.Client_Id == 0)
             {
-                _logger.LogError($"AddressValidationFilter: Client_Id is mandatory. Value Received: {_address.Client_Id}");
+                _logger.LogInformation($"AddressValidationFilter: Client_Id is mandatory. Value Received: {_address.Client_Id}");
                 context.Result = new BadRequestObjectResult("Client_Id is mandatory");
                 return;
             }
 
             if (_address.Client_Id.GetTypeCode() != TypeCode.Int32)
             {
-                _logger.LogError($"AddressValidationFilter: Client_Id must be a valid number. Value Received: {_address.Client_Id}");
+                _logger.LogInformation($"AddressValidationFilter: Client_Id must be a valid number. Value Received: {_address.Client_Id}");
                 context.Result = new BadRequestObjectResult("Client_Id must be a valid number");
                 return;
             }
@@ -58,7 +58,7 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
             //Validate StreetNumber
             if (String.IsNullOrEmpty(_address.StreetNumber))
             {
-                _logger.LogError($"AddressValidationFilter: Street and Number are mandatory. Value Received: {_address.StreetNumber}");
+                _logger.LogInformation($"AddressValidationFilter: Street and Number are mandatory. Value Received: {_address.StreetNumber}");
                 context.Result = new BadRequestObjectResult("Street and Number are mandatory");
                 return;
             }
@@ -66,7 +66,7 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
             //Validate City
             if (String.IsNullOrEmpty(_address.City))
             {
-                _logger.LogError($"AddressValidationFilter: City is mandatory. Value Received: {_address.City}");
+                _logger.LogInformation($"AddressValidationFilter: City is mandatory. Value Received: {_address.City}");
                 context.Result = new BadRequestObjectResult("City is mandatory");
                 return;
             }
@@ -74,7 +74,7 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
             //Validate StateProvince
             if (String.IsNullOrEmpty(_address.StateProvince))
             {
-                _logger.LogError($"AddressValidationFilter: State/Province is mandatory. Value Received: {_address.StateProvince}");
+                _logger.LogInformation($"AddressValidationFilter: State/Province is mandatory. Value Received: {_address.StateProvince}");
                 context.Result = new BadRequestObjectResult("State/Province is mandatory");
                 return;
             }
@@ -82,7 +82,7 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
             //Validate ZipCode
             if (String.IsNullOrEmpty(_address.ZipCode))
             {
-                _logger.LogError($"AddressValidationFilter: ZipCode is mandatory. Value Received: {_address.ZipCode}");
+                _logger.LogInformation($"AddressValidationFilter: ZipCode is mandatory. Value Received: {_address.ZipCode}");
                 context.Result = new BadRequestObjectResult("ZipCode is mandatory");
                 return;
             }
@@ -90,7 +90,7 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
             //Validate Country
             if (String.IsNullOrEmpty(_address.Country))
             {
-                _logger.LogError($"AddressValidationFilter: Country is mandatory. Value Received: {_address.Country}");
+                _logger.LogInformation($"AddressValidationFilter: Country is mandatory. Value Received: {_address.Country}");
                 context.Result = new BadRequestObjectResult("Country is mandatory");
                 return;
             }
@@ -98,7 +98,7 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
             //validate the ModelState
             if (!context.ModelState.IsValid)
             {
-                _logger.LogError($"AddressValidationFilter: ModelState is invalid");
+                _logger.LogInformation($"AddressValidationFilter: ModelState is invalid");
                 context.Result = new BadRequestObjectResult(context.ModelState);
                 return;
             }

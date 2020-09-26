@@ -25,7 +25,7 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
             //validate that the employee_id is not null/zero
             if (queryStringId == 0 || queryStringId == null)
             {
-                _logger.LogError($"EmployeeIdValidator: Employee_id is mandatory. Value Received: {queryStringId}");
+                _logger.LogInformation($"EmployeeIdValidator: Employee_id is mandatory. Value Received: {queryStringId}");
                 context.Result = new BadRequestObjectResult("Employee_id is mandatory");
                 return;
             }

@@ -26,7 +26,7 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
             //validate that Client is not null
             if (_client == null)
             {
-                _logger.LogError($"ClientValidationFilter: Client is mandatory. Value Received: {_client}");
+                _logger.LogInformation($"ClientValidationFilter: Client is mandatory. Value Received: {_client}");
                 context.Result = new BadRequestObjectResult("Client is mandatory");
                 return;
             }
@@ -35,7 +35,7 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
             var httpPostMethod = context.HttpContext.Request.Method;
             if (_client.Id == 0 && httpPostMethod != "POST")
             {
-                _logger.LogError($"ClientValidationFilter: Id is mandatory. Value Received: {_client.Id}");
+                _logger.LogInformation($"ClientValidationFilter: Id is mandatory. Value Received: {_client.Id}");
                 context.Result = new BadRequestObjectResult("Id is mandatory");
                 return;
             }
@@ -43,7 +43,7 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
             //Validate Name
             if (String.IsNullOrEmpty(_client.Name))
             {
-                _logger.LogError($"ClientValidationFilter: Name is mandatory. Value Received: {_client.Name}");
+                _logger.LogInformation($"ClientValidationFilter: Name is mandatory. Value Received: {_client.Name}");
                 context.Result = new BadRequestObjectResult("Name is mandatory");
                 return;
             }
@@ -51,7 +51,7 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
             //Validate Description
             if (String.IsNullOrEmpty(_client.Description))
             {
-                _logger.LogError($"ClientValidationFilter: Description is mandatory. Value Received: {_client.Description}");
+                _logger.LogInformation($"ClientValidationFilter: Description is mandatory. Value Received: {_client.Description}");
                 context.Result = new BadRequestObjectResult("Description is mandatory");
                 return;
             }
@@ -59,7 +59,7 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
             //Validate Website
             if (String.IsNullOrEmpty(_client.Website))
             {
-                _logger.LogError($"ClientValidationFilter: Website is mandatory. Value Received: {_client.Website}");
+                _logger.LogInformation($"ClientValidationFilter: Website is mandatory. Value Received: {_client.Website}");
                 context.Result = new BadRequestObjectResult("Website is mandatory");
                 return;
             }
@@ -67,7 +67,7 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
             //validate the ModelState
             if (!context.ModelState.IsValid)
             {
-                _logger.LogError($"ClientValidationFilter: ModelState is invalid");
+                _logger.LogInformation($"ClientValidationFilter: ModelState is invalid");
                 context.Result = new BadRequestObjectResult(context.ModelState);
                 return;
             }

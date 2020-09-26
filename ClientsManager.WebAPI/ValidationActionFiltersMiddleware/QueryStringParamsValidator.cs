@@ -28,7 +28,7 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
             //validate that pageNumber is not zero
             if (pageNumber == 0)
             {
-                _logger.LogError($"QueryStringParamsValidator: pageNumber is mandatory. Value received: {pageNumber}");
+                _logger.LogInformation($"QueryStringParamsValidator: pageNumber is mandatory. Value received: {pageNumber}");
                 context.Result = new BadRequestObjectResult("pageNumber is mandatory");
                 return;
             }
@@ -36,7 +36,7 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
             //validate that pageSize is not zero
             if (pageSize == 0)
             {
-                _logger.LogError($"QueryStringParamsValidator: pageSize is mandatory. Value received: {pageSize}");
+                _logger.LogInformation($"QueryStringParamsValidator: pageSize is mandatory. Value received: {pageSize}");
                 context.Result = new BadRequestObjectResult("pageSize is mandatory");
                 return;
             }
@@ -44,7 +44,7 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
             //validate the ModelState
             if (!context.ModelState.IsValid)
             {
-                _logger.LogError($"QueryStringParamsValidator: modelState is not valid");
+                _logger.LogInformation($"QueryStringParamsValidator: modelState is not valid");
                 context.Result = new BadRequestObjectResult(context.ModelState);
                 return;
             }

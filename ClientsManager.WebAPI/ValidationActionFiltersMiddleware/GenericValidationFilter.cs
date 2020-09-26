@@ -24,7 +24,7 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
 
             if (param.Value == null)
             {
-                _logger.LogError($"GenericValidationFilter: {param.Key} is null. Value received: {param.Value}");
+                _logger.LogInformation($"GenericValidationFilter: {param.Key} is null. Value received: {param.Value}");
                 context.Result = new BadRequestObjectResult($"{param.Key} is null");
                 return;
             }

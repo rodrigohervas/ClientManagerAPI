@@ -26,7 +26,7 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
             //validate that Contact is not null
             if (_contact == null)
             {
-                _logger.LogError($"ContactValidationFilter: Contact is mandatory. Value Received: {_contact}");
+                _logger.LogInformation($"ContactValidationFilter: Contact is mandatory. Value Received: {_contact}");
                 context.Result = new BadRequestObjectResult("Contact is mandatory");
                 return;
             }
@@ -35,7 +35,7 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
             var httpPostMethod = context.HttpContext.Request.Method;
             if (_contact.Id == 0 && httpPostMethod != "POST")
             {
-                _logger.LogError($"ContactValidationFilter: Id is mandatory. Value Received: {_contact.Id}");
+                _logger.LogInformation($"ContactValidationFilter: Id is mandatory. Value Received: {_contact.Id}");
                 context.Result = new BadRequestObjectResult("Id is mandatory");
                 return;
             }
@@ -43,14 +43,14 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
             //validate Client_id
             if (_contact.Client_Id == 0)
             {
-                _logger.LogError($"ContactValidationFilter: Client_Id is mandatory. Value Received: {_contact.Client_Id}");
+                _logger.LogInformation($"ContactValidationFilter: Client_Id is mandatory. Value Received: {_contact.Client_Id}");
                 context.Result = new BadRequestObjectResult("Client_Id is mandatory");
                 return;
             }
 
             if (_contact.Client_Id.GetTypeCode() != TypeCode.Int32)
             {
-                _logger.LogError($"ContactValidationFilter: Client_Id must be a valid number. Value Received: {_contact.Client_Id}");
+                _logger.LogInformation($"ContactValidationFilter: Client_Id must be a valid number. Value Received: {_contact.Client_Id}");
                 context.Result = new BadRequestObjectResult("Client_Id must be a valid number");
                 return;
             }
@@ -58,14 +58,14 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
             //validate Address_id
             if (_contact.Address_Id == 0)
             {
-                _logger.LogError($"ContactValidationFilter: Address_Id is mandatory. Value Received: {_contact.Address_Id}");
+                _logger.LogInformation($"ContactValidationFilter: Address_Id is mandatory. Value Received: {_contact.Address_Id}");
                 context.Result = new BadRequestObjectResult("Address_Id is mandatory");
                 return;
             }
 
             if (_contact.Address_Id.GetTypeCode() != TypeCode.Int32)
             {
-                _logger.LogError($"ContactValidationFilter: Address_Id must be a valid number. Value Received: {_contact.Address_Id}");
+                _logger.LogInformation($"ContactValidationFilter: Address_Id must be a valid number. Value Received: {_contact.Address_Id}");
                 context.Result = new BadRequestObjectResult("Address_Id must be a valid number");
                 return;
             }
@@ -73,7 +73,7 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
             //Validate Name
             if (String.IsNullOrEmpty(_contact.Name))
             {
-                _logger.LogError($"ContactValidationFilter: Name is mandatory. Value Received: {_contact.Name}");
+                _logger.LogInformation($"ContactValidationFilter: Name is mandatory. Value Received: {_contact.Name}");
                 context.Result = new BadRequestObjectResult("Name is mandatory");
                 return;
             }
@@ -81,7 +81,7 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
             //Validate Position
             if (String.IsNullOrEmpty(_contact.Position))
             {
-                _logger.LogError($"ContactValidationFilter: Position is mandatory. Value Received: {_contact.Position}");
+                _logger.LogInformation($"ContactValidationFilter: Position is mandatory. Value Received: {_contact.Position}");
                 context.Result = new BadRequestObjectResult("Position is mandatory");
                 return;
             }
@@ -89,7 +89,7 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
             //Validate Telephone
             if (String.IsNullOrEmpty(_contact.Telephone))
             {
-                _logger.LogError($"ContactValidationFilter: Telephone is mandatory. Value Received: {_contact.Telephone}");
+                _logger.LogInformation($"ContactValidationFilter: Telephone is mandatory. Value Received: {_contact.Telephone}");
                 context.Result = new BadRequestObjectResult("Telephone is mandatory");
                 return;
             }
@@ -97,14 +97,14 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
             //Validate Cellphone
             if (String.IsNullOrEmpty(_contact.Cellphone))
             {
-                _logger.LogError($"ContactValidationFilter: Cellphone is mandatory. Value Received: {_contact.Cellphone}");
+                _logger.LogInformation($"ContactValidationFilter: Cellphone is mandatory. Value Received: {_contact.Cellphone}");
                 context.Result = new BadRequestObjectResult("Cellphone is mandatory");
                 return;
             }
             //Validate Email
             if (String.IsNullOrEmpty(_contact.Email))
             {
-                _logger.LogError($"ContactValidationFilter: Email is mandatory. Value Received: {_contact.Email}");
+                _logger.LogInformation($"ContactValidationFilter: Email is mandatory. Value Received: {_contact.Email}");
                 context.Result = new BadRequestObjectResult("Email is mandatory");
                 return;
             }
@@ -112,7 +112,7 @@ namespace ClientsManager.WebAPI.ValidationActionFiltersMiddleware
             //validate the ModelState
             if (!context.ModelState.IsValid)
             {
-                _logger.LogError($"ContactValidationFilter: ModelState is Invalid");
+                _logger.LogInformation($"ContactValidationFilter: ModelState is Invalid");
                 context.Result = new BadRequestObjectResult(context.ModelState);
                 return;
             }
