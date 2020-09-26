@@ -7,6 +7,7 @@ using ClientsManager.Data;
 using ClientsManager.Models;
 using ClientsManager.WebAPI.DTOs;
 using ClientsManager.WebAPI.ValidationActionFiltersMiddleware;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -15,6 +16,7 @@ namespace ClientsManager.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class EmployeesController : ControllerBase
     {
         private readonly IGenericRepository<Employee> _genericRepository;
@@ -43,7 +45,16 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (!employees.Any())
             {
-                _logger.LogError($"EmployeesController.GetAllEmployeesAsync: No Employees were found for the pageNumber {parameters.pageNumber} and pageSize {parameters.pageSize}");
+                var logData = new
+                {
+                    Parameters = parameters,
+                    Action = ControllerContext.ActionDescriptor.DisplayName,
+                    Verb = HttpContext.Request.Method,
+                    EndpointPath = HttpContext.Request.Path.Value,
+                    User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
+                };
+                _logger.LogInformation("No Employees were found for Parameters {@parameters}. Data: {@logData}", parameters, logData);
+
                 return NotFound("No Employees were found");
             }
 
@@ -67,7 +78,16 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (employee is null)
             {
-                _logger.LogError($"EmployeesController.GetEmployeeByIdAsync: No data was found for the id {id}");
+                var logData = new
+                {
+                    Id = id,
+                    Action = ControllerContext.ActionDescriptor.DisplayName,
+                    Verb = HttpContext.Request.Method,
+                    EndpointPath = HttpContext.Request.Path.Value,
+                    User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
+                };
+                _logger.LogInformation("No Employee was found for Id {id}. Data: {@logData}", id, logData);
+
                 return NotFound("No data was found");
             }
 
@@ -90,7 +110,16 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (!employees.Any())
             {
-                _logger.LogError($"EmployeesController.GetEmployeesByTypeAsync: No Employees were found for the employeeType_id {employeeType_id}");
+                var logData = new
+                {
+                    EmployeeType_id = employeeType_id,
+                    Action = ControllerContext.ActionDescriptor.DisplayName,
+                    Verb = HttpContext.Request.Method,
+                    EndpointPath = HttpContext.Request.Path.Value,
+                    User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
+                };
+                _logger.LogInformation("No Employees were found for EmployeeType_id {employeeType_id}. Data: {@logData}", employeeType_id, logData);
+
                 return NotFound("No Employees were found");
             }
 
@@ -114,7 +143,16 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (addResult == 0)
             {
-                _logger.LogError($"EmployeesController.AddEmployeeAsync: No Employee was created for the employee {employee}");
+                var logData = new
+                {
+                    Employee = employee,
+                    Action = ControllerContext.ActionDescriptor.DisplayName,
+                    Verb = HttpContext.Request.Method,
+                    EndpointPath = HttpContext.Request.Path.Value,
+                    User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
+                };
+                _logger.LogInformation("No Employee was created for Employee {@employee}. Data: {@logData}", employee, logData);
+
                 return NotFound("No Employee was created");
             }
 
@@ -144,7 +182,17 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (employeeResult is null)
             {
-                _logger.LogError($"EmployeesController.UpdateEmployeeAsync: No Employee was updated for id {id} and employee {employee}");
+                var logData = new
+                {
+                    Id = id, 
+                    Employee = employee,
+                    Action = ControllerContext.ActionDescriptor.DisplayName,
+                    Verb = HttpContext.Request.Method,
+                    EndpointPath = HttpContext.Request.Path.Value,
+                    User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
+                };
+                _logger.LogInformation("No Employee was updated for id {id} and employee {@employee}. Data: {@logData}", id, employee, logData);
+                
                 return NotFound("No Employee was updated");
             }
 
@@ -169,6 +217,16 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (employee is null)
             {
+                var logData = new
+                {
+                    Id = id,
+                    Action = ControllerContext.ActionDescriptor.DisplayName,
+                    Verb = HttpContext.Request.Method,
+                    EndpointPath = HttpContext.Request.Path.Value,
+                    User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
+                };
+                _logger.LogInformation("No Employee was found for the provided id {id}. Data: {@logData}", id, logData);
+
                 _logger.LogError($"EmployeesController.DeleteEmployeeAsync: No Employee was found for the provided id {id}");
                 return NotFound("No Employee was found for the provided id");
             }
