@@ -53,9 +53,9 @@ namespace ClientsManager.WebAPI.Controllers
                     EndpointPath = HttpContext.Request.Path.Value,
                     User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
                 };
-                _logger.LogInformation("No Clients where found for Parameters {parameters}. Data: {@logData}", parameters, logData);
+                _logger.LogInformation("No Clients were found for Parameters {parameters}. Data: {@logData}", parameters, logData);
                 
-                return NotFound("No Clients where found");
+                return NotFound("No Clients were found");
                 
             }
 
@@ -89,7 +89,7 @@ namespace ClientsManager.WebAPI.Controllers
                     EndpointPath = HttpContext.Request.Path.Value, 
                     User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
                 };
-                _logger.LogInformation("No Clients where found for Id {id}. Data: {@logData}", id, logData);
+                _logger.LogInformation("No Clients were found for Id {id}. Data: {@logData}", id, logData);
 
                 return NotFound("No data was found");
             }

@@ -54,9 +54,9 @@ namespace ClientsManager.WebAPI.Controllers
                     EndpointPath = HttpContext.Request.Path.Value,
                     User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
                 };
-                _logger.LogInformation("No Contacts where found for Parameters {parameters}. Data: {@logData}", parameters, logData);
+                _logger.LogInformation("No Contacts were found for Parameters {parameters}. Data: {@logData}", parameters, logData);
 
-                return NotFound("No Contacts where found");
+                return NotFound("No Contacts were found");
             }
 
             IEnumerable<ContactDTO> contactsDTO = _mapper.Map<IEnumerable<ContactDTO>>(contacts);
@@ -87,9 +87,9 @@ namespace ClientsManager.WebAPI.Controllers
                     EndpointPath = HttpContext.Request.Path.Value,
                     User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
                 };
-                _logger.LogInformation("No Contacts where found for Client_Id {client_id}. Data: {@logData}", client_id, logData);
+                _logger.LogInformation("No Contacts were found for Client_Id {client_id}. Data: {@logData}", client_id, logData);
 
-                return NotFound("No contacts where found for the client");
+                return NotFound("No contacts were found for the client");
             }
 
             IEnumerable<ContactDTO> contactsDTO = _mapper.Map<IEnumerable<ContactDTO>>(contacts);

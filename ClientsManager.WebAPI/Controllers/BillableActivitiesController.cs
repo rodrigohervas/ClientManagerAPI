@@ -67,7 +67,7 @@ namespace ClientsManager.WebAPI.Controllers
                         EndpointPath = HttpContext.Request.Path.Value,
                         User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
                     };
-                    _logger.LogInformation("No BillableActivities where found for Parameters {parameters}. Data: {@logData}", parameters, logData);
+                    _logger.LogInformation("No BillableActivities were found for Parameters {parameters}. Data: {@logData}", parameters, logData);
                                         
                     return NotFound("No billable activities were found");
                 }
@@ -131,7 +131,7 @@ namespace ClientsManager.WebAPI.Controllers
                     EndpointPath = HttpContext.Request.Path.Value,
                     User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
                 };
-                _logger.LogInformation("No BillableActivities where found for the employee_id {employee_id}. Data: {@logData}", employee_id, logData);
+                _logger.LogInformation("No BillableActivities were found for the employee_id {employee_id}. Data: {@logData}", employee_id, logData);
 
                 return NotFound("No data was found for the employee");
             }
@@ -163,7 +163,7 @@ namespace ClientsManager.WebAPI.Controllers
                     EndpointPath = HttpContext.Request.Path.Value,
                     User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
                 };
-                _logger.LogInformation("No BillableActivities where found for the LegalCase with legalCase_id {legalCase_id}. Data: {@logData}", legalCase_id, logData);
+                _logger.LogInformation("No BillableActivities were found for the LegalCase with legalCase_id {legalCase_id}. Data: {@logData}", legalCase_id, logData);
                 
                 return NotFound("No data was found for the case");
             }
