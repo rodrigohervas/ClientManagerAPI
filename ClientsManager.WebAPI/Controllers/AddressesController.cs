@@ -53,7 +53,7 @@ namespace ClientsManager.WebAPI.Controllers
                     EndpointPath = HttpContext.Request.Path.Value,
                     User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
                 };
-                _logger.LogInformation("No Addresses where found for Parameters {parameters}. Data: {@logData}", parameters, logData);
+                _logger.LogInformation("No Addresses were found for Parameters {parameters}. Data: {@logData}", parameters, logData);
 
                 return NotFound("No Addresses where found");
             }
