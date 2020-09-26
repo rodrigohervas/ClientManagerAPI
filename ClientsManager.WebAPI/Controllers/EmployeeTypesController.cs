@@ -7,6 +7,7 @@ using ClientsManager.Data;
 using ClientsManager.Models;
 using ClientsManager.WebAPI.DTOs;
 using ClientsManager.WebAPI.ValidationActionFiltersMiddleware;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -14,6 +15,7 @@ namespace ClientsManager.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class EmployeeTypesController : ControllerBase
     {
         private readonly IGenericRepository<EmployeeType> _genericRepository;
@@ -40,7 +42,15 @@ namespace ClientsManager.WebAPI.Controllers
 
             if (!employeeTypeList.Any())
             {
-                _logger.LogError($"EmployeeTypesController.GetAllEmployeeTypesAsync: No EmployeeTypes were found");
+                var logData = new
+                {
+                    Action = ControllerContext.ActionDescriptor.DisplayName,
+                    Verb = HttpContext.Request.Method,
+                    EndpointPath = HttpContext.Request.Path.Value,
+                    User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
+                };
+                _logger.LogInformation("No EmployeeTypes were found. Data: {@logData}", logData);
+
                 return NotFound("No EmployeeTypes were found");
             }
 
@@ -57,13 +67,22 @@ namespace ClientsManager.WebAPI.Controllers
         // GET api/employeetypes/5
         [HttpGet("{id:int}")]
         [ServiceFilter(typeof(IdValidator))]
-        public async Task<ActionResult<EmployeeTypeDTO>> GetEmployeeTypeByIdAsync(int id)
+        public async Task<ActionResult<EmployeeTypeDTO>> GetEmployeeTypeByIdAsync([FromRoute] int id)
         {
             var employeeType = await _genericRepository.GetOneByAsync(et => et.Id == id);
 
             if (employeeType is null)
             {
-                _logger.LogError($"EmployeeTypesController.GetEmployeeTypeByIdAsync: No data was found for the id {id}");
+                var logData = new
+                {
+                    Id = id,
+                    Action = ControllerContext.ActionDescriptor.DisplayName,
+                    Verb = HttpContext.Request.Method,
+                    EndpointPath = HttpContext.Request.Path.Value,
+                    User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
+                };
+                _logger.LogInformation("No EmployeeTypes were found for the id {id}. Data: {@logData}", id, logData);
+
                 return NotFound("No data was found");
             }
 
@@ -80,13 +99,22 @@ namespace ClientsManager.WebAPI.Controllers
         // POST api/employeetypes
         [HttpPost]
         [ServiceFilter(typeof(EmployeeTypeValidationFilter))]
-        public async Task<ActionResult<EmployeeTypeDTO>> AddEmployeeType(EmployeeType employeeType)
+        public async Task<ActionResult<EmployeeTypeDTO>> AddEmployeeType([FromBody] EmployeeType employeeType)
         {
             var addResult = await _genericRepository.AddTAsync(employeeType);
 
             if (addResult == 0)
             {
-                _logger.LogError($"EmployeeTypesController.AddEmployeeType: No EmployeeType was created for employeeType {employeeType}");
+                var logData = new
+                {
+                    EmployeeType = employeeType,
+                    Action = ControllerContext.ActionDescriptor.DisplayName,
+                    Verb = HttpContext.Request.Method,
+                    EndpointPath = HttpContext.Request.Path.Value,
+                    User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
+                };
+                _logger.LogInformation("No EmployeeType was created for the employeeType {@employeeType}. Data: {@logData}", employeeType, logData);
+                
                 return NotFound("No EmployeeType was created");
             }
 
@@ -107,14 +135,24 @@ namespace ClientsManager.WebAPI.Controllers
         [HttpPut("{id:int}")]
         [HttpPatch("{id:int}")]
         [ServiceFilter(typeof(EmployeeTypeValidationFilter))]
-        public async Task<ActionResult<EmployeeTypeDTO>> UpdateEmployeeType(EmployeeType employeeType)
+        public async Task<ActionResult<EmployeeTypeDTO>> UpdateEmployeeType([FromRoute] int id, [FromBody] EmployeeType employeeType)
         {
             var employeeTypeResult = await _genericRepository.GetOneByAsync(et => et.Description == employeeType.Description &&
                                                                           et.Id == employeeType.Id);
 
             if (employeeTypeResult is null)
             {
-                _logger.LogError($"EmployeeTypesController.UpdateEmployeeType: No EmployeeType was updated for employeeType {employeeType}");
+                var logData = new
+                {
+                    Id = id, 
+                    EmployeeType = employeeType,
+                    Action = ControllerContext.ActionDescriptor.DisplayName,
+                    Verb = HttpContext.Request.Method,
+                    EndpointPath = HttpContext.Request.Path.Value,
+                    User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
+                };
+                _logger.LogInformation("No EmployeeType was updated for the Id {id} and employeeType {@employeeType}. Data: {@logData}", id, employeeType, logData);
+                
                 return NotFound("No EmployeeType was updated");
             }
             
@@ -134,12 +172,21 @@ namespace ClientsManager.WebAPI.Controllers
         // DELETE api/employeetypes/5
         [HttpDelete("{id:int}")]
         [ServiceFilter(typeof(IdValidator))]
-        public async Task<ActionResult<int>> DeleteEmployeeType(int id)
+        public async Task<ActionResult<int>> DeleteEmployeeType([FromRoute] int id)
         {
             var employeeType = await _genericRepository.GetOneByAsync(et => et.Id == id);
 
             if (employeeType is null)
             {
+                var logData = new
+                {
+                    Id = id,
+                    Action = ControllerContext.ActionDescriptor.DisplayName,
+                    Verb = HttpContext.Request.Method,
+                    EndpointPath = HttpContext.Request.Path.Value,
+                    User = HttpContext.User.Claims.First(usr => usr.Type == "preferred_username").Value
+                };
+                _logger.LogInformation("No EmployeeType was found for the Id {id}. Data: {@logData}", id, logData);
                 _logger.LogError($"EmployeeTypesController.DeleteEmployeeType: No EmployeeType was found for the provided id {id}");
                 return NotFound("No EmployeeType was found for the provided id");
             }
