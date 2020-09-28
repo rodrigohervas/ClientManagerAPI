@@ -17,6 +17,7 @@ namespace ClientsManager.WebAPI.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
+    [Produces("application/json")]
     public class ClientsController : ControllerBase
     {
         private readonly IGenericRepository<Client> _genericRepository;
