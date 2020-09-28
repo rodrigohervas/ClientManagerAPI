@@ -127,7 +127,7 @@ namespace ClientsManager.WebAPI.Controllers
         [ServiceFilter(typeof(EmployeeIdValidator))]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<IEnumerable<BillableActivityDTO>>> GetBillableActivitiesByEmployeeIdAsync(int employee_id)
+        public async Task<ActionResult<IEnumerable<BillableActivityDTO>>> GetBillableActivitiesByEmployeeIdAsync([FromRoute] int employee_id)
         {
             var billableActivities = await _genericRepository.GetByAsync(ba => ba.Employee_Id == employee_id);
 
@@ -162,7 +162,7 @@ namespace ClientsManager.WebAPI.Controllers
         [ServiceFilter(typeof(LegalCaseIdValidator))]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<IEnumerable<BillableActivityDTO>>> GetBillableActivitiesByLegalCaseIdAsync(int legalCase_id)
+        public async Task<ActionResult<IEnumerable<BillableActivityDTO>>> GetBillableActivitiesByLegalCaseIdAsync([FromRoute] int legalCase_id)
         {
             var billableActivities = await _genericRepository.GetByAsync(ba => ba.LegalCase_Id == legalCase_id);
 
@@ -197,7 +197,7 @@ namespace ClientsManager.WebAPI.Controllers
         [ServiceFilter(typeof(IdValidator))]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<BillableActivityDTO>> GetBillableActivityByIdAsync(int id)
+        public async Task<ActionResult<BillableActivityDTO>> GetBillableActivityByIdAsync([FromRoute] int id)
         {
             var billableActivity = await _genericRepository.GetOneByAsync(ba => ba.Id == id);
 
@@ -230,7 +230,7 @@ namespace ClientsManager.WebAPI.Controllers
         [ServiceFilter(typeof(BillableActivityValidationFilter))]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<BillableActivityDTO>> AddBillableActivityAsync(BillableActivity billableActivity)
+        public async Task<ActionResult<BillableActivityDTO>> AddBillableActivityAsync([FromBody] BillableActivity billableActivity)
         {
             int created = await _genericRepository.AddTAsync(billableActivity);
 
@@ -262,7 +262,7 @@ namespace ClientsManager.WebAPI.Controllers
         /// <summary>
         /// Async Updates an existing BillableActivity
         /// </summary>
-        /// <param name>int - The BillableActivity id</param>
+        /// <param name="id">int - The BillableActivity id</param>
         /// <param name="billableActivity">A BillableActivity object</param>
         /// <returns>Task&lt;ActionResult&lt;BillableActivity&gt;&gt; - The updated BillableActivity</returns>
         /// <![CDATA[ <returns>Task<ActionResult<BillableActivity>> - The updated BillableActivity</returns> ]]>
@@ -271,7 +271,7 @@ namespace ClientsManager.WebAPI.Controllers
         [ServiceFilter(typeof(BillableActivityValidationFilter))]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<BillableActivityDTO>> UpdateBillableActivityAsync(int id, BillableActivity billableActivity)
+        public async Task<ActionResult<BillableActivityDTO>> UpdateBillableActivityAsync([FromRoute] int id, [FromBody] BillableActivity billableActivity)
         {
             var billableActivityResult = await _genericRepository.GetOneByAsync(ba => ba.Id == billableActivity.Id);
 
@@ -308,7 +308,7 @@ namespace ClientsManager.WebAPI.Controllers
         [ServiceFilter(typeof(IdValidator))]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<int>> DeleteBillableActivityAsync(int id)
+        public async Task<ActionResult<int>> DeleteBillableActivityAsync([FromRoute] int id)
         {
             BillableActivity billableActivity = await _genericRepository.GetOneByAsync(tf => tf.Id == id);
 
