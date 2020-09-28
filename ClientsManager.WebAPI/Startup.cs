@@ -2,6 +2,7 @@ using AutoMapper;
 using ClientsManager.Data;
 using ClientsManager.WebAPI.Authentication;
 using ClientsManager.WebAPI.ErrorHandlingMiddleware;
+using ClientsManager.WebAPI.SwaggerMiddleware;
 using ClientsManager.WebAPI.ValidationActionFiltersMiddleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -81,16 +82,8 @@ namespace ClientsManager.WebAPI
             //Configure Azure AD JWT Bearer Token authentication
             services.AddAzureADAuthentication(_configuration);
 
-            //Register Swagger Documentation
-            services.AddSwaggerGen(swg =>
-            {
-                swg.SwaggerDoc(_configuration["Swagger:ApiVersion"],
-                                new OpenApiInfo
-                                {
-                                    Title = _configuration["Swagger:ApiTitle"],
-                                    Version = _configuration["Swagger:ApiVersion"]
-                                });
-            });
+            //Register Swagger Documentation Service
+            services.AddSwaggerGenExtension(_configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

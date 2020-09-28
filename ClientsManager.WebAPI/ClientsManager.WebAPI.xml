@@ -1,0 +1,495 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ClientsManager.WebAPI</name>
+    </assembly>
+    <members>
+        <member name="M:ClientsManager.WebAPI.Authentication.AddAuthenticationExtensions.AddAzureADAuthentication(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Configures JWT Bearer authentication for Azure Active Directory authentication scheme
+            </summary>
+            <param name="services">IServiceCollection services collection object</param>
+            <param name="configuration">IConfiguration object</param>
+            <returns> IServiceCollection services collection object</returns>
+        </member>
+        <member name="M:ClientsManager.WebAPI.Authentication.AddAuthenticationExtensions.AddJWTokenAuthentication(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Configures JWT Bearer authentication for Default JWT Bearer authentication scheme
+            </summary>
+            <param name="services">IServiceCollection services collection object</param>
+            <param name="configuration">IConfiguration object</param>
+            <returns> IServiceCollection services collection object</returns>
+        </member>
+        <member name="T:ClientsManager.WebAPI.AutoMapperProfiles.AutoMapperProfiles">
+            <summary>
+            Class for Automapper DI configuration
+            </summary>
+        </member>
+        <member name="M:ClientsManager.WebAPI.AutoMapperProfiles.AutoMapperProfiles.#ctor">
+            <summary>
+            Method to hold Automapper DI mappings
+            </summary>
+        </member>
+        <member name="M:ClientsManager.WebAPI.Controllers.AddressesController.GetAllAddressesAsync(ClientsManager.Models.QueryStringParameters)">
+            <summary>
+            Gets all Addresses for the paging parameters
+            </summary>
+            <param name="parameters">Paging parameters</param>
+            <returns>Task&lt;ActionResult&lt;IEnumerable&lt;Address&gt;&gt;&gt; - A collection of Address objects</returns>
+            <![CDATA[ <returns>Task<ActionResult<IEnumerable<Address>>> - A collection of Address objects</returns> ]]>
+        </member>
+        <member name="M:ClientsManager.WebAPI.Controllers.AddressesController.GetAddressesByClientIdAsync(System.Int32)">
+            <summary>
+            Gets all Addresses for a provided Client Id
+            </summary>
+            <param name="client_id">int - The Client_Id of the Address objects</param>
+            <returns>Task&lt;ActionResult&lt;IEnumerable&lt;AddressDTO&gt;&gt;&gt; - A list of Address objects</returns>
+            <![CDATA[ <returns>Task<ActionResult<IEnumerable<AddressDTO>>> - A list of Address objects</returns> ]]>
+        </member>
+        <member name="M:ClientsManager.WebAPI.Controllers.AddressesController.GetAddressByIdAsync(System.Int32)">
+            <summary>
+            Gets the Address for the provided Id
+            </summary>
+            <param name="id">int - the Address Id</param>
+            <returns>Task&lt;ActionResult&lt;AddressDTO&gt;&gt; - an Address object</returns>
+            <![CDATA[ <returns>Task<ActionResult<AddressDTO>> - an Address object</returns> ]]>
+        </member>
+        <member name="M:ClientsManager.WebAPI.Controllers.AddressesController.GetAddressByIdWithContactsAsync(System.Int32)">
+            <summary>
+            Gets an Address for the provided Id, including its related Contact objects
+            </summary>
+            <param name="id">int - The Address Id</param>
+            <returns>Task&lt;ActionResult&lt;AddressWithContactsDTO&gt;&gt; - A Contact object with its related Address object</returns>
+            <![CDATA[ <returns>Task<ActionResult<AddressWithContactsDTO>> - A Contact object with its related Address object</returns> ]]>
+        </member>
+        <member name="M:ClientsManager.WebAPI.Controllers.AddressesController.AddAddressAsync(ClientsManager.Models.Address)">
+            <summary>
+            Creates an Address
+            </summary>
+            <param name="address">Address - The Address object to create</param>
+            <returns>Task&lt;ActionResult&lt;AddressDTO&gt;&gt; - The Address created</returns>
+            <![CDATA[ <returns>Task<ActionResult<AddressDTO>> - The Address created</returns> ]]>
+        </member>
+        <member name="M:ClientsManager.WebAPI.Controllers.AddressesController.UpdateAddressAsync(System.Int32,ClientsManager.Models.Address)">
+            <summary>
+            Updates an Address for a provided Id
+            </summary>
+            <param name="id">int - the Address Id</param>
+            <param name="address">Address - The Address object to modify</param>
+            <returns>Task&lt;ActionResult&lt;AddressDTO&gt;&gt; - The Address object updated</returns>
+            <![CDATA[ <returns>Task<ActionResult<AddressDTO>> - The Address object updated</returns> ]]>
+        </member>
+        <member name="M:ClientsManager.WebAPI.Controllers.AddressesController.DeleteAddressAsync(System.Int32)">
+            <summary>
+            Deletes an Address object for a provided Id
+            </summary>
+            <param name="id">int id - the Address id</param>
+            <returns>Task&lt;ActionResult&lt;int&gt;&gt; - The number of Address objects deleted</returns>
+            <![CDATA[ <returns>Task<ActionResult<int>> - The number of Address objects deleted</returns> ]]>
+        </member>
+        <member name="T:ClientsManager.WebAPI.Controllers.BillableActivitiesController">
+            <summary>
+            BillableActivities controller class
+            </summary>
+        </member>
+        <member name="F:ClientsManager.WebAPI.Controllers.BillableActivitiesController._genericRepository">
+            <summary>
+            <!--IGenericRepository<BillableActivity> for DI -->
+            </summary>
+        </member>
+        <member name="M:ClientsManager.WebAPI.Controllers.BillableActivitiesController.#ctor(ClientsManager.Data.IGenericRepository{ClientsManager.Models.BillableActivity},AutoMapper.IMapper,Microsoft.Extensions.Logging.ILogger{ClientsManager.WebAPI.Controllers.BillableActivitiesController})">
+            <summary>
+            DI constructor injection of Respository
+            </summary>
+            <param name="genericRepository"> GenericRepository object</param>
+            <param name="mapper">AutoMapper Imapper object</param>
+        </member>
+        <member name="M:ClientsManager.WebAPI.Controllers.BillableActivitiesController.GetAllBillableActivitiesAsync(ClientsManager.Models.QueryStringParameters)">
+            <summary>
+            Async returns a list of all the available BillableActivities for the paging parameters
+            </summary>
+            <param name="parameters">Paging parameters</param>
+            <returns>Task&lt;ActionResult&lt;IEnumerable&lt;BillableActivity&gt;&gt;&gt; - A list of BillableActivities</returns>
+            <![CDATA[ <returns>Task<ActionResult<IEnumerable<BillableActivity>>> - A list of BillableActivities</returns> ]]>
+        </member>
+        <member name="M:ClientsManager.WebAPI.Controllers.BillableActivitiesController.CountBillableActivities">
+            <summary>
+            Async returns the number of billable activities in the DB
+            </summary>
+            <returns>Task&lt;ActionResult&lt;int&gt;&gt; - The total number of BillableActivities</returns>
+            <![CDATA[ <returns>Task<ActionResult<int>> - The total number of BillableActivities</returns> ]]>
+        </member>
+        <member name="M:ClientsManager.WebAPI.Controllers.BillableActivitiesController.GetBillableActivitiesByEmployeeIdAsync(System.Int32)">
+            <summary>
+            Async returns a list of BillableActivities for a provided employee_id
+            </summary>
+            <param name="employee_id">Integer - BillableActivity employee_id identifier in DB</param>
+            <returns>Task&lt;ActionResult&lt;IEnumerable&lt;BillableActivity&gt;&gt;&gt; - A list of BillableActivities</returns>
+            <![CDATA[ <returns>Task<ActionResult<IEnumerable<BillableActivity>>> - A list of BillableActivities</returns> ]]>
+        </member>
+        <member name="M:ClientsManager.WebAPI.Controllers.BillableActivitiesController.GetBillableActivitiesByLegalCaseIdAsync(System.Int32)">
+            <summary>
+            Async returns a list of BillableActivities for a provided case_id
+            </summary>
+            <param name="legalCase_id">Integer - BillableActivity case_id identifier in DB</param>
+            <returns>Task&lt;ActionResult&lt;IEnumerable&lt;BillableActivity&gt;&gt;&gt; - A list of BillableActivities</returns>
+            <![CDATA[ <returns>Task<ActionResult<IEnumerable<BillableActivity>>> - A list of BillableActivities</returns> ]]>
+        </member>
+        <member name="M:ClientsManager.WebAPI.Controllers.BillableActivitiesController.GetBillableActivityByIdAsync(System.Int32)">
+            <summary>
+            Async returns a BillableActivity for a provided id
+            </summary>
+            <param name="id">Integer - BillableActivity id identifier in DB</param>
+            <returns>Task&lt;ActionResult&lt;BillableActivity&gt;&gt; - A BillableActivity corresponding to the BillableActivity id</returns>
+            <![CDATA[ <returns>Task<ActionResult<BillableActivity>> - A BillableActivity corresponding to the BillableActivity id</returns> ]]>
+        </member>
+        <member name="M:ClientsManager.WebAPI.Controllers.BillableActivitiesController.AddBillableActivityAsync(ClientsManager.Models.BillableActivity)">
+            <summary>
+            Async Creates a BillableActivity
+            </summary>
+            <param name="billableActivity">BillableActivity - A BillableActivity object</param>
+            <returns>Task&lt;ActionResult&lt;BillableActivity&gt;&gt; - The BillableActivity created</returns>
+            <![CDATA[ <returns>Task<ActionResult<BillableActivity>> - The BillableActivity created</returns> ]]>
+        </member>
+        <member name="M:ClientsManager.WebAPI.Controllers.BillableActivitiesController.UpdateBillableActivityAsync(System.Int32,ClientsManager.Models.BillableActivity)">
+            <summary>
+            Async Updates an existing BillableActivity
+            </summary>
+            <param name="id">int - The BillableActivity id</param>
+            <param name="billableActivity">A BillableActivity object</param>
+            <returns>Task&lt;ActionResult&lt;BillableActivity&gt;&gt; - The updated BillableActivity</returns>
+            <![CDATA[ <returns>Task<ActionResult<BillableActivity>> - The updated BillableActivity</returns> ]]>
+        </member>
+        <member name="M:ClientsManager.WebAPI.Controllers.BillableActivitiesController.DeleteBillableActivityAsync(System.Int32)">
+            <summary>
+            Async Deletes an existing BillableActivity
+            </summary>
+            <param name="id">int - The BillableActivity Id</param>
+            <returns>Task&lt;ActionResult&lt;int&gt;&gt; - The number of BillableActivities deleted</returns>
+            <![CDATA[ <returns>Task<ActionResult<int>> - The number of BillableActivities deleted</returns> ]]>
+        </member>
+        <member name="M:ClientsManager.WebAPI.Controllers.ClientsController.GetAllClientsAsync(ClientsManager.Models.QueryStringParameters)">
+            <summary>
+            Gets all Clients for the paging parameters
+            </summary>
+            <param name="parameters">Paging parameters</param>
+            <returns>Task&lt;ActionResult&lt;IEnumerable&lt;ClientDTO&gt;&gt;&gt; - A collection of Client objects</returns>
+            <![CDATA[ <returns>Task<ActionResult<IEnumerable<ClientDTO>>> - A collection of Client objects</returns> ]]>
+        </member>
+        <member name="M:ClientsManager.WebAPI.Controllers.ClientsController.GetClientByIdAsync(System.Int32)">
+            <summary>
+            Gets the Client for the provided Id
+            </summary>
+            <param name="id">int - the Client Id</param>
+            <returns>Task&lt;ActionResult&lt;ClientDTO&gt;&gt; - a Client object</returns>
+            <![CDATA[ <returns>Task<ActionResult<ClientDTO>> - a Client object</returns> ]]>
+        </member>
+        <member name="M:ClientsManager.WebAPI.Controllers.ClientsController.GetClientByIdWithLegalCasesAsync(System.Int32)">
+            <summary>
+            Gets a Client for the provided Id, including its related LegalCase objects
+            </summary>
+            <param name="id">int - The Client Id</param>
+            <returns>Task&lt;ActionResult&lt;ClientWithLegalCasesDTO&gt;&gt; - A Client object with its related LegalCase objects </returns>
+            <![CDATA[ <returns><Task<ActionResult<ClientWithLegalCasesDTO>> - A Client object with its related LegalCase objects--></returns> ]]>
+        </member>
+        <member name="M:ClientsManager.WebAPI.Controllers.ClientsController.GetClientByIdWithAddressesAsync(System.Int32)">
+            <summary>
+            Gets a Client for the provided Id, including its related Address objects
+            </summary>
+            <param name="id">int - The Client Id</param>
+            <returns>Task&lt;ActionResult&lt;ClientWithAddressesDTO&gt;&gt; - A Client object with its related Address objects</returns>
+            <![CDATA[ <returns>Task<ActionResult<ClientWithAddressesDTO>> - A Client object with its related Address objects</returns> ]]>
+        </member>
+        <member name="M:ClientsManager.WebAPI.Controllers.ClientsController.GetClientByIdWithContactsAsync(System.Int32)">
+            <summary>
+            Gets a Client for the provided Id, including its related Contact objects
+            </summary>
+            <param name="id">int - The Client Id</param>
+            <returns>Task&lt;ActionResult&lt;ClientWithContactsDTO&gt;&gt; - A Client object with its related Contact objects</returns>
+            <![CDATA[ <returns>Task<ActionResult<ClientWithContactsDTO>> - A Client object with its related Contact objects</returns> ]]>
+        </member>
+        <member name="M:ClientsManager.WebAPI.Controllers.ClientsController.AddClientAsync(ClientsManager.Models.Client)">
+            <summary>
+            Creates a Client
+            </summary>
+            <param name="client">Client - The Client object to create</param>
+            <returns>Task&lt;ActionResult&lt;ClientDTO&gt;&gt; - The Client created--></returns>
+            <![CDATA[ <returns>Task<ActionResult<ClientDTO>> - The Client created</returns> ]]>
+        </member>
+        <member name="M:ClientsManager.WebAPI.Controllers.ClientsController.UpdateClientAsync(System.Int32,ClientsManager.Models.Client)">
+            <summary>
+            Updates a Client for a provided Id
+            </summary>
+            <param name="id">int - the Client Id</param>
+            <param name="client">Client - The Client object to modify</param>
+            <returns>Task&lt;ActionResult&lt;ClientDTO&gt;&gt; - The Client object updated</returns>
+            <![CDATA[ <returns>Task<ActionResult<ClientDTO>> - The Client object updated</returns> ]]>
+        </member>
+        <member name="M:ClientsManager.WebAPI.Controllers.ClientsController.DeleteClientAsync(System.Int32)">
+            <summary>
+            Deletes a Client object for a provided Id
+            </summary>
+            <param name="id">int id - the Client id</param>
+            <returns>Task&lt;ActionResult&lt;int&gt;&gt; - The number of Client objects deleted--></returns>
+            <![CDATA[ <returns><!--Task<ActionResult<int>> - The number of Client objects deleted</returns> ]]>
+        </member>
+        <member name="M:ClientsManager.WebAPI.Controllers.ContactsController.GetAllContactsAsync(ClientsManager.Models.QueryStringParameters)">
+            <summary>
+            Gets all Contacts for the paging parameters
+            </summary>
+            <param name="parameters">Paging parameters</param>
+            <returns>Task&lt;ActionResult&lt;IEnumerable&lt;Contact&gt;&gt;&gt; - A collection of Contact objects</returns>
+            <![CDATA[<returns>Task<ActionResult<IEnumerable<Contact>>> - A collection of Contact objects</returns>]]>
+        </member>
+        <member name="M:ClientsManager.WebAPI.Controllers.ContactsController.GetContactsByClientIdAsync(System.Int32)">
+            <summary>
+            Gets all Contacts for a provided Client Id
+            </summary>
+            <param name="client_id">int - The Client_Id of the Contact objects</param>
+            <returns>Task&lt;ActionResult&lt;IEnumerable&lt;ContactDTO&gt;&gt;&gt; - A list of Contact objects</returns>
+            <![CDATA[ <returns>Task<ActionResult<IEnumerable<ContactDTO>>> - A list of Contact objects</returns> ]]>
+        </member>
+        <member name="M:ClientsManager.WebAPI.Controllers.ContactsController.GetContactByIdAsync(System.Int32)">
+            <summary>
+            Gets the Contact for the provided Id
+            </summary>
+            <param name="id">int - the Contact Id</param>
+            <returns>Task&lt;ActionResult&lt;ContactDTO&gt;&gt; - a Contact object</returns>
+            <![CDATA[ <returns>Task<ActionResult<ContactDTO>> - a Contact object</returns> ]]>
+        </member>
+        <member name="M:ClientsManager.WebAPI.Controllers.ContactsController.GetContactByIdWithDetailsAsync(System.Int32)">
+            <summary>
+            Gets a Contact for the provided Id, including its related Address object
+            </summary>
+            <param name="id">int - The Contact Id</param>
+            <returns>Task&lt;ActionResult&lt;ContactWithAddressDTO&gt;&gt; - A Contact object with its related Address object</returns>
+            <![CDATA[ <returns>Task<ActionResult<ContactWithAddressDTO>> - A Contact object with its related Address object</returns> ]]>
+        </member>
+        <member name="M:ClientsManager.WebAPI.Controllers.ContactsController.AddContactAsync(ClientsManager.Models.Contact)">
+            <summary>
+            Creates a Contact
+            </summary>
+            <param name="contact">Contact - The Contact object to create</param>
+            <returns>Task&lt;ActionResult&lt;ContactDTO&gt;&gt; - The Contact created</returns>
+            <![CDATA[ <returns>Task<ActionResult<ContactDTO>> - The Contact created</returns> ]]>
+        </member>
+        <member name="M:ClientsManager.WebAPI.Controllers.ContactsController.UpdateContactAsync(System.Int32,ClientsManager.Models.Contact)">
+            <summary>
+            Updates a Contact for a provided Id
+            </summary>
+            <param name="id">int - the Contact Id</param>
+            <param name="contact">Contact - The Contact object to modify</param>
+            <returns>Task&lt;ActionResult&lt;ContactDTO&gt;&gt; - The Contact object updated</returns>
+            <![CDATA[ <returns>Task<ActionResult<ContactDTO>> - The Contact object updated</returns> ]]>
+        </member>
+        <member name="M:ClientsManager.WebAPI.Controllers.ContactsController.DeleteContactAsync(System.Int32)">
+            <summary>
+            Deletes a Contact object for a provided Id
+            </summary>
+            <param name="id">int id - the Contact id</param>
+            <returns>Task&lt;ActionResult&lt;int&gt;&gt; - The number of Contact objects deleted</returns>
+            <![CDATA[ <returns>Task<ActionResult<int>> - The number of Contact objects deleted</returns> ]]>
+        </member>
+        <member name="M:ClientsManager.WebAPI.Controllers.EmployeesController.GetAllEmployeesAsync(ClientsManager.Models.QueryStringParameters)">
+            <summary>
+            Get all Employees for the paging parameters
+            </summary>
+            <param name="parameters">Paging parameters</param>
+            <returns>Task&lt;ActionResult&lt;IEnumerable&lt;EmployeeDTO&gt;&gt;&gt; - A list of all the Employees</returns>
+            <![CDATA[ <returns>Task<ActionResult<IEnumerable<EmployeeDTO>>> - A list of all the Employees</returns> ]]>
+        </member>
+        <member name="M:ClientsManager.WebAPI.Controllers.EmployeesController.GetEmployeeByIdAsync(System.Int32)">
+            <summary>
+            Gets an Employee for a provided id
+            </summary>
+            <param name="id">int - the Employee id</param>
+            <returns>Task&lt;ActionResult&lt;EmployeeDTO&gt;&gt; -  An Employee object</returns>
+            <![CDATA[ <returns>Task<ActionResult<EmployeeDTO>> -  An Employee object</returns> ]]>
+        </member>
+        <member name="M:ClientsManager.WebAPI.Controllers.EmployeesController.GetEmployeesByTypeAsync(System.Int32)">
+            <summary>
+            Gets a list of Employees for a provided employee type
+            </summary>
+            <param name="employeeType_id">int - The EmployeeType id</param>
+            <returns>Task&lt;ActionResult&lt;IEnumerable&lt;EmployeeDTO&gt;&gt;&gt; - A List of Employees</returns>
+            <![CDATA[ <returns>Task<ActionResult<IEnumerable<EmployeeDTO>>> - A List of Employees</returns> ]]>
+        </member>
+        <member name="M:ClientsManager.WebAPI.Controllers.EmployeesController.AddEmployeeAsync(ClientsManager.Models.Employee)">
+            <summary>
+            Creates an Employee
+            </summary>
+            <param name="employee"> Employee - An Employee object</param>
+            <returns>Task&lt;ActionResult&lt;EmployeeDTO&gt;&gt; - The created Employee</returns>
+            <![CDATA[ <returns>Task<ActionResult<EmployeeDTO>> - The created Employee</returns> ]]>
+        </member>
+        <member name="M:ClientsManager.WebAPI.Controllers.EmployeesController.UpdateEmployeeAsync(System.Int32,ClientsManager.Models.Employee)">
+            <summary>
+            Updates an existing Employee
+            </summary>
+            <param name="id"> int - the Employee id</param>
+            <param name="employee"> Employee - An Employee object</param>
+            <returns>Task&lt;ActionResult&lt;EmployeeDTO&gt;&gt; - The updated Employee</returns>
+            <![CDATA[ <returns>Task<ActionResult<EmployeeDTO>> - The updated Employee</returns> ]]>
+        </member>
+        <member name="M:ClientsManager.WebAPI.Controllers.EmployeesController.DeleteEmployeeAsync(System.Int32)">
+            <summary>
+            Deletes an existing Employee
+            </summary>
+            <param name="employee"> int - The Employee id</param>
+            <returns>Task&lt;ActionResult&lt;int&gt;&gt; - The number of Employees deleted</returns>
+            <![CDATA[ <returns>Task<ActionResult<int>> - The number of Employees deleted</returns> ]]>
+        </member>
+        <member name="M:ClientsManager.WebAPI.Controllers.EmployeeTypesController.GetAllEmployeeTypesAsync">
+            <summary>
+            Gets all EmployeeTypes
+            </summary>
+            <returns>Task&lt;ActionResult&lt;IEnumerable&lt;EmployeeTypeDTO&gt;&gt;&gt; - A list of all the EmployeeTypes</returns>
+            <![CDATA[ <returns>Task<ActionResult<IEnumerable<EmployeeTypeDTO>>> - A list of all the EmployeeTypes</returns> ]]>
+        </member>
+        <member name="M:ClientsManager.WebAPI.Controllers.EmployeeTypesController.GetEmployeeTypeByIdAsync(System.Int32)">
+            <summary>
+            Gets an EmployeeType for a provided id
+            </summary>
+            <param name="id"></param>
+            <returns>Task&lt;ActionResult&lt;EmployeeTypeDTO&gt;&gt; - An EmployeeType</returns>
+            <![CDATA[ <returns>Task<ActionResult<EmployeeTypeDTO>> - An EmployeeType</returns> ]]>
+        </member>
+        <member name="M:ClientsManager.WebAPI.Controllers.EmployeeTypesController.AddEmployeeType(ClientsManager.Models.EmployeeType)">
+            <summary>
+            Creates an EmployeeType
+            </summary>
+            <param name="employeeType"> The EmployeeType object to create</param>
+            <returns>Task&lt;ActionResult&lt;EmployeeTypeDTO&gt;&gt; - The created EmployeeType</returns>
+            <![CDATA[ <returns>Task<ActionResult<EmployeeTypeDTO>> - The created EmployeeType</returns> ]]>
+        </member>
+        <member name="M:ClientsManager.WebAPI.Controllers.EmployeeTypesController.UpdateEmployeeType(System.Int32,ClientsManager.Models.EmployeeType)">
+            <summary>
+            Updates an existing EmployeeType
+            </summary>
+            <param name="employeeType">The EmployeeType object to update</param>
+            <returns>Task&lt;ActionResult&lt;EmployeeTypeDTO&gt;&gt; - The updated EmployeeType</returns>
+            <![CDATA[ <returns>Task<ActionResult<EmployeeTypeDTO>> - The updated EmployeeType</returns> ]]>
+        </member>
+        <member name="M:ClientsManager.WebAPI.Controllers.EmployeeTypesController.DeleteEmployeeType(System.Int32)">
+            <summary>
+            Deletes an existing EmployeeType
+            </summary>
+            <param name="id">The if of the EmployeeType object to delete</param>
+            <returns>Task&lt;ActionResult&lt;int&gt;&gt; - The number of EmployeeTypes deleted</returns>
+            <![CDATA[ <returns>Task<ActionResult<int>> - The number of EmployeeTypes deleted</returns> ]]>
+        </member>
+        <member name="M:ClientsManager.WebAPI.Controllers.ErrorController.Error">
+            <summary>
+            Error method to catch exceptions and send a response with the exception details
+            </summary>
+            <returns>IActionResult: a ProblemDetails response with the exception information </returns>
+        </member>
+        <member name="M:ClientsManager.WebAPI.Controllers.LegalCasesController.GetAllLegalCasesAsync(ClientsManager.Models.QueryStringParameters)">
+            <summary>
+            Gets all LegalCases for the paging parameters
+            </summary>
+            <param name="parameters">Paging parameters</param>
+            <returns>Task&lt;ActionResult&lt;IEnumerable&lt;LegalCase&gt;&gt;&gt; - A collection of LegalCase objects</returns>
+            <![CDATA[ <returns>Task<ActionResult<IEnumerable<LegalCase>>> - A collection of LegalCase objects</returns> ]]>
+        </member>
+        <member name="M:ClientsManager.WebAPI.Controllers.LegalCasesController.GetLegalCasesByClientIdAsync(System.Int32)">
+            <summary>
+            Gets all LegalCases for a provided Client Id
+            </summary>
+            <param name="client_id">int - The Client_Id of the LegalCase objects</param>
+            <returns>Task&lt;ActionResult&lt;IEnumerable&lt;LegalCaseDTO&gt;&gt;&gt; - A list of LegalCase objects</returns>
+            <![CDATA[ <returns>Task<ActionResult<IEnumerable<LegalCaseDTO>>> - A list of LegalCase objects</returns> ]]>
+        </member>
+        <member name="M:ClientsManager.WebAPI.Controllers.LegalCasesController.GetLegalCaseByIdAsync(System.Int32)">
+            <summary>
+            Gets the LegalCase for the provided Id
+            </summary>
+            <param name="id">int - the LegalCase Id</param>
+            <returns>Task&lt;ActionResult&lt;LegalCaseDTO&gt;&gt; - a LegalCase object</returns>
+            <![CDATA[ <returns>Task<ActionResult<LegalCaseDTO>> - a LegalCase object</returns> ]]>
+        </member>
+        <member name="M:ClientsManager.WebAPI.Controllers.LegalCasesController.GetLegalCaseByIdWithDetailsAsync(System.Int32)">
+            <summary>
+            Gets A LegalCase for the provided Id, including all its related BillableActivity objects
+            </summary>
+            <param name="id">int - The LegalCase Id</param>
+            <returns>Task&lt;ActionResult&lt;LegalCaseWithBillableActivitiesDTO&gt;&gt; - A LegalCase object with its related BillableActivity objects</returns>
+            <![CDATA[ <returns>Task<ActionResult<LegalCaseWithBillableActivitiesDTO>> - A LegalCase object with its related BillableActivity objects</returns> ]]>
+        </member>
+        <member name="M:ClientsManager.WebAPI.Controllers.LegalCasesController.AddLegalCaseAsync(ClientsManager.Models.LegalCase)">
+            <summary>
+            Creates a LegalCase
+            </summary>
+            <param name="legalCase">LegalCAse - The LegalCase object to create</param>
+            <returns>Task&lt;ActionResult&lt;LegalCaseDTO&gt;&gt; - The LegalCase created</returns>
+            <![CDATA[ <returns>Task<ActionResult<LegalCaseDTO>> - The LegalCase created</returns> ]]>
+        </member>
+        <member name="M:ClientsManager.WebAPI.Controllers.LegalCasesController.UpdateLegalCaseAsync(System.Int32,ClientsManager.Models.LegalCase)">
+            <summary>
+            Updates a LegalCase for a provided Id
+            </summary>
+            <param name="id">int - the LegalCase Id</param>
+            <param name="legalCase">LegalCase - The LegalCase object to modify</param>
+            <returns>Task&lt;ActionResult&lt;LegalCaseDTO&gt;&gt; - The LegalCase object updated</returns>
+            <![CDATA[ <returns>Task<ActionResult<LegalCaseDTO>> - The LegalCase object updated</returns> ]]>
+        </member>
+        <member name="M:ClientsManager.WebAPI.Controllers.LegalCasesController.DeleteLegalCaseAsync(System.Int32)">
+            <summary>
+            Deletes a LegalCase object for a provided Id
+            </summary>
+            <param name="id">int id - the LegalCase id</param>
+            <returns>Task&lt;ActionResult&lt;int&gt;&gt; - The number of LegalCase objects deleted</returns>
+            <![CDATA[ <returns>Task<ActionResult<int>> - The number of LegalCase objects deleted</returns> ]]>
+        </member>
+        <member name="T:ClientsManager.WebAPI.DTOs.BillableActivityDTO">
+            <summary>
+            DTO class for a BillableActivity
+            </summary>
+        </member>
+        <member name="T:ClientsManager.WebAPI.DTOs.EmployeeDTO">
+            <summary>
+            DTO class for an Employee
+            </summary>
+        </member>
+        <member name="T:ClientsManager.WebAPI.DTOs.EmployeeTypeDTO">
+            <summary>
+            DTO class for an EmployeeType
+            </summary>
+        </member>
+        <member name="T:ClientsManager.WebAPI.DTOs.EmployeeWithBillableActivitiesDTO">
+            <summary>
+            DTO class for an Employee with BillableActivities
+            </summary>
+        </member>
+        <member name="M:ClientsManager.WebAPI.ErrorHandlingMiddleware.ErrorDetails.ToString">
+            <summary>
+            Serialize to JSON
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:ClientsManager.WebAPI.ErrorHandlingMiddleware.ExceptionHandlerExtension">
+            <summary>
+            Class that extends UseExceptionHandler middleware for custom error handling before returning the Http Response, 
+            adding a middleware to the pipeline that will catch exceptions, log them, and re-execute the request in an alternate pipeline.
+            After access to the error this class implements the following error handling features:
+            1. Error logging
+            2. Custom Http Response error message (using ErrorDetails class).
+            </summary>
+        </member>
+        <member name="M:ClientsManager.WebAPI.ErrorHandlingMiddleware.ExceptionHandlerExtension.UseExceptionHandlerExtension(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.Extensions.Logging.ILogger)">
+            <summary>
+            Method that catches the exception, logs it, generates a custom Response and sends the response back to the client.
+            </summary>
+            <param name="app">IApplicationBuilder object</param>
+            <param name="_logger">ILogger object</param>
+        </member>
+        <member name="M:ClientsManager.WebAPI.SwaggerMiddleware.SwaggerGenHandler.AddSwaggerGenExtension(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Registers the Swagger Documentation Service to allow for documentation customization
+            </summary>
+            <param name="services">IServiceCollection</param>
+            <param name="_configuration">IConfiguration</param>
+            <returns>IServiceCollection</returns>
+        </member>
+    </members>
+</doc>
