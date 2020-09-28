@@ -17,6 +17,7 @@ namespace ClientsManager.WebAPI.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
+    [Produces("application/json")]
     public class AddressesController : ControllerBase
     {
         private readonly IGenericRepository<Address> _genericRepository;
@@ -39,6 +40,8 @@ namespace ClientsManager.WebAPI.Controllers
         // GET: api/addresses?pageNumber=2&pageSize=3
         [HttpGet]
         [ServiceFilter(typeof(QueryStringParamsValidator))]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
         public async Task<ActionResult<IEnumerable<Address>>> GetAllAddressesAsync([FromQuery] QueryStringParameters parameters)
         {
             var addresses = await _genericRepository.GetAllPagedAsync(ad => ad.Client_Id, parameters);
@@ -72,6 +75,8 @@ namespace ClientsManager.WebAPI.Controllers
         //GET: api/addresses/client/1
         [HttpGet("client/{client_id:int}")]
         [ServiceFilter(typeof(ClientIdValidator))]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
         public async Task<ActionResult<IEnumerable<AddressDTO>>> GetAddressesByClientIdAsync([FromRoute] int client_id)
         {
             var addresses = await _genericRepository.GetByAsync(ad => ad.Client_Id == client_id);
@@ -104,6 +109,8 @@ namespace ClientsManager.WebAPI.Controllers
         //GET: api/addresses/1
         [HttpGet("{id:int}")]
         [ServiceFilter(typeof(IdValidator))]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
         public async Task<ActionResult<AddressDTO>> GetAddressByIdAsync([FromRoute] int id)
         {
             var address = await _genericRepository.GetOneByAsync(ad => ad.Id == id);
@@ -136,6 +143,8 @@ namespace ClientsManager.WebAPI.Controllers
         //GET: api/addresses/details/1
         [HttpGet("details/{id:int}")]
         [ServiceFilter(typeof(IdValidator))]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
         public async Task<ActionResult<AddressWithContactsDTO>> GetAddressByIdWithContactsAsync([FromRoute] int id)
         {
             var addressWithDetails = await _genericRepository.GetOneByWithRelatedDataAsync(ad => ad.Id == id,
@@ -169,6 +178,8 @@ namespace ClientsManager.WebAPI.Controllers
         // POST api/addresses
         [HttpPost]
         [ServiceFilter(typeof(AddressValidationFilter))]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(404)]
         public async Task<ActionResult<AddressDTO>> AddAddressAsync([FromBody] Address address)
         {
             int created = await _genericRepository.AddTAsync(address);
@@ -209,6 +220,8 @@ namespace ClientsManager.WebAPI.Controllers
         [HttpPut("{id:int}")]
         [HttpPatch("{id:int}")]
         [ServiceFilter(typeof(AddressValidationFilter))]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
         public async Task<ActionResult<AddressDTO>> UpdateAddressAsync([FromRoute] int id, [FromBody] Address address)
         {
             Address addressResult = await _genericRepository.GetOneByAsync(ad => ad.Id == address.Id);
@@ -244,6 +257,8 @@ namespace ClientsManager.WebAPI.Controllers
         // DELETE api/addresses/5
         [HttpDelete("{id:int}")]
         [ServiceFilter(typeof(IdValidator))]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
         public async Task<ActionResult<int>> DeleteAddressAsync([FromRoute] int id)
         {
             Address addressResult = await _genericRepository.GetOneByAsync(ad => ad.Id == id);
