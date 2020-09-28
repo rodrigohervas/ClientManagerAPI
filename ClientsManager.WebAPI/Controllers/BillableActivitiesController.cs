@@ -21,6 +21,7 @@ namespace ClientsManager.WebAPI.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
+    [Produces("application/json")]
     public class BillableActivitiesController : ControllerBase
     {
         /// <summary>
@@ -51,6 +52,8 @@ namespace ClientsManager.WebAPI.Controllers
         //GET: api/billableactivities?pageNumber=2&pageSize=3
         [HttpGet]
         [ServiceFilter(typeof(QueryStringParamsValidator))]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
         public async Task<ActionResult<IEnumerable<BillableActivity>>> GetAllBillableActivitiesAsync([FromQuery] QueryStringParameters parameters)
         {
             try
@@ -88,6 +91,8 @@ namespace ClientsManager.WebAPI.Controllers
         /// <returns>Task<ActionResult<int>> - The total number of BillableActivities</returns>
         //GET: api/billableactivities/count/all
         [HttpGet("count/all")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
         public async Task<ActionResult<int>> CountBillableActivities()
         {
             var billableActivitiesNumber = await _genericRepository.CountAsync();
@@ -117,6 +122,8 @@ namespace ClientsManager.WebAPI.Controllers
         //GET: api/billableactivities/employee/1
         [HttpGet("employees/{employee_id:int}")]
         [ServiceFilter(typeof(EmployeeIdValidator))]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
         public async Task<ActionResult<IEnumerable<BillableActivityDTO>>> GetBillableActivitiesByEmployeeIdAsync(int employee_id)
         {
             var billableActivities = await _genericRepository.GetByAsync(ba => ba.Employee_Id == employee_id);
@@ -149,6 +156,8 @@ namespace ClientsManager.WebAPI.Controllers
         //GET: api/billableactivities/case/1
         [HttpGet("case/{legalCase_id:int}")]
         [ServiceFilter(typeof(LegalCaseIdValidator))]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
         public async Task<ActionResult<IEnumerable<BillableActivityDTO>>> GetBillableActivitiesByLegalCaseIdAsync(int legalCase_id)
         {
             var billableActivities = await _genericRepository.GetByAsync(ba => ba.LegalCase_Id == legalCase_id);
@@ -181,6 +190,8 @@ namespace ClientsManager.WebAPI.Controllers
         //GET: api/billableactivity/4
         [HttpGet("{id:int}")]
         [ServiceFilter(typeof(IdValidator))]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
         public async Task<ActionResult<BillableActivityDTO>> GetBillableActivityByIdAsync(int id)
         {
             var billableActivity = await _genericRepository.GetOneByAsync(ba => ba.Id == id);
@@ -211,6 +222,8 @@ namespace ClientsManager.WebAPI.Controllers
         /// <returns>Task<ActionResult<BillableActivity>> - The BillableActivity created</returns>
         [HttpPost()]
         [ServiceFilter(typeof(BillableActivityValidationFilter))]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(404)]
         public async Task<ActionResult<BillableActivityDTO>> AddBillableActivityAsync(BillableActivity billableActivity)
         {
             int created = await _genericRepository.AddTAsync(billableActivity);
@@ -249,6 +262,8 @@ namespace ClientsManager.WebAPI.Controllers
         [HttpPatch("{id:int}")]
         [HttpPut("{id:int}")]
         [ServiceFilter(typeof(BillableActivityValidationFilter))]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
         public async Task<ActionResult<BillableActivityDTO>> UpdateBillableActivityAsync(int id, BillableActivity billableActivity)
         {
             var billableActivityResult = await _genericRepository.GetOneByAsync(ba => ba.Id == billableActivity.Id);
@@ -283,6 +298,8 @@ namespace ClientsManager.WebAPI.Controllers
         /// <returns>Task<ActionResult<int>> - The number of BillableActivities deleted</returns>
         [HttpDelete("{id:int}")]
         [ServiceFilter(typeof(IdValidator))]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
         public async Task<ActionResult<int>> DeleteBillableActivityAsync(int id)
         {
             BillableActivity billableActivity = await _genericRepository.GetOneByAsync(tf => tf.Id == id);
