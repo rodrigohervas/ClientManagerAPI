@@ -17,6 +17,7 @@ namespace ClientsManager.WebAPI.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
+    [Produces("application/json")]
     public class ContactsController : ControllerBase
     {
         private readonly IGenericRepository<Contact> _genericRepository;
@@ -31,15 +32,19 @@ namespace ClientsManager.WebAPI.Controllers
             _logger = logger;
         }
 
+
         /// <summary>
         /// Gets all Contacts for the paging parameters
         /// </summary>
         /// <param name="parameters">Paging parameters</param>
-        /// <returns>Task<ActionResult<IEnumerable<Contact>>> - A collection of Contact objects</returns>
+        /// <returns>Task&lt;ActionResult&lt;IEnumerable&lt;Contact&gt;&gt;&gt; - A collection of Contact objects</returns>
+        /// <![CDATA[<returns>Task<ActionResult<IEnumerable<Contact>>> - A collection of Contact objects</returns>]]>
         // GET: api/contacts
         // GET: api/contacts?pageNumber=2&pageSize=3
         [HttpGet]
         [ServiceFilter(typeof(QueryStringParamsValidator))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<IEnumerable<Contact>>> GetAllContactsAsync([FromQuery] QueryStringParameters parameters)
         {
             var contacts = await _genericRepository.GetAllPagedAsync(co => co.Client_Id, parameters);
@@ -69,10 +74,13 @@ namespace ClientsManager.WebAPI.Controllers
         /// Gets all Contacts for a provided Client Id
         /// </summary>
         /// <param name="client_id">int - The Client_Id of the Contact objects</param>
-        /// <returns>Task<ActionResult<IEnumerable<ContactDTO>>> - A list of Contact objects</returns>
+        /// <returns>Task&lt;ActionResult&lt;IEnumerable&lt;ContactDTO&gt;&gt;&gt; - A list of Contact objects</returns>
+        /// <![CDATA[ <returns>Task<ActionResult<IEnumerable<ContactDTO>>> - A list of Contact objects</returns> ]]>
         //GET: api/contacts/client/1
         [HttpGet("client/{client_id:int}")]
         [ServiceFilter(typeof(ClientIdValidator))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<IEnumerable<ContactDTO>>> GetContactsByClientIdAsync([FromRoute] int client_id)
         {
             var contacts = await _genericRepository.GetByAsync(co => co.Client_Id == client_id);
@@ -101,10 +109,13 @@ namespace ClientsManager.WebAPI.Controllers
         /// Gets the Contact for the provided Id
         /// </summary>
         /// <param name="id">int - the Contact Id</param>
-        /// <returns>Task<ActionResult<ContactDTO>> - a Contact object</returns>
+        /// <returns>Task&lt;ActionResult&lt;ContactDTO&gt;&gt; - a Contact object</returns>
+        /// <![CDATA[ <returns>Task<ActionResult<ContactDTO>> - a Contact object</returns> ]]>
         //GET: api/contacts/1
         [HttpGet("{id:int}")]
         [ServiceFilter(typeof(IdValidator))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ContactDTO>> GetContactByIdAsync([FromRoute] int id)
         {
             var contact = await _genericRepository.GetOneByAsync(co => co.Id == id);
@@ -133,10 +144,13 @@ namespace ClientsManager.WebAPI.Controllers
         /// Gets a Contact for the provided Id, including its related Address object
         /// </summary>
         /// <param name="id">int - The Contact Id</param>
-        /// <returns>Task<ActionResult<ContactWithAddressDTO>> - A Contact object with its related Address object</returns>
+        /// <returns>Task&lt;ActionResult&lt;ContactWithAddressDTO&gt;&gt; - A Contact object with its related Address object</returns>
+        /// <![CDATA[ <returns>Task<ActionResult<ContactWithAddressDTO>> - A Contact object with its related Address object</returns> ]]>
         //GET: api/contacts/details/1
         [HttpGet("details/{id:int}")]
         [ServiceFilter(typeof(IdValidator))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ContactWithAddressDTO>> GetContactByIdWithDetailsAsync([FromRoute] int id)
         {
             var contactWithDetails = await _genericRepository.GetOneByWithRelatedDataAsync(co => co.Id == id,
@@ -167,10 +181,13 @@ namespace ClientsManager.WebAPI.Controllers
         /// Creates a Contact
         /// </summary>
         /// <param name="contact">Contact - The Contact object to create</param>
-        /// <returns>Task<ActionResult<ContactDTO>> - The Contact created</returns>
+        /// <returns>Task&lt;ActionResult&lt;ContactDTO&gt;&gt; - The Contact created</returns>
+        /// <![CDATA[ <returns>Task<ActionResult<ContactDTO>> - The Contact created</returns> ]]>
         // POST api/contacts
         [HttpPost]
         [ServiceFilter(typeof(ContactValidationFilter))]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ContactDTO>> AddContactAsync([FromBody] Contact contact)
         {
             int created = await _genericRepository.AddTAsync(contact);
@@ -207,12 +224,15 @@ namespace ClientsManager.WebAPI.Controllers
         /// </summary>
         /// <param name="id">int - the Contact Id</param>
         /// <param name="contact">Contact - The Contact object to modify</param>
-        /// <returns>Task<ActionResult<ContactDTO>> - The Contact object updated</returns>
+        /// <returns>Task&lt;ActionResult&lt;ContactDTO&gt;&gt; - The Contact object updated</returns>
+        /// <![CDATA[ <returns>Task<ActionResult<ContactDTO>> - The Contact object updated</returns> ]]>
         // PUT api/contacts/5
         // PATCH api/contacts/5
         [HttpPut("{id:int}")]
         [HttpPatch("{id:int}")]
         [ServiceFilter(typeof(ContactValidationFilter))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ContactDTO>> UpdateContactAsync([FromRoute] int id, [FromBody] Contact contact)
         {
             Contact contactResult = await _genericRepository.GetOneByAsync(co => co.Id == contact.Id);
@@ -244,10 +264,13 @@ namespace ClientsManager.WebAPI.Controllers
         /// Deletes a Contact object for a provided Id
         /// </summary>
         /// <param name="id">int id - the Contact id</param>
-        /// <returns>Task<ActionResult<int>> - The number of Contact objects deleted</returns>
+        /// <returns>Task&lt;ActionResult&lt;int&gt;&gt; - The number of Contact objects deleted</returns>
+        /// <![CDATA[ <returns>Task<ActionResult<int>> - The number of Contact objects deleted</returns> ]]>
         // DELETE api/contacts/5
         [HttpDelete("{id:int}")]
         [ServiceFilter(typeof(IdValidator))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<int>> DeleteContactAsync([FromRoute] int id)
         {
             Contact contactResult = await _genericRepository.GetOneByAsync(co => co.Id == id);

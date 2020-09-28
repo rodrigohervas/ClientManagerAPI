@@ -35,13 +35,14 @@ namespace ClientsManager.WebAPI.Controllers
         /// Gets all Clients for the paging parameters
         /// </summary>
         /// <param name="parameters">Paging parameters</param>
-        /// <returns>Task<ActionResult<IEnumerable<ClientDTO>>> - A collection of Client objects</returns>
+        /// <returns>Task&lt;ActionResult&lt;IEnumerable&lt;ClientDTO&gt;&gt;&gt; - A collection of Client objects</returns>
+        /// <![CDATA[ <returns>Task<ActionResult<IEnumerable<ClientDTO>>> - A collection of Client objects</returns> ]]>
         // GET: api/clients
         // GET: api/clients?pageNumber=2&pageSize=3
         [HttpGet]
         [ServiceFilter(typeof(QueryStringParamsValidator))]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<IEnumerable<ClientDTO>>> GetAllClientsAsync([FromQuery] QueryStringParameters parameters)
         {
             IEnumerable<Client> clients = await _genericRepository.GetAllPagedAsync(cl => cl.Id, parameters);
@@ -72,12 +73,13 @@ namespace ClientsManager.WebAPI.Controllers
         /// Gets the Client for the provided Id
         /// </summary>
         /// <param name="id">int - the Client Id</param>
-        /// <returns>Task<ActionResult<ClientDTO>> - a Client object</returns>
+        /// <returns>Task&lt;ActionResult&lt;ClientDTO&gt;&gt; - a Client object</returns>
+        /// <![CDATA[ <returns>Task<ActionResult<ClientDTO>> - a Client object</returns> ]]>
         //GET: api/clients/1
         [HttpGet("{id:int}")]
         [ServiceFilter(typeof(IdValidator))]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ClientDTO>> GetClientByIdAsync([FromRoute] int id)
         {
             var req = HttpContext.Request;
@@ -108,17 +110,18 @@ namespace ClientsManager.WebAPI.Controllers
         /// Gets a Client for the provided Id, including its related LegalCase objects
         /// </summary>
         /// <param name="id">int - The Client Id</param>
-        /// <returns>Task<ActionResult<ClientWithLegalCasesDTO>> - A Client object with its related LegalCase objects</returns>
+        /// <returns>Task&lt;ActionResult&lt;ClientWithLegalCasesDTO&gt;&gt; - A Client object with its related LegalCase objects </returns>
+        /// <![CDATA[ <returns><Task<ActionResult<ClientWithLegalCasesDTO>> - A Client object with its related LegalCase objects--></returns> ]]>
         //GET: api/clients/legalcases/1
         [HttpGet("legalcases/{id:int}")]
         [ServiceFilter(typeof(IdValidator))]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ClientWithLegalCasesDTO>> GetClientByIdWithLegalCasesAsync([FromRoute] int id)
         {
             Client clientWithDetails = await _genericRepository.GetOneByWithRelatedDataAsync(cl => cl.Id == id,
                                                                                    cl => cl.LegalCases);
-
+            
             if (clientWithDetails is null)
             {
                 var logData = new
@@ -143,12 +146,13 @@ namespace ClientsManager.WebAPI.Controllers
         /// Gets a Client for the provided Id, including its related Address objects
         /// </summary>
         /// <param name="id">int - The Client Id</param>
-        /// <returns>Task<ActionResult<ClientWithAddressesDTO>> - A Client object with its related Address objects</returns>
+        /// <returns>Task&lt;ActionResult&lt;ClientWithAddressesDTO&gt;&gt; - A Client object with its related Address objects</returns>
+        /// <![CDATA[ <returns>Task<ActionResult<ClientWithAddressesDTO>> - A Client object with its related Address objects</returns> ]]>
         //GET: api/clients/addresses/1
         [HttpGet("addresses/{id:int}")]
         [ServiceFilter(typeof(IdValidator))]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ClientWithAddressesDTO>> GetClientByIdWithAddressesAsync([FromRoute] int id)
         {
             Client clientWithDetails = await _genericRepository.GetOneByWithRelatedDataAsync(cl => cl.Id == id,
@@ -178,12 +182,13 @@ namespace ClientsManager.WebAPI.Controllers
         /// Gets a Client for the provided Id, including its related Contact objects
         /// </summary>
         /// <param name="id">int - The Client Id</param>
-        /// <returns>Task<ActionResult<ClientWithContactsDTO>> - A Client object with its related Contact objects</returns>
+        /// <returns>Task&lt;ActionResult&lt;ClientWithContactsDTO&gt;&gt; - A Client object with its related Contact objects</returns>
+        /// <![CDATA[ <returns>Task<ActionResult<ClientWithContactsDTO>> - A Client object with its related Contact objects</returns> ]]>
         //GET: api/clients/contacts/1
         [HttpGet("contacts/{id:int}")]
         [ServiceFilter(typeof(IdValidator))]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ClientWithContactsDTO>> GetClientByIdWithContactsAsync([FromRoute] int id)
         {
             Client clientWithDetails = await _genericRepository.GetOneByWithRelatedDataAsync(cl => cl.Id == id,
@@ -214,12 +219,13 @@ namespace ClientsManager.WebAPI.Controllers
         /// Creates a Client
         /// </summary>
         /// <param name="client">Client - The Client object to create</param>
-        /// <returns>Task<ActionResult<ClientDTO>> - The Client created</returns>
+        /// <returns>Task&lt;ActionResult&lt;ClientDTO&gt;&gt; - The Client created--></returns>
+        /// <![CDATA[ <returns>Task<ActionResult<ClientDTO>> - The Client created</returns> ]]>
         // POST api/clients
         [HttpPost]
         [ServiceFilter(typeof(ClientValidationFilter))]
-        [ProducesResponseType(201)]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ClientDTO>> AddClientAsync([FromBody] Client client)
         {
             int created = await _genericRepository.AddTAsync(client);
@@ -254,14 +260,15 @@ namespace ClientsManager.WebAPI.Controllers
         /// </summary>
         /// <param name="id">int - the Client Id</param>
         /// <param name="client">Client - The Client object to modify</param>
-        /// <returns>Task<ActionResult<ClientDTO>> - The Client object updated</returns>
+        /// <returns>Task&lt;ActionResult&lt;ClientDTO&gt;&gt; - The Client object updated</returns>
+        /// <![CDATA[ <returns>Task<ActionResult<ClientDTO>> - The Client object updated</returns> ]]>
         // PUT api/clients/5
         // PATCH api/clients/5
         [HttpPut("{id:int}")]
         [HttpPatch("{id:int}")]
         [ServiceFilter(typeof(ClientValidationFilter))]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ClientDTO>> UpdateClientAsync([FromRoute] int id, [FromBody] Client client)
         {
             Client clientResult = await _genericRepository.GetOneByAsync(cl => cl.Id == client.Id);
@@ -293,12 +300,13 @@ namespace ClientsManager.WebAPI.Controllers
         /// Deletes a Client object for a provided Id
         /// </summary>
         /// <param name="id">int id - the Client id</param>
-        /// <returns>Task<ActionResult<int>> - The number of Client objects deleted</returns>
+        /// <returns>Task&lt;ActionResult&lt;int&gt;&gt; - The number of Client objects deleted--></returns>
+        /// <![CDATA[ <returns><!--Task<ActionResult<int>> - The number of Client objects deleted</returns> ]]>
         // DELETE api/clients/5
         [HttpDelete("{id:int}")]
         [ServiceFilter(typeof(IdValidator))]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<int>> DeleteClientAsync([FromRoute] int id)
         {
             Client clientResult = await _genericRepository.GetOneByAsync(cl => cl.Id == id);

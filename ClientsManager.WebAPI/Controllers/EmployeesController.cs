@@ -17,6 +17,7 @@ namespace ClientsManager.WebAPI.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
+    [Produces("application/json")]
     public class EmployeesController : ControllerBase
     {
         private readonly IGenericRepository<Employee> _genericRepository;
@@ -35,10 +36,13 @@ namespace ClientsManager.WebAPI.Controllers
         /// Get all Employees for the paging parameters
         /// </summary>
         /// <param name="parameters">Paging parameters</param>
-        /// <returns>Task<ActionResult<IEnumerable<EmployeeDTO>>> - A list of all the Employees</returns>
+        /// <returns>Task&lt;ActionResult&lt;IEnumerable&lt;EmployeeDTO&gt;&gt;&gt; - A list of all the Employees</returns>
+        /// <![CDATA[ <returns>Task<ActionResult<IEnumerable<EmployeeDTO>>> - A list of all the Employees</returns> ]]>
         // GET: api/employees?pageNumber=2&pageSize=3
         [HttpGet]
         [ServiceFilter(typeof(QueryStringParamsValidator))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<IEnumerable<EmployeeDTO>>> GetAllEmployeesAsync([FromQuery] QueryStringParameters parameters)
         {
             var employees = await _genericRepository.GetAllPagedAsync(em => em.EmployeeType, parameters);
@@ -67,10 +71,13 @@ namespace ClientsManager.WebAPI.Controllers
         /// Gets an Employee for a provided id
         /// </summary>
         /// <param name="id">int - the Employee id</param>
-        /// <returns>Task<ActionResult<EmployeeDTO>> -  An Employee object</returns>
+        /// <returns>Task&lt;ActionResult&lt;EmployeeDTO&gt;&gt; -  An Employee object</returns>
+        /// <![CDATA[ <returns>Task<ActionResult<EmployeeDTO>> -  An Employee object</returns> ]]>
         // GET: api/employees/5
         [HttpGet("{id}")]
         [ServiceFilter(typeof(IdValidator))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<EmployeeDTO>> GetEmployeeByIdAsync([FromRoute] int id)
         {
             var employee = await _genericRepository.GetOneByWithRelatedDataAsync(employee => employee.Id == id, 
@@ -100,10 +107,13 @@ namespace ClientsManager.WebAPI.Controllers
         /// Gets a list of Employees for a provided employee type
         /// </summary>
         /// <param name="employeeType_id">int - The EmployeeType id</param>
-        /// <returns>Task<ActionResult<IEnumerable<EmployeeDTO>>> - A List of Employees</returns>
+        /// <returns>Task&lt;ActionResult&lt;IEnumerable&lt;EmployeeDTO&gt;&gt;&gt; - A List of Employees</returns>
+        /// <![CDATA[ <returns>Task<ActionResult<IEnumerable<EmployeeDTO>>> - A List of Employees</returns> ]]>
         // GET: api/employees/employeetype/1
         [HttpGet("employeetype/{employeetype_id:int}")]
         [ServiceFilter(typeof(EmployeeTypeIdValidator))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<IEnumerable<EmployeeDTO>>> GetEmployeesByTypeAsync([FromRoute] int employeeType_id)
         {
             var employees = await _genericRepository.GetByAsync(employee => employee.EmployeeType_Id == employeeType_id);
@@ -133,10 +143,13 @@ namespace ClientsManager.WebAPI.Controllers
         /// Creates an Employee
         /// </summary>
         /// <param name="employee"> Employee - An Employee object</param>
-        /// <returns>Task<ActionResult<EmployeeDTO>> - The created Employee</returns>
+        /// <returns>Task&lt;ActionResult&lt;EmployeeDTO&gt;&gt; - The created Employee</returns>
+        /// <![CDATA[ <returns>Task<ActionResult<EmployeeDTO>> - The created Employee</returns> ]]>
         // POST: api/employees
         [HttpPost]
         [ServiceFilter(typeof(EmployeeValidationFilter))]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<EmployeeDTO>> AddEmployeeAsync([FromBody] Employee employee)
         {
             var addResult = await _genericRepository.AddTAsync(employee);
@@ -171,11 +184,14 @@ namespace ClientsManager.WebAPI.Controllers
         /// </summary>
         /// <param name="id"> int - the Employee id</param>
         /// <param name="employee"> Employee - An Employee object</param>
-        /// <returns>Task<ActionResult<EmployeeDTO>> - The updated Employee</returns>
+        /// <returns>Task&lt;ActionResult&lt;EmployeeDTO&gt;&gt; - The updated Employee</returns>
+        /// <![CDATA[ <returns>Task<ActionResult<EmployeeDTO>> - The updated Employee</returns> ]]>
         // PUT/PATCH: api/employees/id
         [HttpPut("{id:int}")]
         [HttpPatch("{id:int}")]
         [ServiceFilter(typeof(EmployeeValidationFilter))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<EmployeeDTO>> UpdateEmployeeAsync([FromRoute] int id, [FromBody] Employee employee)
         {
             var employeeResult = await _genericRepository.GetOneByAsync(emp => emp.Id == employee.Id);
@@ -207,10 +223,13 @@ namespace ClientsManager.WebAPI.Controllers
         /// Deletes an existing Employee
         /// </summary>
         /// <param name="employee"> int - The Employee id</param>
-        /// <returns>Task<ActionResult<int>> - The number of Employees deleted</returns>
+        /// <returns>Task&lt;ActionResult&lt;int&gt;&gt; - The number of Employees deleted</returns>
+        /// <![CDATA[ <returns>Task<ActionResult<int>> - The number of Employees deleted</returns> ]]>
         // DELETE: employees/id
         [HttpDelete("{id:int}")]
         [ServiceFilter(typeof(IdValidator))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<int>> DeleteEmployeeAsync([FromRoute] int id)
         {
             Employee employee = await _genericRepository.GetOneByAsync(emp => emp.Id == id);

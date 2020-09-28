@@ -8,6 +8,7 @@ using ClientsManager.Models;
 using ClientsManager.WebAPI.DTOs;
 using ClientsManager.WebAPI.ValidationActionFiltersMiddleware;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -16,6 +17,7 @@ namespace ClientsManager.WebAPI.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
+    [Produces("application/json")]
     public class LegalCasesController : ControllerBase
     {
         private readonly IGenericRepository<LegalCase> _genericRepository;
@@ -33,11 +35,14 @@ namespace ClientsManager.WebAPI.Controllers
         /// Gets all LegalCases for the paging parameters
         /// </summary>
         /// <param name="parameters">Paging parameters</param>
-        /// <returns>Task<ActionResult<IEnumerable<Case>>> - A collection of LegalCase objects</returns>
+        /// <returns>Task&lt;ActionResult&lt;IEnumerable&lt;LegalCase&gt;&gt;&gt; - A collection of LegalCase objects</returns>
+        /// <![CDATA[ <returns>Task<ActionResult<IEnumerable<LegalCase>>> - A collection of LegalCase objects</returns> ]]>
         // GET: api/legalcases
         // GET: api/legalcases?pageNumber=2&pageSize=3
         [HttpGet]
         [ServiceFilter(typeof(QueryStringParamsValidator))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<IEnumerable<LegalCase>>> GetAllLegalCasesAsync([FromQuery] QueryStringParameters parameters)
         {
             var legalCases = await _genericRepository.GetAllPagedAsync(lc => lc.Client_Id, parameters);
@@ -66,10 +71,13 @@ namespace ClientsManager.WebAPI.Controllers
         /// Gets all LegalCases for a provided Client Id
         /// </summary>
         /// <param name="client_id">int - The Client_Id of the LegalCase objects</param>
-        /// <returns>Task<ActionResult<IEnumerable<LegalCaseDTO>>> - A list of LegalCase objects</returns>
+        /// <returns>Task&lt;ActionResult&lt;IEnumerable&lt;LegalCaseDTO&gt;&gt;&gt; - A list of LegalCase objects</returns>
+        /// <![CDATA[ <returns>Task<ActionResult<IEnumerable<LegalCaseDTO>>> - A list of LegalCase objects</returns> ]]>
         //GET: api/legalcases/client/1
         [HttpGet("client/{client_id:int}")]
         [ServiceFilter(typeof(ClientIdValidator))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<IEnumerable<LegalCaseDTO>>> GetLegalCasesByClientIdAsync([FromRoute] int client_id)
         {
             var legalCases = await _genericRepository.GetByAsync(lc => lc.Client_Id == client_id);
@@ -95,13 +103,16 @@ namespace ClientsManager.WebAPI.Controllers
         }
 
         /// <summary>
-        /// Gets the LegalCAse for the provided Id
+        /// Gets the LegalCase for the provided Id
         /// </summary>
         /// <param name="id">int - the LegalCase Id</param>
-        /// <returns>Task<ActionResult<LegalCaseDTO>> - a LegalCase object</returns>
+        /// <returns>Task&lt;ActionResult&lt;LegalCaseDTO&gt;&gt; - a LegalCase object</returns>
+        /// <![CDATA[ <returns>Task<ActionResult<LegalCaseDTO>> - a LegalCase object</returns> ]]>
         //GET: api/legalcases/1
         [HttpGet("{id:int}")]
         [ServiceFilter(typeof(IdValidator))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<LegalCaseDTO>> GetLegalCaseByIdAsync([FromRoute] int id)
         {
             var legalCase = await _genericRepository.GetOneByAsync(lc => lc.Id == id);
@@ -130,10 +141,13 @@ namespace ClientsManager.WebAPI.Controllers
         /// Gets A LegalCase for the provided Id, including all its related BillableActivity objects
         /// </summary>
         /// <param name="id">int - The LegalCase Id</param>
-        /// <returns>Task<ActionResult<LegalCaseWithBillableActivitiesDTO>> - A LegalCase object with its related BillableActivity objects</returns>
+        /// <returns>Task&lt;ActionResult&lt;LegalCaseWithBillableActivitiesDTO&gt;&gt; - A LegalCase object with its related BillableActivity objects</returns>
+        /// <![CDATA[ <returns>Task<ActionResult<LegalCaseWithBillableActivitiesDTO>> - A LegalCase object with its related BillableActivity objects</returns> ]]>
         //GET: api/legalcases/1
         [HttpGet("details/{id:int}")]
         [ServiceFilter(typeof(IdValidator))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<LegalCaseWithBillableActivitiesDTO>> GetLegalCaseByIdWithDetailsAsync([FromRoute] int id)
         {
             var legalCaseWithDetails = await _genericRepository.GetOneByWithRelatedDataAsync(lc => lc.Id == id, 
@@ -164,10 +178,13 @@ namespace ClientsManager.WebAPI.Controllers
         /// Creates a LegalCase
         /// </summary>
         /// <param name="legalCase">LegalCAse - The LegalCase object to create</param>
-        /// <returns>Task<ActionResult<LegalCaseDTO>> - The LegalCase created</returns>
+        /// <returns>Task&lt;ActionResult&lt;LegalCaseDTO&gt;&gt; - The LegalCase created</returns>
+        /// <![CDATA[ <returns>Task<ActionResult<LegalCaseDTO>> - The LegalCase created</returns> ]]>
         // POST api/legalcases
         [HttpPost]
         [ServiceFilter(typeof(LegalCaseValidationFilter))]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<LegalCaseDTO>> AddLegalCaseAsync([FromBody] LegalCase legalCase)
         {
             int created = await _genericRepository.AddTAsync(legalCase);
@@ -201,12 +218,15 @@ namespace ClientsManager.WebAPI.Controllers
         /// </summary>
         /// <param name="id">int - the LegalCase Id</param>
         /// <param name="legalCase">LegalCase - The LegalCase object to modify</param>
-        /// <returns>Task<ActionResult<LegalCaseDTO>> - The LegalCase object updated</returns>
+        /// <returns>Task&lt;ActionResult&lt;LegalCaseDTO&gt;&gt; - The LegalCase object updated</returns>
+        /// <![CDATA[ <returns>Task<ActionResult<LegalCaseDTO>> - The LegalCase object updated</returns> ]]>
         // PUT api/legalcases/5
         // PATCH api/legalcases/5
         [HttpPut("{id:int}")]
         [HttpPatch("{id:int}")]
         [ServiceFilter(typeof(LegalCaseValidationFilter))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<LegalCaseDTO>> UpdateLegalCaseAsync([FromRoute] int id, [FromBody] LegalCase legalCase)
         {
             LegalCase legalCaseResult = await _genericRepository.GetOneByAsync(lc => lc.Id == legalCase.Id);
@@ -238,10 +258,13 @@ namespace ClientsManager.WebAPI.Controllers
         /// Deletes a LegalCase object for a provided Id
         /// </summary>
         /// <param name="id">int id - the LegalCase id</param>
-        /// <returns>Task<ActionResult<int>> - The number of LegalCase objects deleted</returns>
+        /// <returns>Task&lt;ActionResult&lt;int&gt;&gt; - The number of LegalCase objects deleted</returns>
+        /// <![CDATA[ <returns>Task<ActionResult<int>> - The number of LegalCase objects deleted</returns> ]]>
         // DELETE api/legalcases/5
         [HttpDelete("{id:int}")]
         [ServiceFilter(typeof(IdValidator))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<int>> DeleteLegalCaseAsync([FromRoute] int id)
         {
             LegalCase legalCaseResult = await _genericRepository.GetOneByAsync(lc => lc.Id == id);

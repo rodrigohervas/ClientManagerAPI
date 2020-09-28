@@ -8,6 +8,7 @@ using ClientsManager.Models;
 using ClientsManager.WebAPI.DTOs;
 using ClientsManager.WebAPI.ValidationActionFiltersMiddleware;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -16,6 +17,7 @@ namespace ClientsManager.WebAPI.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
+    [Produces("application/json")]
     public class EmployeeTypesController : ControllerBase
     {
         private readonly IGenericRepository<EmployeeType> _genericRepository;
@@ -33,9 +35,12 @@ namespace ClientsManager.WebAPI.Controllers
         /// <summary>
         /// Gets all EmployeeTypes
         /// </summary>
-        /// <returns>Task<ActionResult<IEnumerable<EmployeeTypeDTO>>> - A list of all the EmployeeTypes</returns>
+        /// <returns>Task&lt;ActionResult&lt;IEnumerable&lt;EmployeeTypeDTO&gt;&gt;&gt; - A list of all the EmployeeTypes</returns>
+        /// <![CDATA[ <returns>Task<ActionResult<IEnumerable<EmployeeTypeDTO>>> - A list of all the EmployeeTypes</returns> ]]>
         // GET: api/employeetypes?pageNumber=2&pageSize=3
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<IEnumerable<EmployeeTypeDTO>>> GetAllEmployeeTypesAsync()
         {
             var employeeTypeList = await _genericRepository.GetAllAsync();
@@ -63,10 +68,13 @@ namespace ClientsManager.WebAPI.Controllers
         /// Gets an EmployeeType for a provided id
         /// </summary>
         /// <param name="id"></param>
-        /// <returns>Task<ActionResult<EmployeeTypeDTO>> - An EmployeeType</returns>
+        /// <returns>Task&lt;ActionResult&lt;EmployeeTypeDTO&gt;&gt; - An EmployeeType</returns>
+        /// <![CDATA[ <returns>Task<ActionResult<EmployeeTypeDTO>> - An EmployeeType</returns> ]]>
         // GET api/employeetypes/5
         [HttpGet("{id:int}")]
         [ServiceFilter(typeof(IdValidator))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<EmployeeTypeDTO>> GetEmployeeTypeByIdAsync([FromRoute] int id)
         {
             var employeeType = await _genericRepository.GetOneByAsync(et => et.Id == id);
@@ -95,10 +103,13 @@ namespace ClientsManager.WebAPI.Controllers
         /// Creates an EmployeeType
         /// </summary>
         /// <param name="employeeType"> The EmployeeType object to create</param>
-        /// <returns>Task<ActionResult<EmployeeTypeDTO>> - The created EmployeeType</returns>
+        /// <returns>Task&lt;ActionResult&lt;EmployeeTypeDTO&gt;&gt; - The created EmployeeType</returns>
+        /// <![CDATA[ <returns>Task<ActionResult<EmployeeTypeDTO>> - The created EmployeeType</returns> ]]>
         // POST api/employeetypes
         [HttpPost]
         [ServiceFilter(typeof(EmployeeTypeValidationFilter))]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<EmployeeTypeDTO>> AddEmployeeType([FromBody] EmployeeType employeeType)
         {
             var addResult = await _genericRepository.AddTAsync(employeeType);
@@ -130,11 +141,14 @@ namespace ClientsManager.WebAPI.Controllers
         /// Updates an existing EmployeeType
         /// </summary>
         /// <param name="employeeType">The EmployeeType object to update</param>
-        /// <returns>Task<ActionResult<EmployeeTypeDTO>> - The updated EmployeeType</returns>
+        /// <returns>Task&lt;ActionResult&lt;EmployeeTypeDTO&gt;&gt; - The updated EmployeeType</returns>
+        /// <![CDATA[ <returns>Task<ActionResult<EmployeeTypeDTO>> - The updated EmployeeType</returns> ]]>
         // PUT/PATCH api/employeetypes/5
         [HttpPut("{id:int}")]
         [HttpPatch("{id:int}")]
         [ServiceFilter(typeof(EmployeeTypeValidationFilter))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<EmployeeTypeDTO>> UpdateEmployeeType([FromRoute] int id, [FromBody] EmployeeType employeeType)
         {
             var employeeTypeResult = await _genericRepository.GetOneByAsync(et => et.Description == employeeType.Description &&
@@ -168,10 +182,13 @@ namespace ClientsManager.WebAPI.Controllers
         /// Deletes an existing EmployeeType
         /// </summary>
         /// <param name="id">The if of the EmployeeType object to delete</param>
-        /// <returns>Task<ActionResult<int>> - The number of EmployeeTypes deleted</returns>
+        /// <returns>Task&lt;ActionResult&lt;int&gt;&gt; - The number of EmployeeTypes deleted</returns>
+        /// <![CDATA[ <returns>Task<ActionResult<int>> - The number of EmployeeTypes deleted</returns> ]]>
         // DELETE api/employeetypes/5
         [HttpDelete("{id:int}")]
         [ServiceFilter(typeof(IdValidator))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<int>> DeleteEmployeeType([FromRoute] int id)
         {
             var employeeType = await _genericRepository.GetOneByAsync(et => et.Id == id);
