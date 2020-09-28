@@ -39,6 +39,8 @@ namespace ClientsManager.WebAPI.Controllers
         // GET: api/clients?pageNumber=2&pageSize=3
         [HttpGet]
         [ServiceFilter(typeof(QueryStringParamsValidator))]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
         public async Task<ActionResult<IEnumerable<ClientDTO>>> GetAllClientsAsync([FromQuery] QueryStringParameters parameters)
         {
             IEnumerable<Client> clients = await _genericRepository.GetAllPagedAsync(cl => cl.Id, parameters);
@@ -73,6 +75,8 @@ namespace ClientsManager.WebAPI.Controllers
         //GET: api/clients/1
         [HttpGet("{id:int}")]
         [ServiceFilter(typeof(IdValidator))]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
         public async Task<ActionResult<ClientDTO>> GetClientByIdAsync([FromRoute] int id)
         {
             var req = HttpContext.Request;
@@ -107,6 +111,8 @@ namespace ClientsManager.WebAPI.Controllers
         //GET: api/clients/legalcases/1
         [HttpGet("legalcases/{id:int}")]
         [ServiceFilter(typeof(IdValidator))]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
         public async Task<ActionResult<ClientWithLegalCasesDTO>> GetClientByIdWithLegalCasesAsync([FromRoute] int id)
         {
             Client clientWithDetails = await _genericRepository.GetOneByWithRelatedDataAsync(cl => cl.Id == id,
@@ -140,6 +146,8 @@ namespace ClientsManager.WebAPI.Controllers
         //GET: api/clients/addresses/1
         [HttpGet("addresses/{id:int}")]
         [ServiceFilter(typeof(IdValidator))]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
         public async Task<ActionResult<ClientWithAddressesDTO>> GetClientByIdWithAddressesAsync([FromRoute] int id)
         {
             Client clientWithDetails = await _genericRepository.GetOneByWithRelatedDataAsync(cl => cl.Id == id,
@@ -173,6 +181,8 @@ namespace ClientsManager.WebAPI.Controllers
         //GET: api/clients/contacts/1
         [HttpGet("contacts/{id:int}")]
         [ServiceFilter(typeof(IdValidator))]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
         public async Task<ActionResult<ClientWithContactsDTO>> GetClientByIdWithContactsAsync([FromRoute] int id)
         {
             Client clientWithDetails = await _genericRepository.GetOneByWithRelatedDataAsync(cl => cl.Id == id,
@@ -207,6 +217,8 @@ namespace ClientsManager.WebAPI.Controllers
         // POST api/clients
         [HttpPost]
         [ServiceFilter(typeof(ClientValidationFilter))]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(404)]
         public async Task<ActionResult<ClientDTO>> AddClientAsync([FromBody] Client client)
         {
             int created = await _genericRepository.AddTAsync(client);
@@ -247,6 +259,8 @@ namespace ClientsManager.WebAPI.Controllers
         [HttpPut("{id:int}")]
         [HttpPatch("{id:int}")]
         [ServiceFilter(typeof(ClientValidationFilter))]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
         public async Task<ActionResult<ClientDTO>> UpdateClientAsync([FromRoute] int id, [FromBody] Client client)
         {
             Client clientResult = await _genericRepository.GetOneByAsync(cl => cl.Id == client.Id);
@@ -282,6 +296,8 @@ namespace ClientsManager.WebAPI.Controllers
         // DELETE api/clients/5
         [HttpDelete("{id:int}")]
         [ServiceFilter(typeof(IdValidator))]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
         public async Task<ActionResult<int>> DeleteClientAsync([FromRoute] int id)
         {
             Client clientResult = await _genericRepository.GetOneByAsync(cl => cl.Id == id);
