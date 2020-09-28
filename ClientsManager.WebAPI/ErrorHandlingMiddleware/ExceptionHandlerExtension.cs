@@ -23,7 +23,7 @@ namespace ClientsManager.WebAPI.ErrorHandlingMiddleware
         /// Method that catches the exception, logs it, generates a custom Response and sends the response back to the client.
         /// </summary>
         /// <param name="app">IApplicationBuilder object</param>
-        /// <param name="logger">ILogger object</param>
+        /// <param name="_logger">ILogger object</param>
         public static void UseExceptionHandlerExtension(this IApplicationBuilder app, ILogger _logger)
         {
             //register the UseExceptionHandler middleware, and provide a lambda expression as a parameter
