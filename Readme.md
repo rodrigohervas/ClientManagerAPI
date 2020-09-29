@@ -104,7 +104,9 @@ The API has the following endpoints:
 
 ## Clients endpoint: 
 
-### URI: get => /api/clients?pageNumber=[number]&pageSize=[size] :
+### test:
+
+### URI: get => /api/clients?pageNumber=[number]&pageSize=[size]
 
 * **Description**: returns a collection of Client objects, paged by the provided pageNumber and pageSize
 
