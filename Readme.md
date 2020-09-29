@@ -104,7 +104,7 @@ The API has the following endpoints:
 
 ## Clients endpoint: 
 
-### URI: get => /api/clients?pageNumber=[number]&pageSize=[size]
+### URI: get => /api/clients?pageNumber=[number]&pageSize=[size] :
 
 * **Description**: returns a collection of Client objects, paged by the provided pageNumber and pageSize
 
@@ -126,7 +126,7 @@ A collection of Client objects:
 | description   | String   |
 | website       | String   |
 
-###URI: get => /api/clients/[id]
+### URI: get => /api/clients/[id]
 
 * **Description**: returns a Client object for the provided client id
 
