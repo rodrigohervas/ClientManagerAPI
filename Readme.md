@@ -33,13 +33,13 @@ Note. This server can be used with the following client repo: [xxxx](xxxxx)
 
 ## Configuration: Azure web app and Azure Active Directory:
 
-Before using the API there are several you need to follow to create the API in Azure and register it in Azure Active Directory:
+Before using the API there are several steps to follow in order to create the API in Azure App Services and register it in Azure Active Directory:
 
-1. Register the API in Azure Active Directory (you'll need to have an Azure AD tenant configured)
+1. Register the API in Azure Active Directory (you'll need to have an Azure Active Dircetory tenant configured)
 
 [Recommended Read: Protected Web API app registration](https://docs.microsoft.com/en-us/azure/active-directory/develop/scenario-protected-web-api-app-registration)
 
-2. Configure the API registration in Azure AD (the registration must expose at least one scope/role in the *Expose an API* section)
+2. Configure the API registration in Azure Active Directory (the registration must expose at least one scope/role in the *Expose an API* section)
 
 3. In **appsettings.json** / **secrets.json**, add the following configuration (get your config data from the Azure AD API registration):
   
@@ -67,11 +67,11 @@ Before using the API there are several you need to follow to create the API in A
 
 ## Configuration: Authentication / Authorization:
 
-All API requests must be made using an access_token. The access_token is a JWT Token, and is issued by Azure Active Directory.
+All API requests must be made using an access_token. The access_token is a JWT Bearer Token, issued by Azure Active Directory.
 
 After the API configuration in Azure Web Services and Azure Active Directory the app is ready to authenticate JWT Tokens.
 
-Regarding Token validation check *ClientsManager.WebAPI.Authentication.AddAuthenticationExtensions.cs*, called from the *Startup.ConfigureServices* method.
+Regarding Token validation, check *ClientsManager.WebAPI.Authentication.AddAuthenticationExtensions.cs*, called from the *Startup.ConfigureServices* method.
 
 Authorization is configured at the controller level using the *[Authorize]* attribute.
 
