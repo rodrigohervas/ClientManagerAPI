@@ -143,7 +143,7 @@ namespace ClientsManager.WebAPI.Controllers
         /// <param name="id">int - The LegalCase Id</param>
         /// <returns>Task&lt;ActionResult&lt;LegalCaseWithBillableActivitiesDTO&gt;&gt; - A LegalCase object with its related BillableActivity objects</returns>
         /// <![CDATA[ <returns>Task<ActionResult<LegalCaseWithBillableActivitiesDTO>> - A LegalCase object with its related BillableActivity objects</returns> ]]>
-        //GET: api/legalcases/1
+        //GET: api/legalcases/details/1
         [HttpGet("details/{id:int}")]
         [ServiceFilter(typeof(IdValidator))]
         [ProducesResponseType(StatusCodes.Status200OK)]
