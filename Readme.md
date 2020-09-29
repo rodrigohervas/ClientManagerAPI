@@ -104,18 +104,18 @@ The API has the following endpoints:
 
 ## Clients endpoint: 
 
-### get => /api/clients?pageNumber=[number]&pageSize=[size]
+### URI: get => /api/clients?pageNumber=[number]&pageSize=[size]
 
-* Description: returns a collection of Client objects, paged by the provided pageNumber and pageSize
+* **Description**: returns a collection of Client objects, paged by the provided pageNumber and pageSize
 
-* Request params:
+* **Request params**:
 
 | param name    | type     | param type   |
 | ------------- |:--------:| ------------:|
 | pageNumber    | String   | querystring  |
 | pageSize      | String   | querystring  |
 
-* Response:
+* **Response**:
 
 A collection of Client objects:
 
@@ -126,17 +126,17 @@ A collection of Client objects:
 | description   | String   |
 | website       | String   |
 
-### get => /api/clients/[id]
+### URI: get => /api/clients/[id]
 
-* Description: returns a Client object for the provided client id
+* **Description**: returns a Client object for the provided client id
 
-* Request params:
+* **Request params**:
 
 | param name    | type     | param type   |
 | ------------- |:--------:| ------------:|
 | id            | Number   | route        |
 
-* Response:
+* **Response**:
 
 A Client object:
 
@@ -148,17 +148,17 @@ A Client object:
 | website       | String   |
 
 
-### get => /api/clients/legalcases/[id]
+### URI: get => /api/clients/legalcases/[id]
 
-* Description: returns a collection of Client objects, with its related LegalCases
+* **Description**: returns a collection of Client objects, with its related LegalCases
 
-* Request params:
+* **Request params**:
 
 | param name    | type     | param type   |
 | ------------- |:--------:| ------------:|
 | id            | Number   | route        |
 
-* Response:
+* **Response**:
 
 A collection of Client objects, with its LegalCase objects:
 
@@ -171,17 +171,17 @@ A collection of Client objects, with its LegalCase objects:
 | Legalcases    | LegalCase |
 
 
-### get => /api/clients/addresses/[id]
+### URI: get => /api/clients/addresses/[id]
 
-* Description: returns a Client object for the provided client id, including its related Address objects
+* **Description**: returns a Client object for the provided client id, including its related Address objects
 
-* Request params:
+* **Request params**:
 
 | param name    | type     | param type   |
 | ------------- |:--------:| ------------:|
 | id            | Number   | route        |
 
-* Response:
+* **Response**:
 
 A collection of Client objects:
 
@@ -193,17 +193,17 @@ A collection of Client objects:
 | website       | String   |
 
 
-### get => /api/clients/contacts/[id]
+### URI: get => /api/clients/contacts/[id]
 
-* Description: returns a Client object for the provided id, including its related Contact objects
+* **Description**: returns a Client object for the provided id, including its related Contact objects
 
-* Request params:
+* **Request params**:
 
 | param name    | type     | param type   |
 | ------------- |:--------:| ------------:|
 | id            | Number   | route        |
 
-* Response:
+* **Response**:
 
 A Client object with its related Contact objects:
 
@@ -215,11 +215,11 @@ A Client object with its related Contact objects:
 | website       | String   |
 
 
-#### post => /api/clients
+### URI:  post => /api/clients
 
-* Description: creates a Client object
+* **Description**: creates a Client object
 
-* Request params:
+* **Request params**:
 
 | param name    | type     | param type   |
 | ------------- |:--------:| ------------:|
@@ -227,8 +227,7 @@ A Client object with its related Contact objects:
 | description   | String   | Body         |
 | website       | String   | Body         |
 
-
-* Response:
+* **Response**:
 
 The Client object created.
 
@@ -240,11 +239,11 @@ The Client object created.
 | website       | String   |
 
 
-#### put => /api/clients/[id]
+### URI: put => /api/clients/[id]
 
-* Description: updates an existing Client object
+* **Description**: updates an existing Client object
 
-* Request params:
+* **Request params**:
 
 | param name    | type     | param type   |
 | ------------- |:--------:| ------------:|
@@ -254,8 +253,7 @@ The Client object created.
 | description   | String   | Body         |
 | website       | String   | Body         |
 
-
-* Response:
+* **Response**:
 
 The Client object updated
 
@@ -267,11 +265,11 @@ The Client object updated
 | website       | String   |
 
 
-#### delete => /api/clients/[id]
+### URI: delete => /api/clients/[id]
 
-* Description: deletes an existing Client object
+* **Description**: deletes an existing Client object
 
-* Request params:
+* **Request params**:
 
 | param name    | type     | param type   |
 | ------------- |:--------:| ------------:|
@@ -280,8 +278,7 @@ The Client object updated
 | description   | String   | Body         |
 | website       | String   | Body         |
 
-
-* Response:
+* **Response**:
 
 The Client object updated
 
@@ -294,19 +291,19 @@ The Client object updated
 
 *** ***
 
-### LegalCases endpoint: 
+## LegalCases endpoint: 
 
-#### get => /xxx/xxx:xxx
+### URI: get => api/legalcases?pageNumber=2&pageSize=3
 
-* Description: xx
+* **Description**: xx
 
-* Request params:
+* **Request params**:
 
 | param name    | type     | param type   |
 | ------------- |:--------:| ------------:|
 | xx       | xx   | xx  |
 
-* Response:
+* **Response**:
 
 An array of xxx objects.
 
@@ -320,18 +317,17 @@ An array of xxx objects.
 | xx          | xx       |
 | xx          | xx       |
 
+### URI: get => /xx/xx/:xx
 
-#### get => /xx/xx/:xx
+* **Description**: xx
 
-* Description: xx
-
-* Request params:
+* **Request params**:
 
 | param name    | type     | param type   |
 | ------------- |:--------:| ------------:|
 | xx            | xx       | xx           |
 
-* Response:
+* **Response**:
 
 An xx object.
 
@@ -346,21 +342,19 @@ An xx object.
 | xx     | xx   |
 
 
-***
+## BillableActivities endpoint: 
 
-### BillableActivities endpoint: 
+### URI: get => /xxx/xxx:xxx
 
-#### get => /xxx/xxx:xxx
+* **Description**: xx
 
-* Description: xx
-
-* Request params:
+* **Request params**:
 
 | param name    | type     | param type   |
 | ------------- |:--------:| ------------:|
 | xx       | xx   | xx  |
 
-* Response:
+* **Response**:
 
 An array of xxx objects.
 
@@ -375,17 +369,17 @@ An array of xxx objects.
 | xx          | xx       |
 
 
-#### get => /xx/xx/:xx
+### URI: get => /xx/xx/:xx
 
-* Description: xx
+* **Description**: xx
 
-* Request params:
+* **Request params**:
 
 | param name    | type     | param type   |
 | ------------- |:--------:| ------------:|
 | xx            | xx       | xx           |
 
-* Response:
+* **Response**:
 
 An xx object.
 
@@ -400,21 +394,19 @@ An xx object.
 | xx     | xx   |
 
 
-***
+## Addresses endpoint: 
 
-### Addresses endpoint: 
+### URI: get => /xxx/xxx:xxx
 
-#### get => /xxx/xxx:xxx
+* **Description**: xx
 
-* Description: xx
-
-* Request params:
+* **Request params**:
 
 | param name    | type     | param type   |
 | ------------- |:--------:| ------------:|
 | xx       | xx   | xx  |
 
-* Response:
+* **Response**:
 
 An array of xxx objects.
 
@@ -429,17 +421,17 @@ An array of xxx objects.
 | xx          | xx       |
 
 
-#### get => /xx/xx/:xx
+### URI: get => /xx/xx/:xx
 
-* Description: xx
+* **Description**: xx
 
-* Request params:
+* **Request params**:
 
 | param name    | type     | param type   |
 | ------------- |:--------:| ------------:|
 | xx            | xx       | xx           |
 
-* Response:
+* **Response**:
 
 An xx object.
 
@@ -454,21 +446,19 @@ An xx object.
 | xx     | xx   |
 
 
-***
+## Contacts endpoint: 
 
-### Contacts endpoint: 
+### URI: get => /xxx/xxx:xxx
 
-#### get => /xxx/xxx:xxx
+* **Description**: xx
 
-* Description: xx
-
-* Request params:
+* **Request params**:
 
 | param name    | type     | param type   |
 | ------------- |:--------:| ------------:|
 | xx       | xx   | xx  |
 
-* Response:
+* **Response**:
 
 An array of xxx objects.
 
@@ -483,17 +473,17 @@ An array of xxx objects.
 | xx          | xx       |
 
 
-#### get => /xx/xx/:xx
+### URI: get => /xx/xx/:xx
 
-* Description: xx
+* **Description**: xx
 
-* Request params:
+* **Request params**:
 
 | param name    | type     | param type   |
 | ------------- |:--------:| ------------:|
 | xx            | xx       | xx           |
 
-* Response:
+* **Response**:
 
 An xx object.
 
@@ -508,21 +498,19 @@ An xx object.
 | xx     | xx   |
 
 
-***
+## Employees endpoint: 
 
-### Employees endpoint: 
+### URI: get => /xxx/xxx:xxx
 
-#### get => /xxx/xxx:xxx
+* **Description**: xx
 
-* Description: xx
-
-* Request params:
+* **Request params**:
 
 | param name    | type     | param type   |
 | ------------- |:--------:| ------------:|
 | xx       | xx   | xx  |
 
-* Response:
+* **Response**:
 
 An array of xxx objects.
 
@@ -537,17 +525,17 @@ An array of xxx objects.
 | xx          | xx       |
 
 
-#### get => /xx/xx/:xx
+### URI: get => /xx/xx/:xx
 
-* Description: xx
+* **Description**: xx
 
-* Request params:
+* **Request params**:
 
 | param name    | type     | param type   |
 | ------------- |:--------:| ------------:|
 | xx            | xx       | xx           |
 
-* Response:
+* **Response**:
 
 An xx object.
 
@@ -562,21 +550,19 @@ An xx object.
 | xx     | xx   |
 
 
-***
+## EmployeeTypes endpoint: 
 
-### EmployeeTypes endpoint: 
+### URI: get => /xxx/xxx:xxx
 
-#### get => /xxx/xxx:xxx
+* **Description**: xx
 
-* Description: xx
-
-* Request params:
+* **Request params**:
 
 | param name    | type     | param type   |
 | ------------- |:--------:| ------------:|
 | xx       | xx   | xx  |
 
-* Response:
+* **Response**:
 
 An array of xxx objects.
 
@@ -591,17 +577,17 @@ An array of xxx objects.
 | xx          | xx       |
 
 
-#### get => /xx/xx/:xx
+### URI: get => /xx/xx/:xx
 
-* Description: xx
+* **Description**: xx
 
-* Request params:
+* **Request params**:
 
 | param name    | type     | param type   |
 | ------------- |:--------:| ------------:|
 | xx            | xx       | xx           |
 
-* Response:
+* **Response**:
 
 An xx object.
 
