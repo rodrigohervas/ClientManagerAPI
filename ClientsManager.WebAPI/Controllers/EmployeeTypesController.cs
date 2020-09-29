@@ -37,7 +37,7 @@ namespace ClientsManager.WebAPI.Controllers
         /// </summary>
         /// <returns>Task&lt;ActionResult&lt;IEnumerable&lt;EmployeeTypeDTO&gt;&gt;&gt; - A list of all the EmployeeTypes</returns>
         /// <![CDATA[ <returns>Task<ActionResult<IEnumerable<EmployeeTypeDTO>>> - A list of all the EmployeeTypes</returns> ]]>
-        // GET: api/employeetypes?pageNumber=2&pageSize=3
+        // GET: api/employeetypes
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
