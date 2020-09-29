@@ -35,7 +35,7 @@ Note. This server can be used with the following client repo: [xxxx](xxxxx)
 
 Before using the API there are several steps to follow in order to create the API in Azure App Services and register it in Azure Active Directory:
 
-1. Register the API in Azure Active Directory (you'll need to have an Azure Active Dircetory tenant configured)
+1. Register the API in Azure Active Directory (you'll need to have an Azure Active Directory tenant configured)
 
 [Recommended Read: Protected Web API app registration](https://docs.microsoft.com/en-us/azure/active-directory/develop/scenario-protected-web-api-app-registration)
 
