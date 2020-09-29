@@ -19,7 +19,19 @@ ASP.NET Core 3.1, C#, AutoMapper, Swagger, Serilog, Entity Framework Core, SQL S
 [ClientsManager API](https://homemanagerrh.herokuapp.com/)
 
 
-## Azure web app and Azure Active Directory:
+## Set up
+
+Complete the following steps to start a new project (NEW-PROJECT-NAME):
+
+1. Clone this repository to your local machine `git clone https://github.com/rodrigohervas/ClientManagerAPI.git NEW-PROJECT-NAME`
+2. `cd` into the cloned repository
+3. Make a fresh start of the git history for this project with `rm -r -Force .git`, amd then `git init`
+4. Make sure that the .gitignore file is encoded as 'UTF-8'
+
+Note. This server can be used with the following client repo: [xxxx](xxxxx)
+
+
+## Configuration: Azure web app and Azure Active Directory:
 
 Before using the API there are several you need to follow to create the API in Azure and register it in Azure Active Directory:
 
@@ -53,7 +65,7 @@ Before using the API there are several you need to follow to create the API in A
 6. Configure the web app created in Azure App Services, specially the appsettings in Azure (or a Key Vault if preferred). 
 
 
-## Authentication / Authorization:
+## Configuration: Authentication / Authorization:
 
 All API requests must be made using an access_token. The access_token is a JWT Token, and is issued by Azure Active Directory.
 
@@ -64,7 +76,7 @@ Regarding Token validation check *ClientsManager.WebAPI.Authentication.AddAuthen
 Authorization is configured at the controller level using the *[Authorize]* attribute.
 
 
-## Database:
+## Configuration: Database:
 
 During the API Publish process you can create the Database in Azure. If you want to run the scripts, you can find them in **_ClientsManager.SQLscripts_**:
 
@@ -81,6 +93,13 @@ During the API Publish process you can create the Database in Azure. If you want
 6. Run *Create_Contacts_Table_Script.sql* to create the ***Contacts*** table
 
 7. Run *Create_Logs_Table_Script.sql* to create the ***EventLogging.Logs*** table
+
+
+## Run Application
+
+Build the solution
+
+Run the application
 
 
 ## Endpoints:
@@ -102,15 +121,12 @@ The API has the following endpoints:
 * **EmployeeTypes**: CRUD *EmployeeTypes* for an *Employee*
 
 
-## Clients endpoint: 
 
-## The second largest heading
-### The second largest heading
-#### The second largest heading
+## Clients endpoint: 
 
 ### URI: get => /api/clients?pageNumber=[number]&pageSize=[size]
 
-* **Description**: returns a collection of Client objects, paged by the provided pageNumber and pageSize
+* **Description**: returns an array of Client objects, paged by the provided pageNumber and pageSize
 
 * **Request params**:
 
@@ -154,7 +170,7 @@ A Client object:
 
 ### URI: get => /api/clients/legalcases/[id]
 
-* **Description**: returns a collection of Client objects, with its related LegalCases
+* **Description**: returns an array of Client objects, with its related LegalCases
 
 * **Request params**:
 
@@ -164,7 +180,7 @@ A Client object:
 
 * **Response**:
 
-A collection of Client objects, with its LegalCase objects:
+An array of Client objects, with its LegalCase objects:
 
 | param name    | type      |
 | ------------- |:---------:|
@@ -172,7 +188,7 @@ A collection of Client objects, with its LegalCase objects:
 | name          | String    |
 | description   | String    |
 | website       | String    |
-| Legalcases    | LegalCase |
+| legalcases    | Array     |
 
 
 ### URI: get => /api/clients/addresses/[id]
@@ -187,7 +203,7 @@ A collection of Client objects, with its LegalCase objects:
 
 * **Response**:
 
-A collection of Client objects:
+A Client object:
 
 | param name    | type     |
 | ------------- |:--------:|
@@ -195,6 +211,7 @@ A collection of Client objects:
 | name          | String   |
 | description   | String   |
 | website       | String   |
+| addresses     | Array    |
 
 
 ### URI: get => /api/clients/contacts/[id]
@@ -217,6 +234,7 @@ A Client object with its related Contact objects:
 | name          | String   |
 | description   | String   |
 | website       | String   |
+| contacts      | Array    |
 
 
 ### URI:  post => /api/clients
@@ -243,7 +261,7 @@ The Client object created.
 | website       | String   |
 
 
-### URI: put => /api/clients/[id]
+### URI: put/patch => /api/clients/[id]
 
 * **Description**: updates an existing Client object
 
@@ -277,353 +295,996 @@ The Client object updated
 
 | param name    | type     | param type   |
 | ------------- |:--------:| ------------:|
-| id            | Number   | Body         |
-| name          | String   | Body         |
-| description   | String   | Body         |
-| website       | String   | Body         |
+| id            | Number   | Route        |
 
 * **Response**:
 
-The Client object updated
+The number of Client objects deleted
 
 | param name    | type     |
 | ------------- |:--------:|
-| id            | Number   |
-| name          | String   |
-| description   | String   |
-| website       | String   |
+| number        | Number   |
 
-*** ***
 
 ## LegalCases endpoint: 
 
 ### URI: get => api/legalcases?pageNumber=2&pageSize=3
 
-* **Description**: xx
+* **Description**: returns an array of LegalCase objects, paged by the provided pageNumber and pageSize
 
 * **Request params**:
 
 | param name    | type     | param type   |
 | ------------- |:--------:| ------------:|
-| xx       | xx   | xx  |
+| pageNumber    | String   | querystring  |
+| pageSize      | String   | querystring  |
 
 * **Response**:
 
-An array of xxx objects.
+An array of LegalCase of  objects.
 
 | param name  | type     |
 | ------------|:--------:|
-| xx          | xx       |
-| xx          | xx       |
-| xx          | xx       |
-| xx          | xx       |
-| xx          | xx       |
-| xx          | xx       |
-| xx          | xx       |
+| id          | Number   |
+| client_id   | Number   |
+| title       | String   |
+| description | String   |
+| trustfund   | Number   |
 
-### URI: get => /xx/xx/:xx
+### URI: get => /api/legalcases/client/[id]
 
-* **Description**: xx
+* **Description**: returns all LegalCases for a provided Client id
 
 * **Request params**:
 
 | param name    | type     | param type   |
 | ------------- |:--------:| ------------:|
-| xx            | xx       | xx           |
+| client_id     | Number   | Route        |
 
 * **Response**:
 
-An xx object.
+An array of LegalCase objects.
 
 | param name  | type     |
 | ------------|:--------:|
-| xx          | xx   |
-| xx     | xx   |
-| xx      | xx   |
-| xx        | xx   |
-| xx | xx   |
-| xx        | xx     |
-| xx     | xx   |
+| id          | Number   |
+| client_id   | Number   |
+| title       | String   |
+| description | String   |
+| trustfund   | Number   | 
+
+### URI: get => /api/legalcases/[id]
+
+* **Description**: returns a LegalCase object for a provided id
+
+* **Request params**:
+
+| param name    | type     | param type   |
+| ------------- |:--------:| ------------:|
+| id            | Number   | Route        |
+
+* **Response**:
+
+A LegalCase object.
+
+| param name  | type     |
+| ------------|:--------:|
+| id          | Number   |
+| client_id   | Number   |
+| title       | String   |
+| description | String   |
+| trustfund   | Number   | 
+
+### URI: get => /api/legalcases/details/[1]
+
+* **Description**: returns a LegalCase object for a provided id, with all its related BillableActivity objects
+
+* **Request params**:
+
+| param name    | type     | param type   |
+| ------------- |:--------:| ------------:|
+| id            | Number   | Route        |
+
+* **Response**:
+
+A LegalCase object
+
+| param name        | type     |
+| ------------------|:--------:|
+| id                | Number   |
+| client_id         | Number   |
+| title             | String   |
+| description       | String   |
+| trustfund         | Number   | 
+| BillableActivities| Array    |
+
+### URI: post => /api/legalcases/
+
+* **Description**: creates a LegalCase object
+
+* **Request params**:
+
+| param name    | type     | param type   |
+| ------------- |:--------:| ------------:|
+| client_id     | Number   | Body         |
+| title         | String   | Body         |
+| description   | String   | Body         |
+| trustfund     | Number   | Body         |
+
+* **Response**:
+
+The created LegalCase object
+
+| param name        | type     |
+| ------------------|:--------:|
+| id                | Number   |
+| client_id         | Number   |
+| title             | String   |
+| description       | String   |
+| trustfund         | Number   | 
+
+### URI: put/patch => /api/legalcases/[id]
+
+* **Description**: updates an existing LegalCase object
+
+* **Request params**:
+
+| param name    | type     | param type   |
+| ------------- |:--------:| ------------:|
+| id            | Number   | Route        |
+| id            | Number   | Body         |
+| client_id     | Number   | Body         |
+| title         | String   | Body         |
+| description   | String   | Body         |
+| trustfund     | Number   | Body         |
+
+* **Response**:
+
+The updated LegalCase object
+
+| param name        | type     |
+| ------------------|:--------:|
+| id                | Number   |
+| client_id         | Number   |
+| title             | String   |
+| description       | String   |
+| trustfund         | Number   | 
+
+### URI: delete => /api/legalcases/[id]
+
+* **Description**: deletes an existing LegalCase object
+
+* **Request params**:
+
+| param name    | type     | param type   |
+| ------------- |:--------:| ------------:|
+| id            | Number   | Route        |
+
+* **Response**:
+
+The number of deleted LegalCase objects
+
+| param name        | type     |
+| ------------------|:--------:|
+| number            | Number   |
+
 
 
 ## BillableActivities endpoint: 
 
-### URI: get => /xxx/xxx:xxx
+### URI: get => /api/billableactivities?pageNumber=[number]&pageSize=[size]
 
-* **Description**: xx
-
-* **Request params**:
-
-| param name    | type     | param type   |
-| ------------- |:--------:| ------------:|
-| xx       | xx   | xx  |
-
-* **Response**:
-
-An array of xxx objects.
-
-| param name  | type     |
-| ------------|:--------:|
-| xx          | xx       |
-| xx          | xx       |
-| xx          | xx       |
-| xx          | xx       |
-| xx          | xx       |
-| xx          | xx       |
-| xx          | xx       |
-
-
-### URI: get => /xx/xx/:xx
-
-* **Description**: xx
+* **Description**: returns an array of BillableActivity objects, paged by the provided pageNumber and pageSize
 
 * **Request params**:
 
 | param name    | type     | param type   |
 | ------------- |:--------:| ------------:|
-| xx            | xx       | xx           |
+| pageNumber    | String   | querystring  |
+| pageSize      | String   | querystring  |
 
 * **Response**:
 
-An xx object.
+An array of BillableActivity objects.
 
-| param name  | type     |
-| ------------|:--------:|
-| xx          | xx   |
-| xx     | xx   |
-| xx      | xx   |
-| xx        | xx   |
-| xx | xx   |
-| xx        | xx     |
-| xx     | xx   |
+| param name      | type     |
+| ----------------|:--------:|
+| id              | Number   |
+| legalcase_id    | Number   |
+| employee_id     | Number   |
+| title           | String   |
+| description     | String   |
+| price           | Number   |
+| start_datetime  | String   |
+| finish_datetime | String   |  
+
+### URI: get => /api/billableactivities/employee/[employee_id]
+
+* **Description**: returns the an array of BillableActivity objects, for a provided Employee id
+
+* **Request params**:
+
+| param name    | type     | param type   |
+| ------------- |:--------:| ------------:|
+| employee_id   | Number   | Route        |
+
+* **Response**:
+
+An array of BillableActivity objects
+
+| param name      | type     |
+| ----------------|:--------:|
+| id              | Number   |
+| legalcase_id    | Number   |
+| employee_id     | Number   |
+| title           | String   |
+| description     | String   |
+| price           | Number   |
+| start_datetime  | String   |
+| finish_datetime | String   | 
+
+
+### URI: get => /api/billableactivities/legalcase/[legalcase_id]
+
+* **Description**: returns an array of BillableActivity objects, for a provided LegalCase id 
+
+* **Request params**:
+
+| param name    | type     | param type   |
+| ------------- |:--------:| ------------:|
+| legalcase_id  | Number   | Route        |
+
+* **Response**:
+
+A LegalCase object.
+
+An array of BillableActivity objects
+
+| param name      | type     |
+| ----------------|:--------:|
+| id              | Number   |
+| legalcase_id    | Number   |
+| employee_id     | Number   |
+| title           | String   |
+| description     | String   |
+| price           | Number   |
+| start_datetime  | String   |
+| finish_datetime | String   | 
+
+
+
+### URI: get => /api/billableactivity/[id]
+
+* **Description**: returns a BillableActivity object, for a provided id 
+
+* **Request params**:
+
+| param name  | type     | param type   |
+| ----------- |:--------:| ------------:|
+| id          | Number   | Route        |
+
+* **Response**:
+
+A BillableActivity object.
+
+| param name      | type     |
+| ----------------|:--------:|
+| id              | Number   |
+| legalcase_id    | Number   |
+| employee_id     | Number   |
+| title           | String   |
+| description     | String   |
+| price           | Number   |
+| start_datetime  | String   |
+| finish_datetime | String   | 
+
+
+### URI: post => /api/billableactivities
+
+* **Description**: creates a BillableActivity object
+
+* **Request params**:
+
+| param name      | type     | param type   |
+| --------------- |:--------:| ------------:|
+| legalcase_id    | Number   |  Body        |
+| employee_id     | Number   |  Body        |
+| title           | String   |  Body        |
+| description     | String   |  Body        |
+| price           | Number   |  Body        |
+| start_datetime  | String   |  Body        |
+| finish_datetime | String   |  Body        |
+
+* **Response**:
+
+The created BillableActivity object.
+
+| param name      | type     |
+| ----------------|:--------:|
+| id              | Number   |
+| legalcase_id    | Number   |
+| employee_id     | Number   |
+| title           | String   |
+| description     | String   |
+| price           | Number   |
+| start_datetime  | String   |
+| finish_datetime | String   | 
+
+
+### URI: put/patch => /api/billableactivities/[id]
+
+* **Description**: updates an existing BillableActivity object
+
+* **Request params**:
+
+| param name      | type     | param type   |
+| --------------- |:--------:| ------------:|
+| id              | Number   |  Route       |
+| id              | Number   |  Body        |
+| legalcase_id    | Number   |  Body        |
+| employee_id     | Number   |  Body        |
+| title           | String   |  Body        |
+| description     | String   |  Body        |
+| price           | Number   |  Body        |
+| start_datetime  | String   |  Body        |
+| finish_datetime | String   |  Body        |
+
+* **Response**:
+
+The updated BillableActivity object.
+
+| param name      | type     |
+| ----------------|:--------:|
+| id              | Number   |
+| legalcase_id    | Number   |
+| employee_id     | Number   |
+| title           | String   |
+| description     | String   |
+| price           | Number   |
+| start_datetime  | String   |
+| finish_datetime | String   | 
+
+
+### URI: delete => /api/billableactivities/[id]
+
+* **Description**: deletes an existing BillableActivity object
+
+* **Request params**:
+
+| param name      | type     | param type   |
+| --------------- |:--------:| ------------:|
+| id              | Number   |  Route       |
+
+* **Response**:
+
+The number of deleted BillableActivity objects
+
+| param name        | type     |
+| ------------------|:--------:|
+| number            | Number   |
 
 
 ## Addresses endpoint: 
 
-### URI: get => /xxx/xxx:xxx
+### URI: get => /api/addresses?pageNumber=[number]&pageSize=[size]
 
-* **Description**: xx
-
-* **Request params**:
-
-| param name    | type     | param type   |
-| ------------- |:--------:| ------------:|
-| xx       | xx   | xx  |
-
-* **Response**:
-
-An array of xxx objects.
-
-| param name  | type     |
-| ------------|:--------:|
-| xx          | xx       |
-| xx          | xx       |
-| xx          | xx       |
-| xx          | xx       |
-| xx          | xx       |
-| xx          | xx       |
-| xx          | xx       |
-
-
-### URI: get => /xx/xx/:xx
-
-* **Description**: xx
+* **Description**: returns an array of Address objects, paged by the provided pageNumber and pageSize
 
 * **Request params**:
 
 | param name    | type     | param type   |
 | ------------- |:--------:| ------------:|
-| xx            | xx       | xx           |
+| pageNumber    | String   | querystring  |
+| pageSize      | String   | querystring  |
 
 * **Response**:
 
-An xx object.
+An array of Address objects.
 
-| param name  | type     |
-| ------------|:--------:|
-| xx          | xx   |
-| xx     | xx   |
-| xx      | xx   |
-| xx        | xx   |
-| xx | xx   |
-| xx        | xx     |
-| xx     | xx   |
+| param name    | type     |
+| --------------|:--------:|
+| id            | Number   |
+| client_id     | Number   |
+| streetnumber  | String   |
+| city          | String   |
+| stateprovince | String   |
+| zipcode       | String   |
+| country       | String   |
+
+
+### URI: get => /api/addresses/client/[client_id]
+
+* **Description**: returns an array of Address objects, for a provided Client id 
+
+* **Request params**:
+
+| param name  | type     | param type   |
+| ----------- |:--------:| ------------:|
+| client_id   | Number   | Route        |
+
+* **Response**:
+
+An array of Address objects
+
+| param name    | type     |
+| --------------|:--------:|
+| id            | Number   |
+| client_id     | Number   |
+| streetnumber  | String   |
+| city          | String   |
+| stateprovince | String   |
+| zipcode       | String   |
+| country       | String   |
+
+
+### URI: get => /api/addresses/[id]
+
+* **Description**: returns an Address object, for a provided id 
+
+* **Request params**:
+
+| param name  | type     | param type   |
+| ----------- |:--------:| ------------:|
+| id          | Number   | Route        |
+
+* **Response**:
+
+An Address object
+
+| param name    | type     |
+| --------------|:--------:|
+| id            | Number   |
+| client_id     | Number   |
+| streetnumber  | String   |
+| city          | String   |
+| stateprovince | String   |
+| zipcode       | String   |
+| country       | String   |
+
+
+### URI: get => /api/addresses/details/[id]
+
+* **Description**: returns an Address object, for a provided id, with its related Contact objects
+
+* **Request params**:
+
+| param name  | type     | param type   |
+| ----------- |:--------:| ------------:|
+| id          | Number   | Route        |
+
+* **Response**:
+
+An Address object
+
+| param name    | type     |
+| --------------|:--------:|
+| id            | Number   |
+| client_id     | Number   |
+| streetnumber  | String   |
+| city          | String   |
+| stateprovince | String   |
+| zipcode       | String   |
+| country       | String   |
+| contacts      | Array    |
+
+
+### URI: post => /api/addresses
+
+* **Description**: creates an Address object
+
+* **Request params**:
+
+| param name     | type      | param type   |
+| ---------------|:---------:| ------------:|
+| client_id      | Number    |  Body        |
+| streetnumber   | String    |  Body        |
+| city           | String    |  Body        |
+| stateprovince  | String    |  Body        |
+| zipcode        | String    |  Body        |
+| country        | String    |  Body        |
+
+* **Response**:
+
+The created Address object.
+
+| param name    | type     |
+| --------------|:--------:|
+| id            | Number   |
+| client_id     | Number   |
+| streetnumber  | String   |
+| city          | String   |
+| stateprovince | String   |
+| zipcode       | String   |
+| country       | String   | 
+
+
+### URI: put/patch => /api/addresses/[id]
+
+* **Description**: updates an existing Address object
+
+* **Request params**:
+
+| param name      | type     | param type   |
+| --------------- |:--------:| ------------:|
+| id              | Number   |  Route       |
+| id              | Number   |  Body        |
+| client_id       | Number   |  Body        |
+| streetnumber    | String   |  Body        |
+| city            | String   |  Body        |
+| stateprovince   | String   |  Body        |
+| zipcode         | String   |  Body        |
+| country         | String   |  Body        |
+
+* **Response**:
+
+The updated Address object.
+
+| param name    | type     |
+| --------------|:--------:|
+| id            | Number   |
+| client_id     | Number   |
+| streetnumber  | String   |
+| city          | String   |
+| stateprovince | String   |
+| zipcode       | String   |
+| country       | String   | 
+
+
+### URI: delete => /api/addresses/[id]
+
+* **Description**: deletes an existing Address object
+
+* **Request params**:
+
+| param name      | type     | param type   |
+| --------------- |:--------:| ------------:|
+| id              | Number   |  Route       |
+
+* **Response**:
+
+The number of deleted Address objects
+
+| param name        | type     |
+| ------------------|:--------:|
+| number            | Number   |
+
 
 
 ## Contacts endpoint: 
 
-### URI: get => /xxx/xxx:xxx
 
-* **Description**: xx
+### URI: get => /api/contacts?pageNumber=[number]&pageSize=[size]
 
-* **Request params**:
-
-| param name    | type     | param type   |
-| ------------- |:--------:| ------------:|
-| xx       | xx   | xx  |
-
-* **Response**:
-
-An array of xxx objects.
-
-| param name  | type     |
-| ------------|:--------:|
-| xx          | xx       |
-| xx          | xx       |
-| xx          | xx       |
-| xx          | xx       |
-| xx          | xx       |
-| xx          | xx       |
-| xx          | xx       |
-
-
-### URI: get => /xx/xx/:xx
-
-* **Description**: xx
+* **Description**: returns an array of Contact objects, paged by the provided pageNumber and pageSize
 
 * **Request params**:
 
 | param name    | type     | param type   |
 | ------------- |:--------:| ------------:|
-| xx            | xx       | xx           |
+| pageNumber    | String   | querystring  |
+| pageSize      | String   | querystring  |
 
 * **Response**:
 
-An xx object.
+An array of Contact objects
 
-| param name  | type     |
-| ------------|:--------:|
-| xx          | xx   |
-| xx     | xx   |
-| xx      | xx   |
-| xx        | xx   |
-| xx | xx   |
-| xx        | xx     |
-| xx     | xx   |
+| param name    | type     |
+| --------------|:--------:|
+| id            | Number   |
+| client_id     | Number   |
+| address_id    | Number   |
+| name          | String   |
+| position      | String   |
+| telephone     | String   |
+| cellphone     | String   |
+| email         | String   |
+
+
+### URI: get => /api/contacts/client/[client_id]
+
+* **Description**: returns an array of Contact objects, for a provided Client id 
+
+* **Request params**:
+
+| param name  | type     | param type   |
+| ----------- |:--------:| ------------:|
+| client_id   | Number   | Route        |
+
+* **Response**:
+
+An array of Contact objects
+
+| param name    | type     |
+| --------------|:--------:|
+| id            | Number   |
+| client_id     | Number   |
+| address_id    | Number   |
+| name          | String   |
+| position      | String   |
+| telephone     | String   |
+| cellphone     | String   |
+| email         | String   |
+
+
+### URI: get => /api/contacts/[id]
+
+* **Description**: returns a Contact object, for a provided id 
+
+* **Request params**:
+
+| param name  | type     | param type   |
+| ----------- |:--------:| ------------:|
+| id          | Number   | Route        |
+
+* **Response**:
+
+A Contact object
+
+| param name    | type     |
+| --------------|:--------:|
+| id            | Number   |
+| client_id     | Number   |
+| address_id    | Number   |
+| name          | String   |
+| position      | String   |
+| telephone     | String   |
+| cellphone     | String   |
+| email         | String   |
+
+
+### URI: get => /api/contacts/details/1
+
+* **Description**: returns a Contact object, for a provided id, with its related Address objects
+
+* **Request params**:
+
+| param name  | type     | param type   |
+| ----------- |:--------:| ------------:|
+| id          | Number   | Route        |
+
+* **Response**:
+
+A Contact object
+
+| param name    | type     |
+| --------------|:--------:|
+| id            | Number   |
+| client_id     | Number   |
+| address_id    | Number   |
+| name          | String   |
+| position      | String   |
+| telephone     | String   |
+| cellphone     | String   |
+| email         | String   |
+| addresses     | Array    |
+
+
+### URI: post => /api/contacts
+
+* **Description**: creates a Contact object
+
+* **Request params**:
+
+| param name    | type     | param type   |
+| --------------|:--------:| ------------:|
+| client_id     | Number   | Body         |
+| address_id    | Number   | Body         |
+| name          | String   | Body         |
+| position      | String   | Body         |
+| telephone     | String   | Body         |
+| cellphone     | String   | Body         |
+| email         | String   | Body         |
+
+* **Response**:
+
+The created Contact object.
+
+| param name    | type     |
+| --------------|:--------:|
+| client_id     | Number   |
+| address_id    | Number   |
+| name          | String   |
+| position      | String   |
+| telephone     | String   |
+| cellphone     | String   |
+| email         | String   |
+
+
+### URI: put/patch => /api/contacts[id]
+
+* **Description**: updates an existing Contact object
+
+* **Request params**:
+
+| param name    | type     | param type   |
+| --------------|:--------:| ------------:|
+| id            | Number   | Route        |
+| id            | Number   | Body         |
+| client_id     | Number   | Body         |
+| address_id    | Number   | Body         |
+| name          | String   | Body         |
+| position      | String   | Body         |
+| telephone     | String   | Body         |
+| cellphone     | String   | Body         |
+| email         | String   | Body         |
+
+* **Response**:
+
+The updated Contact object.
+
+| param name    | type     |
+| --------------|:--------:|
+| id            | Number   |
+| client_id     | Number   |
+| address_id    | Number   |
+| name          | String   |
+| position      | String   |
+| telephone     | String   |
+| cellphone     | String   |
+| email         | String   |
+
+
+### URI: delete => /api/contacts/[id]
+
+* **Description**: deletes an existing Contact object
+
+* **Request params**:
+
+| param name    | type     | param type   |
+| --------------|:--------:| ------------:|
+| id            | Number   | Route        |
+
+* **Response**:
+
+The number of deleted Contact objects
+
+| param name        | type     |
+| ------------------|:--------:|
+| number            | Number   |
+
 
 
 ## Employees endpoint: 
 
-### URI: get => /xxx/xxx:xxx
 
-* **Description**: xx
+### URI: get => /api/employees?pageNumber=[number]&pageSize=[size]
 
-* **Request params**:
-
-| param name    | type     | param type   |
-| ------------- |:--------:| ------------:|
-| xx       | xx   | xx  |
-
-* **Response**:
-
-An array of xxx objects.
-
-| param name  | type     |
-| ------------|:--------:|
-| xx          | xx       |
-| xx          | xx       |
-| xx          | xx       |
-| xx          | xx       |
-| xx          | xx       |
-| xx          | xx       |
-| xx          | xx       |
-
-
-### URI: get => /xx/xx/:xx
-
-* **Description**: xx
+* **Description**: returns an array of Employee objects, paged by the provided pageNumber and pageSize
 
 * **Request params**:
 
 | param name    | type     | param type   |
 | ------------- |:--------:| ------------:|
-| xx            | xx       | xx           |
+| pageNumber    | String   | querystring  |
+| pageSize      | String   | querystring  |
 
 * **Response**:
 
-An xx object.
+An array of Employee objects
 
-| param name  | type     |
-| ------------|:--------:|
-| xx          | xx   |
-| xx     | xx   |
-| xx      | xx   |
-| xx        | xx   |
-| xx | xx   |
-| xx        | xx     |
-| xx     | xx   |
+| param name      | type     |
+| ----------------|:--------:|
+| id              | Number   |
+| name            | String   |
+| employeetype_id | String   |
+| position        | String   |
+
+
+### URI: get => /api/employees/[id]
+
+* **Description**: returns an array of Employee objects, for a provided id 
+
+* **Request params**:
+
+| param name  | type     | param type   |
+| ----------- |:--------:| ------------:|
+| id          | Number   | Route        |
+
+* **Response**:
+
+An array of Employee objects
+
+| param name      | type     |
+| ----------------|:--------:|
+| id              | Number   |
+| name            | String   |
+| employeetype_id | String   |
+| position        | String   |
+
+
+### URI: get => /api/employees/[employeetype_id]
+
+* **Description**: returns an array of Employee objects, for a provided EmployeeType id 
+
+* **Request params**:
+
+| param name        | type     | param type   |
+| ----------------- |:--------:| ------------:|
+| employeetype_id   | Number   | Route        |
+
+* **Response**:
+
+An array of Employee objects
+
+| param name      | type     |
+| ----------------|:--------:|
+| id              | Number   |
+| name            | String   |
+| employeetype_id | String   |
+| position        | String   |
+
+
+### URI: post => /api/employees
+
+* **Description**: creates an Employee object
+
+* **Request params**:
+
+| param name      | type     | param type   |
+| ----------------|:--------:| ------------:|
+| name            | Number   | Body         |
+| employeetype_id | String   | Body         |
+| position        | String   | Body         |
+
+* **Response**:
+
+The created Employee object
+
+| param name    | type     |
+| --------------|:--------:|
+| id              | Number   |
+| name            | String   |
+| employeetype_id | String   |
+| position        | String   |
+
+
+### URI: put/patch => /api/employees/[id]
+
+* **Description**: updates an existing Employee object
+
+* **Request params**:
+
+| param name      | type     | param type   |
+| ----------------|:--------:| ------------:|
+| id              | Number   | Route        |
+| id              | Number   | Body         |
+| name            | String   | Body         |
+| employeetype_id | String   | Body         |
+| position        | String   | Body         |
+
+* **Response**:
+
+The updated Employee object
+
+| param name    | type     |
+| --------------|:--------:|
+| id              | Number   |
+| name            | String   |
+| employeetype_id | String   |
+| position        | String   |
+
+
+### URI: put/patch => /api/employees/[id]
+
+* **Description**: deletes an existing Employee object
+
+* **Request params**:
+
+| param name      | type     | param type   |
+| ----------------|:--------:| ------------:|
+| id              | Number   | Route        |
+
+* **Response**:
+
+The number of deleted Employee objects
+
+| param name        | type     |
+| ------------------|:--------:|
+| number            | Number   |
+
 
 
 ## EmployeeTypes endpoint: 
 
-### URI: get => /xxx/xxx:xxx
 
-* **Description**: xx
+### URI: get => /api/employeetypes
 
-* **Request params**:
-
-| param name    | type     | param type   |
-| ------------- |:--------:| ------------:|
-| xx       | xx   | xx  |
-
-* **Response**:
-
-An array of xxx objects.
-
-| param name  | type     |
-| ------------|:--------:|
-| xx          | xx       |
-| xx          | xx       |
-| xx          | xx       |
-| xx          | xx       |
-| xx          | xx       |
-| xx          | xx       |
-| xx          | xx       |
-
-
-### URI: get => /xx/xx/:xx
-
-* **Description**: xx
+* **Description**: returns an array of EmployeeType objects
 
 * **Request params**:
 
-| param name    | type     | param type   |
-| ------------- |:--------:| ------------:|
-| xx            | xx       | xx           |
+None
 
 * **Response**:
 
-An xx object.
+An array of EmployeeType objects
 
-| param name  | type     |
-| ------------|:--------:|
-| xx          | xx   |
-| xx     | xx   |
-| xx      | xx   |
-| xx        | xx   |
-| xx | xx   |
-| xx        | xx     |
-| xx     | xx   |
+| param name      | type     |
+| ----------------|:--------:|
+| id              | Number   |
+| description     | String   |
+
+### URI: get => /api/employeetypes/[id]
+
+* **Description**: returns an EmployeeType object, for a provided id 
+
+* **Request params**:
+
+| param name  | type     | param type   |
+| ----------- |:--------:| ------------:|
+| id          | Number   | Route        |
+
+* **Response**:
+
+An array of Employee objects
+
+| param name      | type     |
+| ----------------|:--------:|
+| id              | Number   |
+| description     | String   |
 
 
+### URI: post => /api/employeetypes
+
+* **Description**: creates an EmployeeType object
+
+* **Request params**:
+
+| param name      | type     | param type   |
+| ----------------|:--------:| ------------:|
+| description     | String   | Body         |
+
+* **Response**:
+
+The created EmployeeType object
+
+| param name    | type     |
+| --------------|:--------:|
+| id              | Number   |
+| description     | String   |
 
 
-## Set up
+### URI: put/patch => /api/employeetypes/[id]
 
-Complete the following steps to start a new project (NEW-PROJECT-NAME):
+* **Description**: updates an existing EmployeeType object
 
-1. Clone this repository to your local machine `git clone https://github.com/rodrigohervas/ClientManagerAPI.git NEW-PROJECT-NAME`
-2. `cd` into the cloned repository
-3. Make a fresh start of the git history for this project with `rm -r -Force .git`, amd then `git init`
-4. Make sure that the .gitignore file is encoded as 'UTF-8'
+* **Request params**:
 
-Note. This server can be used with the following client repo: [xxxx](xxxxx)
+| param name   | type     | param type   |
+| -------------|:--------:| ------------:|
+| id           | Number   | Route        |
+| id           | Number   | Body         |
+| description  | String   | Body         |
 
-## Run Application
+* **Response**:
 
-Build the solution
+The updated EmployeeType object
 
-Run the application
+| param name    | type     |
+| --------------|:--------:|
+| id              | Number   |
+| description     | String   |
+
+### URI: delete => /api/employeetypes/[id]
+
+* **Description**: deletes an existing EmployeeType object
+
+* **Request params**:
+
+| param name   | type     | param type   |
+| -------------|:--------:| ------------:|
+| id           | Number   | Route        |
+| id           | Number   | Body         |
+| description  | String   | Body         |
+
+* **Response**:
+
+The number of deleted EmployeeType objects
+
+| param name        | type     |
+| ------------------|:--------:|
+| number            | Number   |
+
 
 ## Related Repos
 
