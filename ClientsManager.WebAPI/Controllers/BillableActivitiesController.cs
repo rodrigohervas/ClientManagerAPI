@@ -157,7 +157,7 @@ namespace ClientsManager.WebAPI.Controllers
         /// <param name="legalCase_id">Integer - BillableActivity case_id identifier in DB</param>
         /// <returns>Task&lt;ActionResult&lt;IEnumerable&lt;BillableActivity&gt;&gt;&gt; - A list of BillableActivities</returns>
         /// <![CDATA[ <returns>Task<ActionResult<IEnumerable<BillableActivity>>> - A list of BillableActivities</returns> ]]>
-        //GET: api/billableactivities/case/1
+        //GET: api/billableactivities/legalcase/1
         [HttpGet("case/{legalCase_id:int}")]
         [ServiceFilter(typeof(LegalCaseIdValidator))]
         [ProducesResponseType(StatusCodes.Status200OK)]
