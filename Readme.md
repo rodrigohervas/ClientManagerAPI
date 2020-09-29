@@ -102,96 +102,201 @@ The API has the following endpoints:
 * **EmployeeTypes**: CRUD *EmployeeTypes* for an *Employee*
 
 
-## users endpoint: 
+## Clients endpoint: 
 
-#### post => /api/users/auth
+### get => /api/clients?pageNumber=[number]&pageSize=[size]
 
-* Description: returns a user object for a provided username and password
+* Description: returns a collection of Client objects, paged by the provided pageNumber and pageSize
 
 * Request params:
 
 | param name    | type     | param type   |
 | ------------- |:--------:| ------------:|
-| username      | String   | body         |
-| password      | String   | body         |
-
+| pageNumber    | String   | querystring  |
+| pageSize      | String   | querystring  |
 
 * Response:
 
-A user object.
+A collection of Client objects:
 
 | param name    | type     |
 | ------------- |:--------:|
 | id            | Number   |
-| username      | String   |
-| password      | String   |
+| name          | String   |
+| description   | String   |
+| website       | String   |
 
+### get => /api/clients/[id]
 
-#### post => /api/users
-
-* Description: creates a user object
+* Description: returns a Client object for the provided client id
 
 * Request params:
 
 | param name    | type     | param type   |
 | ------------- |:--------:| ------------:|
-| username      | String   | body         |
-| password      | String   | body         |
-
+| id            | Number   | route        |
 
 * Response:
 
-The user object created.
+A Client object:
 
 | param name    | type     |
 | ------------- |:--------:|
 | id            | Number   |
-| username      | String   |
-| password      | String   |
+| name          | String   |
+| description   | String   |
+| website       | String   |
 
 
-#### put => /api/users
+### get => /api/clients/legalcases/[id]
 
-* Description: updates a user's password
+* Description: returns a collection of Client objects, with its related LegalCases
 
 * Request params:
 
 | param name    | type     | param type   |
 | ------------- |:--------:| ------------:|
-| username      | String   | body         |
-| password      | String   | body         |
-| newPassword   | String   | body         |
+| id            | Number   | route        |
 
 * Response:
 
-The user object updated.
+A collection of Client objects, with its LegalCase objects:
 
-| param name    | type     |
-| ------------- |:--------:|
-| id            | numeric  |
-| username      | String   |
-| password      | String   |
+| param name    | type      |
+| ------------- |:---------:|
+| id            | Number    |
+| name          | String    |
+| description   | String    |
+| website       | String    |
+| Legalcases    | LegalCase |
 
 
-#### delete => /api/users
+### get => /api/clients/addresses/[id]
 
-* Description: deletes a user
+* Description: returns a Client object for the provided client id, including its related Address objects
 
 * Request params:
 
 | param name    | type     | param type   |
 | ------------- |:--------:| ------------:|
-| username      | String   | body         |
-| password      | String   | body         |
+| id            | Number   | route        |
+
+* Response:
+
+A collection of Client objects:
+
+| param name    | type     |
+| ------------- |:--------:|
+| id            | Number   |
+| name          | String   |
+| description   | String   |
+| website       | String   |
 
 
-* Response: a string confirming the user is deleted.
+### get => /api/clients/contacts/[id]
 
-***
+* Description: returns a Client object for the provided id, including its related Contact objects
 
-### XXX endpoint: 
+* Request params:
 
-#### post => /xxx/xxx:xxx
+| param name    | type     | param type   |
+| ------------- |:--------:| ------------:|
+| id            | Number   | route        |
+
+* Response:
+
+A Client object with its related Contact objects:
+
+| param name    | type     |
+| ------------- |:--------:|
+| id            | Number   |
+| name          | String   |
+| description   | String   |
+| website       | String   |
+
+
+#### post => /api/clients
+
+* Description: creates a Client object
+
+* Request params:
+
+| param name    | type     | param type   |
+| ------------- |:--------:| ------------:|
+| name          | String   | Body         |
+| description   | String   | Body         |
+| website       | String   | Body         |
+
+
+* Response:
+
+The Client object created.
+
+| param name    | type     |
+| ------------- |:--------:|
+| id            | Number   |
+| name          | String   |
+| description   | String   |
+| website       | String   |
+
+
+#### put => /api/clients/[id]
+
+* Description: updates an existing Client object
+
+* Request params:
+
+| param name    | type     | param type   |
+| ------------- |:--------:| ------------:|
+| id            | Number   | Route        |
+| id            | Number   | Body         |
+| name          | String   | Body         |
+| description   | String   | Body         |
+| website       | String   | Body         |
+
+
+* Response:
+
+The Client object updated
+
+| param name    | type     |
+| ------------- |:--------:|
+| id            | Number   |
+| name          | String   |
+| description   | String   |
+| website       | String   |
+
+
+#### delete => /api/clients/[id]
+
+* Description: deletes an existing Client object
+
+* Request params:
+
+| param name    | type     | param type   |
+| ------------- |:--------:| ------------:|
+| id            | Number   | Body         |
+| name          | String   | Body         |
+| description   | String   | Body         |
+| website       | String   | Body         |
+
+
+* Response:
+
+The Client object updated
+
+| param name    | type     |
+| ------------- |:--------:|
+| id            | Number   |
+| name          | String   |
+| description   | String   |
+| website       | String   |
+
+*** ***
+
+### LegalCases endpoint: 
+
+#### get => /xxx/xxx:xxx
 
 * Description: xx
 
@@ -203,17 +308,17 @@ The user object updated.
 
 * Response:
 
-An array of expense objects.
+An array of xxx objects.
 
 | param name  | type     |
 | ------------|:--------:|
-| xx          | xx   |
-| xx     | xx   |
-| xx      | xx   |
-| xx        | xx   |
-| xx | xx   |
-| xx        | xx     |
-| xx     | xx   |
+| xx          | xx       |
+| xx          | xx       |
+| xx          | xx       |
+| xx          | xx       |
+| xx          | xx       |
+| xx          | xx       |
+| xx          | xx       |
 
 
 #### get => /xx/xx/:xx
@@ -224,7 +329,7 @@ An array of expense objects.
 
 | param name    | type     | param type   |
 | ------------- |:--------:| ------------:|
-| xx            | xx   | xx  |
+| xx            | xx       | xx           |
 
 * Response:
 
@@ -241,6 +346,274 @@ An xx object.
 | xx     | xx   |
 
 
+***
+
+### BillableActivities endpoint: 
+
+#### get => /xxx/xxx:xxx
+
+* Description: xx
+
+* Request params:
+
+| param name    | type     | param type   |
+| ------------- |:--------:| ------------:|
+| xx       | xx   | xx  |
+
+* Response:
+
+An array of xxx objects.
+
+| param name  | type     |
+| ------------|:--------:|
+| xx          | xx       |
+| xx          | xx       |
+| xx          | xx       |
+| xx          | xx       |
+| xx          | xx       |
+| xx          | xx       |
+| xx          | xx       |
+
+
+#### get => /xx/xx/:xx
+
+* Description: xx
+
+* Request params:
+
+| param name    | type     | param type   |
+| ------------- |:--------:| ------------:|
+| xx            | xx       | xx           |
+
+* Response:
+
+An xx object.
+
+| param name  | type     |
+| ------------|:--------:|
+| xx          | xx   |
+| xx     | xx   |
+| xx      | xx   |
+| xx        | xx   |
+| xx | xx   |
+| xx        | xx     |
+| xx     | xx   |
+
+
+***
+
+### Addresses endpoint: 
+
+#### get => /xxx/xxx:xxx
+
+* Description: xx
+
+* Request params:
+
+| param name    | type     | param type   |
+| ------------- |:--------:| ------------:|
+| xx       | xx   | xx  |
+
+* Response:
+
+An array of xxx objects.
+
+| param name  | type     |
+| ------------|:--------:|
+| xx          | xx       |
+| xx          | xx       |
+| xx          | xx       |
+| xx          | xx       |
+| xx          | xx       |
+| xx          | xx       |
+| xx          | xx       |
+
+
+#### get => /xx/xx/:xx
+
+* Description: xx
+
+* Request params:
+
+| param name    | type     | param type   |
+| ------------- |:--------:| ------------:|
+| xx            | xx       | xx           |
+
+* Response:
+
+An xx object.
+
+| param name  | type     |
+| ------------|:--------:|
+| xx          | xx   |
+| xx     | xx   |
+| xx      | xx   |
+| xx        | xx   |
+| xx | xx   |
+| xx        | xx     |
+| xx     | xx   |
+
+
+***
+
+### Contacts endpoint: 
+
+#### get => /xxx/xxx:xxx
+
+* Description: xx
+
+* Request params:
+
+| param name    | type     | param type   |
+| ------------- |:--------:| ------------:|
+| xx       | xx   | xx  |
+
+* Response:
+
+An array of xxx objects.
+
+| param name  | type     |
+| ------------|:--------:|
+| xx          | xx       |
+| xx          | xx       |
+| xx          | xx       |
+| xx          | xx       |
+| xx          | xx       |
+| xx          | xx       |
+| xx          | xx       |
+
+
+#### get => /xx/xx/:xx
+
+* Description: xx
+
+* Request params:
+
+| param name    | type     | param type   |
+| ------------- |:--------:| ------------:|
+| xx            | xx       | xx           |
+
+* Response:
+
+An xx object.
+
+| param name  | type     |
+| ------------|:--------:|
+| xx          | xx   |
+| xx     | xx   |
+| xx      | xx   |
+| xx        | xx   |
+| xx | xx   |
+| xx        | xx     |
+| xx     | xx   |
+
+
+***
+
+### Employees endpoint: 
+
+#### get => /xxx/xxx:xxx
+
+* Description: xx
+
+* Request params:
+
+| param name    | type     | param type   |
+| ------------- |:--------:| ------------:|
+| xx       | xx   | xx  |
+
+* Response:
+
+An array of xxx objects.
+
+| param name  | type     |
+| ------------|:--------:|
+| xx          | xx       |
+| xx          | xx       |
+| xx          | xx       |
+| xx          | xx       |
+| xx          | xx       |
+| xx          | xx       |
+| xx          | xx       |
+
+
+#### get => /xx/xx/:xx
+
+* Description: xx
+
+* Request params:
+
+| param name    | type     | param type   |
+| ------------- |:--------:| ------------:|
+| xx            | xx       | xx           |
+
+* Response:
+
+An xx object.
+
+| param name  | type     |
+| ------------|:--------:|
+| xx          | xx   |
+| xx     | xx   |
+| xx      | xx   |
+| xx        | xx   |
+| xx | xx   |
+| xx        | xx     |
+| xx     | xx   |
+
+
+***
+
+### EmployeeTypes endpoint: 
+
+#### get => /xxx/xxx:xxx
+
+* Description: xx
+
+* Request params:
+
+| param name    | type     | param type   |
+| ------------- |:--------:| ------------:|
+| xx       | xx   | xx  |
+
+* Response:
+
+An array of xxx objects.
+
+| param name  | type     |
+| ------------|:--------:|
+| xx          | xx       |
+| xx          | xx       |
+| xx          | xx       |
+| xx          | xx       |
+| xx          | xx       |
+| xx          | xx       |
+| xx          | xx       |
+
+
+#### get => /xx/xx/:xx
+
+* Description: xx
+
+* Request params:
+
+| param name    | type     | param type   |
+| ------------- |:--------:| ------------:|
+| xx            | xx       | xx           |
+
+* Response:
+
+An xx object.
+
+| param name  | type     |
+| ------------|:--------:|
+| xx          | xx   |
+| xx     | xx   |
+| xx      | xx   |
+| xx        | xx   |
+| xx | xx   |
+| xx        | xx     |
+| xx     | xx   |
 
 
 
