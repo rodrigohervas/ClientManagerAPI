@@ -126,7 +126,7 @@ A collection of Client objects:
 | description   | String   |
 | website       | String   |
 
-### URI: get => /api/clients/[id]
+###URI: get => /api/clients/[id]
 
 * **Description**: returns a Client object for the provided client id
 
