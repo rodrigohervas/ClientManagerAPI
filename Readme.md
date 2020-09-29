@@ -1,29 +1,31 @@
 # ClientsManagerAPI
 ASP.NET Core 3 Web API to manage clients and legal clases
 
+
 ## Description: 
 
 ClientsManager is an ASP.NET Core 3.1 Web API.
 
 Using ClientsManager you can manage your clients, legal cases, and billable activities.
 
+
 ## Technologies used: 
 
 ASP.NET Core 3.1, C#, AutoMapper, Swagger, Serilog, Entity Framework Core, SQL Server
+
 
 ## Live Site
 
 [ClientsManager API](https://homemanagerrh.herokuapp.com/)
 
-## API Documentation:
 
-### Azure web app and Azure Active Directory:
+## Azure web app and Azure Active Directory:
 
 Before using the API there are several you need to follow to create the API in Azure and register it in Azure Active Directory:
 
 1. Register the API in Azure Active Directory (you'll need to have an Azure AD tenant configured)
 
-[Recommended Read:](https://docs.microsoft.com/en-us/azure/active-directory/develop/scenario-protected-web-api-app-registration)
+[Recommended Read: Protected Web API app registration](https://docs.microsoft.com/en-us/azure/active-directory/develop/scenario-protected-web-api-app-registration)
 
 2. Configure the API registration in Azure AD (the registration must expose at least one scope/role in the *Expose an API* section)
 
@@ -44,14 +46,14 @@ Before using the API there are several you need to follow to create the API in A
 
 4. Create a web app in Azure App Services for your API
 
-[Recommended read:](https://docs.microsoft.com/en-us/aspnet/core/tutorials/publish-to-azure-webapp-using-vs?view=aspnetcore-3.1)
+[Recommended read: Publish web app to Azure](https://docs.microsoft.com/en-us/aspnet/core/tutorials/publish-to-azure-webapp-using-vs?view=aspnetcore-3.1)
 
 5. Publish the API to Azure
 
 6. Configure the web app created in Azure App Services, specially the appsettings in Azure (or a Key Vault if preferred). 
 
 
-### Authentication / Authorization:
+## Authentication / Authorization:
 
 All API requests must be made using an access_token. The access_token is a JWT Token, and is issued by Azure Active Directory.
 
@@ -62,26 +64,26 @@ Regarding Token validation check *ClientsManager.WebAPI.Authentication.AddAuthen
 Authorization is configured at the controller level using the *[Authorize]* attribute.
 
 
-### Database:
+## Database:
 
 During the API Publish process you can create the Database in Azure. If you want to run the scripts, you can find them in **_ClientsManager.SQLscripts_**:
 
 1. Run *Create_ClientsManager_DB_Script.sql* to create the **_ClientManagers_** database
 
-2. Run *Create_EmployeeTypes_Table_Script.sql* to create the *EmployeeTypes* table
+2. Run *Create_EmployeeTypes_Table_Script.sql* to create the ***EmployeeTypes*** table
 
-3. Run *Create_Employees_Table_Script.sql* to create the *Employees* table
+3. Run *Create_Employees_Table_Script.sql* to create the ***Employees*** table
 
-4. Run *Create_Clients_Table_Script.sql* to create the *Clients* table
+4. Run *Create_Clients_Table_Script.sql* to create the **_Clients_** table
 
-5. Run *Create_Addresses_Table_Script.sql* to create the *Addresses* table
+5. Run *Create_Addresses_Table_Script.sql* to create the **_Addresses_** table
 
-6. Run *Create_Contacts_Table_Script.sql* to create the *Contacts* table
+6. Run *Create_Contacts_Table_Script.sql* to create the ***Contacts*** table
 
-7. Run *Create_Logs_Table_Script.sql* to create the *EventLogging.Logs* table
+7. Run *Create_Logs_Table_Script.sql* to create the ***EventLogging.Logs*** table
 
 
-### Endpoints:
+## Endpoints:
 
 The API has the following endpoints: 
 
@@ -100,8 +102,7 @@ The API has the following endpoints:
 * **EmployeeTypes**: CRUD *EmployeeTypes* for an *Employee*
 
 
-
-### users endpoint: 
+## users endpoint: 
 
 #### post => /api/users/auth
 
