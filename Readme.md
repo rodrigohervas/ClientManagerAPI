@@ -106,7 +106,7 @@ Run the application
 
 The API has the following endpoints: 
 
-* **Clients**: CRUD *Clients*
+* **Clients**: CRUD *Clients* [Clients endpoint](#Clients-endpoint)
 
 * **LegalCases**: CRUD *LegalCases* for a *Client*
 
