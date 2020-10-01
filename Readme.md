@@ -106,19 +106,19 @@ Run the application
 
 The API has the following endpoints: 
 
-* **Clients**: CRUD *Clients* [Clients endpoint](#Clients-endpoint)
+* [**Clients**](#Clients-endpoint): CRUD *Clients*
 
 * [**LegalCases**](#LegalCases-endpoint): CRUD *LegalCases* for a *Client*
 
-* **BillableActivities**: CRUD *BillableActivities* for a *LegalCase*
+* [**BillableActivities**](#BillableActivities-endpoint): CRUD *BillableActivities* for a *LegalCase*
 
-* **Addresses**: CRUD *Adresses* for a *Client*
+* [**Addresses**](#Addresses-endpoint): CRUD *Adresses* for a *Client*
 
-* **Contacts**: CRUD *Contacts* for a *Client*
+* [**Contacts**](#Contacts-endpoint): CRUD *Contacts* for a *Client*
 
-* **Employees**: CRUD *Employees* for a *LegalCase*
+* [**Employees**](#Employees-endpoint): CRUD *Employees* for a *LegalCase*
 
-* **EmployeeTypes**: CRUD *EmployeeTypes* for an *Employee*
+* [**EmployeeTypes**](#EmployeeTypes-endpoint): CRUD *EmployeeTypes* for an *Employee*
 
 
 
