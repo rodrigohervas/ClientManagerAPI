@@ -1,5 +1,5 @@
 # ClientsManagerAPI
-ASP.NET Core 3 Web API to manage clients and legal clases
+ASP.NET Core 3 Web API to manage clients and legal cases
 
 - [**Description**](#Description)
 - [**Technologies used**](#Technologies-used)
