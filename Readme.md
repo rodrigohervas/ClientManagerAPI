@@ -1,6 +1,17 @@
 # ClientsManagerAPI
 ASP.NET Core 3 Web API to manage clients and legal clases
 
+[**Description**:](#Description)
+[**Technologies used**:](#Technologies-used)
+[**Live Site**:](#Live-Site)
+[**Set up**:](#Set-up) 
+[**Configuration: Authentication / Authorization**:](#Configuration:-Authentication-/-Authorization)
+[**Configuration: Database**:](#Configuration:-Database)
+[**Run Application**:](#Run-Application) 
+[**Endpoints**:](#Endpoints)
+[**Related Repos**:](#Related-Repos)
+
+
 
 ## Description: 
 
@@ -95,7 +106,7 @@ During the API Publish process you can create the Database in Azure. If you want
 7. Run *Create_Logs_Table_Script.sql* to create the ***EventLogging.Logs*** table
 
 
-## Run Application
+## Run Application:
 
 Build the solution
 
