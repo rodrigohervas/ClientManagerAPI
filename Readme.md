@@ -5,7 +5,7 @@ ASP.NET Core 3 Web API to manage clients and legal clases
 - [**Technologies used**](#Technologies-used)
 - [**Live Site**](#Live-Site)
 - [**Set up**](#Set-up) 
-- [**Configuration**](#configuration-azure-web-app-and-azure-active-directory)
+- [**Configuration: Azure web app and Azure Active Directory**](#configuration-azure-web-app-and-azure-active-directory)
 - [**Configuration: Authentication / Authorization**](#Configuration-Authentication--Authorization)
 - [**Configuration: Database**](#Configuration-Database)
 - [**Run Application**](#Run-Application) 
