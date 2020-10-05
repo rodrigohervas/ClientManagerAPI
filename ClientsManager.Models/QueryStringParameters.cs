@@ -14,11 +14,11 @@ namespace ClientsManager.Models
         //Page number requested. Defaults to 1
         public int pageNumber { get; set; } = 1;
 
-        //Maximum results allowed per page. Defaults to 15.
-        private int _maxPageSize { get; set; } = 15;
+        //Maximum results allowed per page. Defaults to 50.
+        private int _maxPageSize { get; set; } = 50;
 
-        //Results per page requested. Defaults to 10.
-        private int _pageSize { get; set; } = 10;
+        //Results per page requested. Defaults to 50.
+        private int _pageSize { get; set; } = 50;
         public int pageSize
         {
             get { return _pageSize; }
