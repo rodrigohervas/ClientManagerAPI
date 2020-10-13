@@ -21,7 +21,8 @@ namespace ClientsManager.Data.EntityConfiguration
             builder
                 .HasOne(ba => ba.Employee)
                 .WithMany(ba => ba.BillableActivities) //Relationship with Employee
-                .HasForeignKey(ba => ba.Employee_Id); //FK from Employee
+                .HasForeignKey(ba => ba.Employee_Id)
+                .OnDelete(DeleteBehavior.Restrict); //FK from Employee
 
             //Map Properties
             builder.Property(ba => ba.Id)
@@ -41,20 +42,23 @@ namespace ClientsManager.Data.EntityConfiguration
                 .HasColumnType<string>("nvarchar(max)");
             
             builder.Property(ba => ba.Description)
-                .IsRequired()
+                .IsRequired(false)
                 .HasColumnType<string>("nvarchar(max)");
             
             builder.Property(ba => ba.Price)
-                .IsRequired()
-                .HasColumnType<decimal>("decimal(18,2)");
+                .IsRequired(false)
+                .HasColumnType<decimal>("decimal(18,2)")
+                .HasDefaultValue<decimal>(0.0);
             
             builder.Property(ba => ba.Start_DateTime)
-                .IsRequired()
-                .HasColumnType<DateTime>("DATETIME2 (7)");
+                .IsRequired(false)
+                .HasColumnType<DateTime>("DATETIME2 (7)")
+                .HasDefaultValue<DateTime>(DateTime.Now);
             
             builder.Property(ba => ba.Start_DateTime)
-                .IsRequired()
-                .HasColumnType<DateTime>("DATETIME2 (7)");
+                .IsRequired(false)
+                .HasColumnType<DateTime>("DATETIME2 (7)")
+                .HasDefaultValue<DateTime>(DateTime.Now);
 
             //Seed Data
             builder.HasData(

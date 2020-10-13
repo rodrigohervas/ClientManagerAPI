@@ -47,12 +47,13 @@ namespace ClientsManager.Data.EntityConfiguration
                 .HasColumnType<string>("nvarchar(max)");
             
             builder.Property(lc => lc.Description)
-                .IsRequired()
+                .IsRequired(false)
                 .HasColumnType<string>("nvarchar(max)");
             
             builder.Property(lc => lc.TrustFund)
-                .IsRequired()
-                .HasColumnType<decimal>("decimal(18,2)");
+                .IsRequired(false)
+                .HasColumnType<decimal>("decimal(18,2)")
+                .HasDefaultValue<decimal>(0.0);
 
 
             //Seed Table
