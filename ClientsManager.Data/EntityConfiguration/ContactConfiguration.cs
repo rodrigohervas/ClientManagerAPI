@@ -29,7 +29,8 @@ namespace ClientsManager.Data.EntityConfiguration
             builder
                 .HasOne(co => co.Address)
                 .WithMany(a => a.Contacts)
-                .HasForeignKey(co => co.Address_Id); //FK from Address
+                .HasForeignKey(co => co.Address_Id) //FK from Address
+                .OnDelete(DeleteBehavior.Restrict); //don't cascade delete to prevent conflicts with Address
 
             //Map properties
             builder.Property(co => co.Id)
@@ -41,7 +42,7 @@ namespace ClientsManager.Data.EntityConfiguration
                 .HasColumnType<int>("int");
 
             builder.Property(co => co.Address_Id)
-                .IsRequired()
+                .IsRequired(false)
                 .HasColumnType<int>("int");
 
             builder.Property(co => co.Name)
@@ -49,7 +50,7 @@ namespace ClientsManager.Data.EntityConfiguration
                 .HasColumnType<string>("nvarchar(150)");
 
             builder.Property(co => co.Position)
-                .IsRequired()
+                .IsRequired(false)
                 .HasColumnType<string>("nvarchar(150)");
 
             builder.Property(co => co.Telephone)
@@ -57,11 +58,11 @@ namespace ClientsManager.Data.EntityConfiguration
                 .HasColumnType<string>("nvarchar(15)");
 
             builder.Property(co => co.Cellphone)
-                .IsRequired()
+                .IsRequired(false)
                 .HasColumnType<string>("nvarchar(15)");
 
             builder.Property(co => co.Email)
-                .IsRequired()
+                .IsRequired(false)
                 .HasColumnType<string>("nvarchar(320)");
 
             //Seed Table
