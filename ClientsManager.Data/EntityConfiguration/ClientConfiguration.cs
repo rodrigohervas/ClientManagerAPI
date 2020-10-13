@@ -27,7 +27,7 @@ namespace ClientsManager.Data.EntityConfiguration
                 .HasColumnType<string>("nvarchar(max)");
             
             builder.Property(c => c.Description)
-                .IsRequired()
+                .IsRequired(false)
                 .HasColumnType<string>("nvarchar(max)");
 
             builder.Property(c => c.Website)
