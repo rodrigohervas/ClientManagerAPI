@@ -37,7 +37,7 @@ namespace ClientsManager.Data.EntityConfiguration
                 .HasColumnType<string>("nvarchar(max)");
 
             builder.Property(e => e.EmployeeType_Id)
-                .IsRequired(false)
+                .IsRequired()
                 .HasColumnType<int>("int");
             
             builder.Property(e => e.Position)

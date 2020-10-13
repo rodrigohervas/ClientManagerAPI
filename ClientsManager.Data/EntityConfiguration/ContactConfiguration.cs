@@ -42,7 +42,7 @@ namespace ClientsManager.Data.EntityConfiguration
                 .HasColumnType<int>("int");
 
             builder.Property(co => co.Address_Id)
-                .IsRequired(false)
+                .IsRequired()
                 .HasColumnType<int>("int");
 
             builder.Property(co => co.Name)

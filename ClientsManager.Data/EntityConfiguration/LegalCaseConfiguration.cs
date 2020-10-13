@@ -51,7 +51,7 @@ namespace ClientsManager.Data.EntityConfiguration
                 .HasColumnType<string>("nvarchar(max)");
             
             builder.Property(lc => lc.TrustFund)
-                .IsRequired(false)
+                .IsRequired()
                 .HasColumnType<decimal>("decimal(18,2)")
                 .HasDefaultValue<decimal>(0.0);
 

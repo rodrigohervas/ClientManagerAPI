@@ -46,17 +46,17 @@ namespace ClientsManager.Data.EntityConfiguration
                 .HasColumnType<string>("nvarchar(max)");
             
             builder.Property(ba => ba.Price)
-                .IsRequired(false)
+                .IsRequired()
                 .HasColumnType<decimal>("decimal(18,2)")
                 .HasDefaultValue<decimal>(0.0);
             
             builder.Property(ba => ba.Start_DateTime)
-                .IsRequired(false)
+                .IsRequired()
                 .HasColumnType<DateTime>("DATETIME2 (7)")
                 .HasDefaultValue<DateTime>(DateTime.Now);
             
             builder.Property(ba => ba.Start_DateTime)
-                .IsRequired(false)
+                .IsRequired()
                 .HasColumnType<DateTime>("DATETIME2 (7)")
                 .HasDefaultValue<DateTime>(DateTime.Now);
 
