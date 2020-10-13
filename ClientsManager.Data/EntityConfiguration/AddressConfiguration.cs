@@ -43,15 +43,15 @@ namespace ClientsManager.Data.EntityConfiguration
                 .HasColumnType<string>("nvarchar(350)");
 
             builder.Property(a => a.StateProvince)
-                .IsRequired()
+                .IsRequired(false)
                 .HasColumnType<string>("nvarchar(75)");
 
             builder.Property(a => a.ZipCode)
-                .IsRequired()
+                .IsRequired(false)
                 .HasColumnType<string>("nvarchar(15)");
 
             builder.Property(a => a.Country)
-                .IsRequired()
+                .IsRequired(false)
                 .HasColumnType<string>("nvarchar(75)");
 
 
