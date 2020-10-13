@@ -35,13 +35,13 @@ namespace ClientsManager.Data.EntityConfiguration
             builder.Property(e => e.Name)
                 .IsRequired()
                 .HasColumnType<string>("nvarchar(max)");
-            
+
             builder.Property(e => e.EmployeeType_Id)
-                .IsRequired()
+                .IsRequired(false)
                 .HasColumnType<int>("int");
             
             builder.Property(e => e.Position)
-                .IsRequired()
+                .IsRequired(false)
                 .HasColumnType<string>("nvarchar(max)");
 
 

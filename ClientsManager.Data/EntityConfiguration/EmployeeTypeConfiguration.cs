@@ -20,7 +20,8 @@ namespace ClientsManager.Data.EntityConfiguration
             //Map Relationships
             builder
                 .HasMany(et => et.Employees)
-                .WithOne(e => e.EmployeeType); //Relationship with Employee
+                .WithOne(e => e.EmployeeType) //Relationship with Employee
+                .OnDelete(DeleteBehavior.Restrict); //do not delete Employees when deleting employee type
 
             //Map Properties
             builder.Property(et => et.Id)
