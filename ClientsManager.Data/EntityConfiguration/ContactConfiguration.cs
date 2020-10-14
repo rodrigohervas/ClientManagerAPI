@@ -23,14 +23,14 @@ namespace ClientsManager.Data.EntityConfiguration
                 .HasOne(co => co.Client)
                 .WithMany(cl => cl.Contacts)
                 .HasForeignKey(co => co.Client_Id) //FK from Client
-                .OnDelete(DeleteBehavior.Restrict); //don't cascade delete to prevent conflicts with Client
+                .OnDelete(DeleteBehavior.SetNull); //don't cascade delete to prevent conflicts with Client
 
             //One-to-many with Address
             builder
                 .HasOne(co => co.Address)
                 .WithMany(a => a.Contacts)
                 .HasForeignKey(co => co.Address_Id) //FK from Address
-                .OnDelete(DeleteBehavior.Restrict); //don't cascade delete to prevent conflicts with Address
+                .OnDelete(DeleteBehavior.SetNull); //don't cascade delete to prevent conflicts with Address
 
             //Map properties
             builder.Property(co => co.Id)

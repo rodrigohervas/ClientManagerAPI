@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClientsManager.Data.Migrations
 {
     [DbContext(typeof(ClientsManagerDBContext))]
-    [Migration("20200805012516_Modified_Address_Table_Name_In_AddressConfiguration")]
-    partial class Modified_Address_Table_Name_In_AddressConfiguration
+    [Migration("20201013173606_Changed Contacts.Address_Id adding a default value of 0")]
+    partial class ChangedContactsAddress_Idaddingadefaultvalueof0
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -36,11 +36,9 @@ namespace ClientsManager.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Country")
-                        .IsRequired()
                         .HasColumnType("nvarchar(75)");
 
                     b.Property<string>("StateProvince")
-                        .IsRequired()
                         .HasColumnType("nvarchar(75)");
 
                     b.Property<string>("StreetNumber")
@@ -48,7 +46,6 @@ namespace ClientsManager.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ZipCode")
-                        .IsRequired()
                         .HasColumnType("nvarchar(15)");
 
                     b.HasKey("Id");
@@ -128,7 +125,6 @@ namespace ClientsManager.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Employee_Id")
@@ -141,10 +137,14 @@ namespace ClientsManager.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(18,2)")
+                        .HasDefaultValue(0m);
 
                     b.Property<DateTime>("Start_DateTime")
-                        .HasColumnType("DATETIME2 (7)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("DATETIME2 (7)")
+                        .HasDefaultValue(new DateTime(2020, 10, 13, 13, 36, 5, 866, DateTimeKind.Local).AddTicks(7981));
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -312,7 +312,6 @@ namespace ClientsManager.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -350,17 +349,17 @@ namespace ClientsManager.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("Address_Id")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
 
                     b.Property<string>("Cellphone")
-                        .IsRequired()
                         .HasColumnType("nvarchar(15)");
 
                     b.Property<int>("Client_Id")
                         .HasColumnType("int");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("nvarchar(320)");
 
                     b.Property<string>("Name")
@@ -368,7 +367,6 @@ namespace ClientsManager.Data.Migrations
                         .HasColumnType("nvarchar(150)");
 
                     b.Property<string>("Position")
-                        .IsRequired()
                         .HasColumnType("nvarchar(150)");
 
                     b.Property<string>("Telephone")
@@ -511,7 +509,6 @@ namespace ClientsManager.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Position")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -604,7 +601,6 @@ namespace ClientsManager.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
@@ -612,7 +608,9 @@ namespace ClientsManager.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("TrustFund")
-                        .HasColumnType("decimal(18,2)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(18,2)")
+                        .HasDefaultValue(0m);
 
                     b.HasKey("Id");
 
@@ -669,7 +667,7 @@ namespace ClientsManager.Data.Migrations
                     b.HasOne("ClientsManager.Models.Employee", "Employee")
                         .WithMany("BillableActivities")
                         .HasForeignKey("Employee_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("ClientsManager.Models.LegalCase", "LegalCase")
@@ -684,7 +682,7 @@ namespace ClientsManager.Data.Migrations
                     b.HasOne("ClientsManager.Models.Address", "Address")
                         .WithMany("Contacts")
                         .HasForeignKey("Address_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("ClientsManager.Models.Client", "Client")
@@ -699,7 +697,7 @@ namespace ClientsManager.Data.Migrations
                     b.HasOne("ClientsManager.Models.EmployeeType", "EmployeeType")
                         .WithMany("Employees")
                         .HasForeignKey("EmployeeType_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 

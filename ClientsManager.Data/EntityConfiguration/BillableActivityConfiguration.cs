@@ -21,8 +21,8 @@ namespace ClientsManager.Data.EntityConfiguration
             builder
                 .HasOne(ba => ba.Employee)
                 .WithMany(ba => ba.BillableActivities) //Relationship with Employee
-                .HasForeignKey(ba => ba.Employee_Id)
-                .OnDelete(DeleteBehavior.Restrict); //FK from Employee
+                .HasForeignKey(ba => ba.Employee_Id); //FK from Employee
+                //.OnDelete(DeleteBehavior.Restrict); 
 
             //Map Properties
             builder.Property(ba => ba.Id)

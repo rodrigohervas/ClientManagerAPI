@@ -22,7 +22,8 @@ namespace ClientsManager.Data.EntityConfiguration
             builder
                 .HasOne(a => a.Client)
                 .WithMany(cl => cl.Addresses)
-                .HasForeignKey(a => a.Client_Id); //Relationship with Client
+                .HasForeignKey(a => a.Client_Id) //Relationship with Client
+                .OnDelete(DeleteBehavior.Restrict);
 
             
             //Map Properties
