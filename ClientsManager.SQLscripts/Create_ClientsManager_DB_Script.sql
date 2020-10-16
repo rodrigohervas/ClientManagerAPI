@@ -1,13 +1,13 @@
 USE [master]
 GO
 
-/****** Object:  Database [ClientsManager]    Script Date: 9/28/2020 9:22:41 PM ******/
+/****** Object:  Database [ClientsManager]    Script Date: 10/15/2020 3:28:26 PM ******/
 CREATE DATABASE [ClientsManager]
  CONTAINMENT = NONE
  ON  PRIMARY 
-( NAME = N'ClientsManager', FILENAME = N'[YOUR-ROUTE-HERE]\ClientsManager.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+( NAME = N'ClientsManager', FILENAME = N'C:\DB\ClientsManager.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
  LOG ON 
-( NAME = N'ClientsManager_log', FILENAME = N'[YOUR-ROUTE-HERE]\ClientsManager_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+( NAME = N'ClientsManager_log', FILENAME = N'C:\DB\ClientsManager_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
 GO
 
 IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))

@@ -1,7 +1,7 @@
 USE [ClientsManager]
 GO
 
-/****** Object:  Table [dbo].[Employees]    Script Date: 9/28/2020 9:21:10 PM ******/
+/****** Object:  Table [dbo].[Employees]    Script Date: 10/15/2020 3:30:20 PM ******/
 SET ANSI_NULLS ON
 GO
 
@@ -12,7 +12,7 @@ CREATE TABLE [dbo].[Employees](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[Name] [nvarchar](max) NOT NULL,
 	[EmployeeType_Id] [int] NOT NULL,
-	[Position] [nvarchar](max) NOT NULL,
+	[Position] [nvarchar](max) NULL,
  CONSTRAINT [PK_Employees] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
@@ -22,7 +22,6 @@ GO
 
 ALTER TABLE [dbo].[Employees]  WITH CHECK ADD  CONSTRAINT [FK_Employees_EmployeeTypes_EmployeeType_Id] FOREIGN KEY([EmployeeType_Id])
 REFERENCES [dbo].[EmployeeTypes] ([Id])
-ON DELETE CASCADE
 GO
 
 ALTER TABLE [dbo].[Employees] CHECK CONSTRAINT [FK_Employees_EmployeeTypes_EmployeeType_Id]

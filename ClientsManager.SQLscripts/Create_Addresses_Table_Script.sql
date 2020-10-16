@@ -1,7 +1,7 @@
 USE [ClientsManager]
 GO
 
-/****** Object:  Table [dbo].[Addresses]    Script Date: 9/28/2020 9:16:23 PM ******/
+/****** Object:  Table [dbo].[Addresses]    Script Date: 10/15/2020 3:29:32 PM ******/
 SET ANSI_NULLS ON
 GO
 
@@ -13,9 +13,9 @@ CREATE TABLE [dbo].[Addresses](
 	[Client_Id] [int] NOT NULL,
 	[StreetNumber] [nvarchar](max) NOT NULL,
 	[City] [nvarchar](350) NOT NULL,
-	[StateProvince] [nvarchar](75) NOT NULL,
-	[Country] [nvarchar](75) NOT NULL,
-	[ZipCode] [nvarchar](15) NOT NULL,
+	[StateProvince] [nvarchar](75) NULL,
+	[Country] [nvarchar](75) NULL,
+	[ZipCode] [nvarchar](15) NULL,
  CONSTRAINT [PK_Addresses] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
@@ -23,15 +23,10 @@ CREATE TABLE [dbo].[Addresses](
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
-ALTER TABLE [dbo].[Addresses] ADD  DEFAULT (N'') FOR [ZipCode]
-GO
-
 ALTER TABLE [dbo].[Addresses]  WITH CHECK ADD  CONSTRAINT [FK_Addresses_Clients_Client_Id] FOREIGN KEY([Client_Id])
 REFERENCES [dbo].[Clients] ([Id])
-ON DELETE CASCADE
 GO
 
 ALTER TABLE [dbo].[Addresses] CHECK CONSTRAINT [FK_Addresses_Clients_Client_Id]
 GO
-
 

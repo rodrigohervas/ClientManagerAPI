@@ -1,7 +1,7 @@
 USE [ClientsManager]
 GO
 
-/****** Object:  Table [dbo].[BillableActivities]    Script Date: 9/28/2020 9:18:19 PM ******/
+/****** Object:  Table [dbo].[BillableActivities]    Script Date: 10/15/2020 3:29:42 PM ******/
 SET ANSI_NULLS ON
 GO
 
@@ -13,7 +13,7 @@ CREATE TABLE [dbo].[BillableActivities](
 	[LegalCase_Id] [int] NOT NULL,
 	[Employee_Id] [int] NOT NULL,
 	[Title] [nvarchar](max) NOT NULL,
-	[Description] [nvarchar](max) NOT NULL,
+	[Description] [nvarchar](max) NULL,
 	[Price] [decimal](18, 2) NOT NULL,
 	[Start_DateTime] [datetime2](7) NOT NULL,
 	[Finish_DateTime] [datetime2](7) NOT NULL,
@@ -24,9 +24,14 @@ CREATE TABLE [dbo].[BillableActivities](
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
+ALTER TABLE [dbo].[BillableActivities] ADD  DEFAULT ((0.0)) FOR [Price]
+GO
+
+ALTER TABLE [dbo].[BillableActivities] ADD  DEFAULT ('2020-10-13T16:04:05.6738560-04:00') FOR [Start_DateTime]
+GO
+
 ALTER TABLE [dbo].[BillableActivities]  WITH CHECK ADD  CONSTRAINT [FK_BillableActivities_Employees_Employee_Id] FOREIGN KEY([Employee_Id])
 REFERENCES [dbo].[Employees] ([Id])
-ON DELETE CASCADE
 GO
 
 ALTER TABLE [dbo].[BillableActivities] CHECK CONSTRAINT [FK_BillableActivities_Employees_Employee_Id]
@@ -39,5 +44,4 @@ GO
 
 ALTER TABLE [dbo].[BillableActivities] CHECK CONSTRAINT [FK_BillableActivities_LegalCases_LegalCase_Id]
 GO
-
 

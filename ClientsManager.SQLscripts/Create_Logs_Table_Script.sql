@@ -1,7 +1,7 @@
 USE [ClientsManager]
 GO
 
-/****** Object:  Table [EventLogging].[Logs]    Script Date: 9/28/2020 9:22:11 PM ******/
+/****** Object:  Table [EventLogging].[Logs]    Script Date: 10/15/2020 3:31:15 PM ******/
 SET ANSI_NULLS ON
 GO
 

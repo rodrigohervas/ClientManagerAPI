@@ -1,7 +1,7 @@
 USE [ClientsManager]
 GO
 
-/****** Object:  Table [dbo].[EmployeeTypes]    Script Date: 9/28/2020 9:21:29 PM ******/
+/****** Object:  Table [dbo].[EmployeeTypes]    Script Date: 10/15/2020 3:30:28 PM ******/
 SET ANSI_NULLS ON
 GO
 
