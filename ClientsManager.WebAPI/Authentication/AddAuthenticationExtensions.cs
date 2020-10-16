@@ -102,7 +102,7 @@ namespace ClientsManager.WebAPI.Authentication
         {
             var secretKey = configuration["Jwt:SecretKey"];
             var issuer = configuration["Jwt:Issuer"];
-            var audience = configuration["Jwt:Issuer"];
+            var audience = configuration["Jwt:Audience"];
 
             //Default JWT Bearer Authentication
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
