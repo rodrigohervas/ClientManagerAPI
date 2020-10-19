@@ -2,19 +2,23 @@
 using ClientsManager.Data;
 using ClientsManager.Models;
 using ClientsManager.Tests.IntegrationTests;
+using ClientsManager.Tests.Models;
 using ClientsManager.Tests.TestData;
 using ClientsManager.WebAPI;
 using ClientsManager.WebAPI.AutoMapperProfiles;
 using ClientsManager.WebAPI.Controllers;
 using ClientsManager.WebAPI.DTOs;
 using FluentAssertions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
@@ -31,14 +35,23 @@ namespace ClientsManager.Tests.UnitTests
 
         public BillableActivityControllerTests()
         {
-            _mockRepository = new Mock<IGenericRepository<BillableActivity>>();
+            //get Billable Activities test data
             _billableActivities = BillableActivityData.GetTestBillableActivities();
 
             //AutoMapper Configuration
             var profiles = new AutoMapperProfiles();
             var configuration = new MapperConfiguration(config => config.AddProfile(profiles));
             _mapper = new Mapper(configuration);
-            _logger = new Logger<BillableActivitiesController>(new LoggerFactory());
+
+            //Configure Logger Mock
+            var _loggerMock = new Mock<ILogger<BillableActivitiesController>>();
+            _logger = _loggerMock.Object;
+
+            //Mock Repo initialization
+            _mockRepository = new Mock<IGenericRepository<BillableActivity>>();
+
+            //Create Custom ControllerContext and add it to Controller for logging in the Controller in case of error
+            //_controller.ControllerContext = new ControllerContextModel();
 
             //QueryStringParameters for paging
             parameters = new QueryStringParameters();
@@ -51,10 +64,9 @@ namespace ClientsManager.Tests.UnitTests
         public async void GetAllAsync_Returns_All_BillableActivities()
         {
             //specify the mockRepo return
-            //_mockRepository.Setup(repo => repo.GetAllAsync()).ReturnsAsync(_billableActivities);
             _mockRepository.Setup(repo => repo.GetAllPagedAsync(ba => ba.LegalCase_Id, parameters)).ReturnsAsync(_billableActivities);
 
-            //instantiate the controller, and call the method
+            //instantiate the controller
             var controller = new BillableActivitiesController(_mockRepository.Object, _mapper, _logger);
 
             //Call the SUT method
@@ -67,21 +79,8 @@ namespace ClientsManager.Tests.UnitTests
             var billableActivitiesList = objResult.Value;
             IEnumerable<BillableActivity> dtos = _mapper.Map<IEnumerable<BillableActivity>>(billableActivitiesList);
 
-            var expected = _billableActivities.FirstOrDefault();
-            var actual = dtos.FirstOrDefault();
-
-            Assert.Equal(expected.Id, actual.Id);
-            Assert.Equal(expected.LegalCase_Id, actual.LegalCase_Id);
-            Assert.Equal(expected.Employee_Id, actual.Employee_Id);
-            Assert.Equal(expected.Title, actual.Title);
-            Assert.Equal(expected.Description, actual.Description);
-            Assert.Equal(expected.Price, actual.Price);
-            Assert.Equal(expected.Start_DateTime, actual.Start_DateTime);
-            Assert.Equal(expected.Finish_DateTime, actual.Finish_DateTime);
-
-            Assert.Equal(_billableActivities.Count(), dtos.Count());
-
-            //TODO: add FluentAssertions package to assert collections
+            //use FluentAssertions to compare Collections of Reference types
+            dtos.Should().BeEquivalentTo(_billableActivities, options => options.ComparingByMembers<BillableActivityDTO>());
         }
 
 
@@ -111,21 +110,8 @@ namespace ClientsManager.Tests.UnitTests
             var actualbillableActivities = (IEnumerable<BillableActivityDTO>)(result.Value);
             IEnumerable<BillableActivity> dtos = _mapper.Map<IEnumerable<BillableActivity>>(actualbillableActivities);
 
-            var expected = _billableActivitiesOfEmployee.FirstOrDefault();
-            var actual = dtos.FirstOrDefault();
-
-            Assert.Equal(expected.Id, actual.Id);
-            Assert.Equal(expected.LegalCase_Id, actual.LegalCase_Id);
-            Assert.Equal(expected.Employee_Id, actual.Employee_Id);
-            Assert.Equal(expected.Title, actual.Title);
-            Assert.Equal(expected.Description, actual.Description);
-            Assert.Equal(expected.Price, actual.Price);
-            Assert.Equal(expected.Start_DateTime, actual.Start_DateTime);
-            Assert.Equal(expected.Finish_DateTime, actual.Finish_DateTime);
-
-            Assert.Equal(_billableActivitiesOfEmployee.Count(), dtos.Count());
-
-            //TODO: add FluentAssertions package to assert collections
+            //use FluentAssertions to compare Collections of Reference types
+            dtos.Should().BeEquivalentTo(_billableActivitiesOfEmployee, options => options.ComparingByMembers<BillableActivityDTO>());
         }
 
 
@@ -134,8 +120,9 @@ namespace ClientsManager.Tests.UnitTests
         [InlineData(1)]
         public async void GetBillableActivityByIdAsync_Returns_One_BillableActivity(int id)
         {
-            //get the first TimeFrame
+            //get the first BA
             var billableActivity = _billableActivities.FirstOrDefault<BillableActivity>();
+            var expectedBillableActivityDto = _mapper.Map<BillableActivityDTO>(billableActivity);
 
             //specify the mockRepo return
             _mockRepository.Setup(repo => repo.GetOneByAsync(tf => tf.Id == id)).ReturnsAsync(billableActivity);
@@ -152,19 +139,11 @@ namespace ClientsManager.Tests.UnitTests
 
             //convert ActionResult to OkObjectResult to get its Value: a BillableActivity type
             var result = Assert.IsType<OkObjectResult>(actionResult.Result);
-            //get the ObjectResult.Value (the TimeFrame)
-            var actualBillableActivity = result.Value;
+            //get the ObjectResult.Value
+            var actualBillableActivityDto = result.Value as BillableActivityDTO;
 
-            BillableActivity actual = _mapper.Map<BillableActivity>(actualBillableActivity);
-
-            Assert.Equal(billableActivity.Id, actual.Id);
-            Assert.Equal(billableActivity.LegalCase_Id, actual.LegalCase_Id);
-            Assert.Equal(billableActivity.Employee_Id, actual.Employee_Id);
-            Assert.Equal(billableActivity.Title, actual.Title);
-            Assert.Equal(billableActivity.Description, actual.Description);
-            Assert.Equal(billableActivity.Price, actual.Price);
-            Assert.Equal(billableActivity.Start_DateTime, actual.Start_DateTime);
-            Assert.Equal(billableActivity.Finish_DateTime, actual.Finish_DateTime);
+            //use FluentAssertions to compare Reference types
+            actualBillableActivityDto.Should().BeEquivalentTo(expectedBillableActivityDto, options => options.ComparingByMembers<BillableActivityDTO>());
         }
 
         //AddBillableActivityAsync(BillableActivity billableActivity)
@@ -222,14 +201,16 @@ namespace ClientsManager.Tests.UnitTests
         [Fact]
         public async void AddBillableActivityAsync_Returns_NotFound_404_When_Create_With_null_BillableActivity()
         {
-            //specify the mockRepo return
+            //Configure Repository Mock
             _mockRepository.Setup(repo => repo.AddTAsync(null)).ReturnsAsync(0);
 
             //instantiate the controller, and call the method
             var controller = new BillableActivitiesController(_mockRepository.Object, _mapper, _logger);
 
-            //Call the SUT method
-            //returns ActionResult<BillableActivity> type
+            //Create Custom ControllerContext and add it to Controller for logging in the Controller in case of error
+            controller.ControllerContext = new ControllerContextModel();
+
+            //Call the SUT method - returns ActionResult<BillableActivity> type
             var actionResult = await controller.AddBillableActivityAsync(new BillableActivity());
 
             //Assert the result
@@ -293,21 +274,23 @@ namespace ClientsManager.Tests.UnitTests
             actualBaDTO.Should().BeEquivalentTo(expectedBaDTO, options => options.ComparingByMembers<BillableActivityDTO>());
         }
 
-        //update error
         //UpdateBillableActivityAsync(int id, BillableActivity billableActivity)
         [Fact]
         public async void UpdateBillableActivityAsync_Returns_NotFound_404_When_Update_With_null_BillableActivity()
         {
             //declare a BillableActivity
             BillableActivity expectedBillableActivity = null;
-            //
+            //expected return error message
             string expectedResponseMessage = "No Billable Activity was updated";
 
             ///set mockRepo return for Update action
             _mockRepository.Setup(repo => repo.UpdateTAsync(expectedBillableActivity)).ReturnsAsync(0);
 
-            //instantiate the controller, passing the repo object
+            //instantiate the controller, and call the method
             var controller = new BillableActivitiesController(_mockRepository.Object, _mapper, _logger);
+
+            //Create Custom ControllerContext and add it to Controller for logging in the Controller in case of error
+            controller.ControllerContext = new ControllerContextModel();
 
             //Call the SUT method
             //returns ActionResult<BillableActivity> type
@@ -395,8 +378,11 @@ namespace ClientsManager.Tests.UnitTests
             //set mockRepo return for Delete action
             _mockRepository.Setup(repo => repo.DeleteTAsync(expectedBillableActivity)).ReturnsAsync(0);
 
-            //instantiate the controller, passing the repo object
+            //instantiate the controller, and call the method
             var controller = new BillableActivitiesController(_mockRepository.Object, _mapper, _logger);
+
+            //Create Custom ControllerContext and add it to Controller for logging in the Controller in case of error
+            controller.ControllerContext = new ControllerContextModel();
 
             //Call the controller method
             var actionResult = await controller.DeleteBillableActivityAsync(id);

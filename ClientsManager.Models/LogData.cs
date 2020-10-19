@@ -22,6 +22,11 @@ namespace ClientsManager.Models
         public string EndpointPath { get; set; }
         public string User { get; set; }
 
+        public LogData()
+        {
+
+        }
+
         public LogData(ControllerContext controllerContext, HttpContext httpContext)
         {
             Entity = new { test = "value" };

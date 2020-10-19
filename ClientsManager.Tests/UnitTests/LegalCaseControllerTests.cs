@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ClientsManager.Data;
 using ClientsManager.Models;
+using ClientsManager.Tests.Models;
 using ClientsManager.Tests.TestData;
 using ClientsManager.WebAPI.AutoMapperProfiles;
 using ClientsManager.WebAPI.Controllers;
@@ -32,11 +33,17 @@ namespace ClientsManager.Tests.UnitTests
             var profiles = new AutoMapperProfiles();
             var configuration = new MapperConfiguration(config => config.AddProfile(profiles));
             _mapper = new Mapper(configuration);
-            _logger = new Logger<LegalCasesController>(new LoggerFactory());
+
+            //Configure Logger Mock
+            var _loggerMock = new Mock<ILogger<LegalCasesController>>();
+            _logger = _loggerMock.Object;
 
             //Repo and Controller initialization
             _mockRepository = new Mock<IGenericRepository<LegalCase>>();
             _controller = new LegalCasesController(_mockRepository.Object, _mapper, _logger);
+
+            //Create Custom ControllerContext and add it to Controller for logging in the Controller in case of error
+            _controller.ControllerContext = new ControllerContextModel();
 
             //Load LegalCases Test Data
             _legalCases = LegalCasesData.GetLegalCases();
