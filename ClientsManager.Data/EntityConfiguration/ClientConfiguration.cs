@@ -7,7 +7,7 @@ using System.Text;
 
 namespace ClientsManager.Data.EntityConfiguration
 {
-    class ClientConfiguration : IEntityTypeConfiguration<Client>
+    public class ClientConfiguration : IEntityTypeConfiguration<Client>
     {
         public void Configure(EntityTypeBuilder<Client> builder)
         {

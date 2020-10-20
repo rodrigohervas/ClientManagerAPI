@@ -7,7 +7,7 @@ using System.Text;
 
 namespace ClientsManager.Data.EntityConfiguration
 {
-    class LegalCaseConfiguration : IEntityTypeConfiguration<LegalCase>
+    public class LegalCaseConfiguration : IEntityTypeConfiguration<LegalCase>
     {
 
         //add one-to-many relationship with BillableActivities
