@@ -12,6 +12,7 @@ using System.IO;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace ClientsManager.Tests.IntegrationTests
 {
@@ -45,21 +46,19 @@ namespace ClientsManager.Tests.IntegrationTests
 
                 //Remove the app's DbContext that was registered in Startup.ConfigureServices(), 
                 //to be able to use a different DB for testing
-                var descriptor = services.SingleOrDefault(d => 
-                        d.ServiceType == typeof(DbContextOptions<ClientsManagerDBContext>));
-                if (descriptor != null)
-                {
-                    services.Remove(descriptor);
-                }
+                services.RemoveAll(typeof(ClientsManagerDBContext));
 
                 //Add testing configured (InMemory) DbContext
-                services.AddDbContext<ClientsManagerDBContext>(options =>
-                        options.UseInMemoryDatabase("TestDB")
-                               .EnableSensitiveDataLogging()
-                );
+                services.AddDbContext<TestDBContext>(options =>
+                                                options.UseInMemoryDatabase("InMemoryTestDB")
+                                                       .EnableSensitiveDataLogging() );
 
-                //Add Repos?
-                services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+                //ADD A TEST DB IN SQL SERVER
+                //services.AddDbContext<TestDBContext>((options, context) =>
+                //{
+                //    context.UseSqlServer(
+                //        Configuration.GetConnectionString("TestingDbConnectionString"));
+                //});
 
                 //Build service provider
                 var sp = services.BuildServiceProvider();
@@ -69,7 +68,7 @@ namespace ClientsManager.Tests.IntegrationTests
                 {
                     //Get the Test DbContext from the service collection
                     var scopedServices = scope.ServiceProvider;
-                    var context = scopedServices.GetRequiredService<ClientsManagerDBContext>();
+                    var context = scopedServices.GetRequiredService<TestDBContext>();
 
                     //Get the Logger service from the service collection
                     var logger = scopedServices.GetRequiredService<ILogger<TestWebHost<TStartup>>>();

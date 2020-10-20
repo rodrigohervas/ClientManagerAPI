@@ -47,7 +47,9 @@ namespace ClientsManager.Tests.IntegrationTests
         [MemberData(nameof(PagingParameters))]
         public async Task GetAllBillableActivitiesAsync_Returns_All_BillableActivities_Paged(string url, int pageNumber, int pageSize)
         {
-            var response = await _client.GetAsync($"{url}?pageNumber={pageNumber}&pageSize={pageSize}");
+            string uri = "/";
+            var response = await _client.GetAsync(url);
+            //var response = await _client.GetAsync($"{url}?pageNumber={pageNumber}&pageSize={pageSize}");
             var expected = _billableActivities;
 
             var serializedResponse = await response.Content.ReadAsStringAsync();
