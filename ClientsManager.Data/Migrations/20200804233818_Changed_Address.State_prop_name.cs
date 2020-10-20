@@ -8,53 +8,53 @@ namespace ClientsManager.Data.Migrations
         {
             migrationBuilder.RenameColumn(
                 name: "State",
-                table: "Address",
+                table: "Addresses",
                 newName: "StateProvince");
 
             migrationBuilder.AddColumn<string>(
                 name: "ZipCode",
-                table: "Address",
+                table: "Addresses",
                 type: "nvarchar(15)",
                 nullable: false,
                 defaultValue: "");
 
             migrationBuilder.UpdateData(
-                table: "Address",
+                table: "Addresses",
                 keyColumn: "Id",
                 keyValue: 1,
                 column: "ZipCode",
                 value: "20811");
 
             migrationBuilder.UpdateData(
-                table: "Address",
+                table: "Addresses",
                 keyColumn: "Id",
                 keyValue: 2,
                 column: "ZipCode",
                 value: "20812");
 
             migrationBuilder.UpdateData(
-                table: "Address",
+                table: "Addresses",
                 keyColumn: "Id",
                 keyValue: 3,
                 column: "ZipCode",
                 value: "20813");
 
             migrationBuilder.UpdateData(
-                table: "Address",
+                table: "Addresses",
                 keyColumn: "Id",
                 keyValue: 4,
                 column: "ZipCode",
                 value: "20814");
 
             migrationBuilder.UpdateData(
-                table: "Address",
+                table: "Addresses",
                 keyColumn: "Id",
                 keyValue: 5,
                 column: "ZipCode",
                 value: "20815");
 
             migrationBuilder.InsertData(
-                table: "Address",
+                table: "Addresses",
                 columns: new[] { "Id", "City", "Client_Id", "Country", "StateProvince", "StreetNumber", "ZipCode" },
                 values: new object[] { 6, "Madrid", 2, "Spain", "Madrid", "Calle Lopez Masquez, 34", "28032" });
         }
@@ -62,17 +62,17 @@ namespace ClientsManager.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DeleteData(
-                table: "Address",
+                table: "Addresses",
                 keyColumn: "Id",
                 keyValue: 6);
 
             migrationBuilder.DropColumn(
                 name: "ZipCode",
-                table: "Address");
+                table: "Addresses");
 
             migrationBuilder.RenameColumn(
                 name: "StateProvince",
-                table: "Address",
+                table: "Addresses",
                 newName: "State");
         }
     }

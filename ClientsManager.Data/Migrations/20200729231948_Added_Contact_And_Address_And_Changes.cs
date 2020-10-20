@@ -13,7 +13,7 @@ namespace ClientsManager.Data.Migrations
                 nullable: true);
 
             migrationBuilder.CreateTable(
-                name: "Address",
+                name: "Addresses",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -26,9 +26,9 @@ namespace ClientsManager.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Address", x => x.Id);
+                    table.PrimaryKey("PK_Addresses", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Address_Clients_Client_Id",
+                        name: "FK_Addresses_Clients_Client_Id",
                         column: x => x.Client_Id,
                         principalTable: "Clients",
                         principalColumn: "Id",
@@ -53,9 +53,9 @@ namespace ClientsManager.Data.Migrations
                 {
                     table.PrimaryKey("PK_Contacts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Contacts_Address_Address_Id",
+                        name: "FK_Contacts_Addresses_Address_Id",
                         column: x => x.Address_Id,
-                        principalTable: "Address",
+                        principalTable: "Addresses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -67,7 +67,7 @@ namespace ClientsManager.Data.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Address",
+                table: "Addresses",
                 columns: new[] { "Id", "City", "Client_Id", "Country", "State", "StreetNumber" },
                 values: new object[,]
                 {
@@ -104,7 +104,7 @@ namespace ClientsManager.Data.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_Address_Client_Id",
-                table: "Address",
+                table: "Addresses",
                 column: "Client_Id");
 
             migrationBuilder.CreateIndex(
@@ -124,7 +124,7 @@ namespace ClientsManager.Data.Migrations
                 name: "Contacts");
 
             migrationBuilder.DropTable(
-                name: "Address");
+                name: "Addresses");
 
             migrationBuilder.DropColumn(
                 name: "Website",

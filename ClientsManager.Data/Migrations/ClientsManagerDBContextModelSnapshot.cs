@@ -142,7 +142,7 @@ namespace ClientsManager.Data.Migrations
                     b.Property<DateTime>("Start_DateTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("DATETIME2 (7)")
-                        .HasDefaultValue(new DateTime(2020, 10, 13, 16, 4, 5, 673, DateTimeKind.Local).AddTicks(8560));
+                        .HasDefaultValue(new DateTime(2020, 10, 20, 0, 14, 22, 71, DateTimeKind.Local).AddTicks(8667));
 
                     b.Property<string>("Title")
                         .IsRequired()

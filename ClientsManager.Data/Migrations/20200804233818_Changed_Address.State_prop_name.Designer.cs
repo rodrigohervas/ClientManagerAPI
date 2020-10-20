@@ -55,7 +55,7 @@ namespace ClientsManager.Data.Migrations
 
                     b.HasIndex("Client_Id");
 
-                    b.ToTable("Address");
+                    b.ToTable("Addresses");
 
                     b.HasData(
                         new
