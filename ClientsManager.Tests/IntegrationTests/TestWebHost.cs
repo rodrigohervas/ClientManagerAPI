@@ -11,6 +11,7 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authentication;
 
 namespace ClientsManager.Tests.IntegrationTests
 {
@@ -38,6 +39,10 @@ namespace ClientsManager.Tests.IntegrationTests
 
             builder.ConfigureServices(services =>
             {
+                //set the test Authentication Scheme using the TestAuthorizationHandler class
+                services.AddAuthentication("TestScheme")
+                        .AddScheme<AuthenticationSchemeOptions, TestAuthorizationHandler>("TestScheme", options => { });
+
                 //Remove the app's DbContext that was registered in Startup.ConfigureServices(), 
                 //to be able to use a different DB for testing
                 var descriptor = services.SingleOrDefault(d => 
