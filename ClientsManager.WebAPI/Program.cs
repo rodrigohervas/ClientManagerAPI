@@ -20,7 +20,7 @@ namespace ClientsManager.WebAPI
             var serilogConfiguration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddUserSecrets<Startup>(true, reloadOnChange: true) //to read secrets.connectionString from appsettings.json
+                .AddUserSecrets<Startup>(true, reloadOnChange: true)
                 .Build();
 
             //create Serilog Logger object, using serilogConfiguration
