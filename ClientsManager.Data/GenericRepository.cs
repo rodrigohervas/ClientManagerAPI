@@ -14,13 +14,19 @@ namespace ClientsManager.Data
         /// <summary>
         /// DbContext for DI
         /// </summary>
-        private ClientsManagerDbContext _context;
+        //private ClientsManagerDbContext _context;
+        DbContext _context;
 
         /// <summary>
         /// DbContext DI constructor injected
         /// </summary>
         /// <param name="context">ClientsManagerDBContext</param>
         public GenericRepository(ClientsManagerDbContext context)
+        {
+            _context = context;
+        }
+
+        public GenericRepository(CMTestsDbContext context)
         {
             _context = context;
         }
