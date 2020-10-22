@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ClientsManager.Data.Migrations
 {
-    [DbContext(typeof(ClientsManagerDBContext))]
+    [DbContext(typeof(ClientsManagerDbContext))]
     [Migration("20200724004333_BillableActivity_LegalCase_Id_Change")]
     partial class BillableActivity_LegalCase_Id_Change
     {

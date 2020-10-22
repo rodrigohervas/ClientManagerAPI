@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ClientsManager.Data.Migrations
 {
-    [DbContext(typeof(ClientsManagerDBContext))]
+    [DbContext(typeof(ClientsManagerDbContext))]
     [Migration("20200729231948_Added_Contact_And_Address_And_Changes")]
     partial class Added_Contact_And_Address_And_Changes
     {

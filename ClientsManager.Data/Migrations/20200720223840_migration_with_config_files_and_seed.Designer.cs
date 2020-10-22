@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ClientsManager.Data.Migrations
 {
-    [DbContext(typeof(ClientsManagerDBContext))]
+    [DbContext(typeof(ClientsManagerDbContext))]
     [Migration("20200720223840_migration_with_config_files_and_seed")]
     partial class migration_with_config_files_and_seed
     {

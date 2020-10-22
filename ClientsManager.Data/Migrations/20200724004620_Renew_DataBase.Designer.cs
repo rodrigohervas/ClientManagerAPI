@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ClientsManager.Data.Migrations
 {
-    [DbContext(typeof(ClientsManagerDBContext))]
+    [DbContext(typeof(ClientsManagerDbContext))]
     [Migration("20200724004620_Renew_DataBase")]
     partial class Renew_DataBase
     {

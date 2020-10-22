@@ -10,13 +10,13 @@ namespace ClientsManager.Data
     /// <summary>
     /// DbContext class for ClientsManagerDB access. It represents a Unit Of Work
     /// </summary>
-    public class ClientsManagerDBContext : DbContext
+    public class ClientsManagerDbContext : DbContext
     {
         /// <summary>
         /// DBContext constructor
         /// </summary>
         /// <param name="options">DbContextOptions<ClientsManagerDBContext> - DbContext config data: sql provider, connection string, etc.</param>
-        public ClientsManagerDBContext(DbContextOptions<ClientsManagerDBContext> options) : base(options)
+        public ClientsManagerDbContext(DbContextOptions<ClientsManagerDbContext> options) : base(options)
         {
 
         }

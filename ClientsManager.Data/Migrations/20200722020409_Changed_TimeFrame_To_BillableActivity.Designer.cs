@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ClientsManager.Data.Migrations
 {
-    [DbContext(typeof(ClientsManagerDBContext))]
+    [DbContext(typeof(ClientsManagerDbContext))]
     [Migration("20200722020409_Changed_TimeFrame_To_BillableActivity")]
     partial class Changed_TimeFrame_To_BillableActivity
     {
