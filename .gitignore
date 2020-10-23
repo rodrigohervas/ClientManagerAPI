@@ -159,3 +159,4 @@ paket-files/
 
 # Log files folder
 ClientsManager.Logs/
+ClientsManager.Data/Migrations/
