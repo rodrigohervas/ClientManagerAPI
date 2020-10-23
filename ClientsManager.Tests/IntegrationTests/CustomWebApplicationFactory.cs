@@ -55,11 +55,9 @@ namespace ClientsManager.Tests.IntegrationTests
                 );
 
                 //Register TestDbContext Middleware (SQL Server Test DB)
-                //string tempConnnString = "Server=(localdb)\\mssqllocaldb;Database=ClientsManagerTestDB;Trusted_Connection=True;MultipleActiveResultSets=true";
-                //var testDBConnectionString = TestConfigurationHelper.getTestConnectionString(TestContext.CurrentContext.);
-                //services.AddDbContext<CMTestsDbContext>( (options, context) =>
-                //    context.UseSqlServer(testDBConnectionString)
-                //    options.UseSqlServer(tempConnnString)
+                //var testDBConnectionString = TestConfigurationHelper.getTestConnectionString("");
+                //services.AddDbContext<CMTestsDbContext>(options =>
+                //    options.UseSqlServer(testDBConnectionString)
                 //);
 
                 //Add Generic Repo

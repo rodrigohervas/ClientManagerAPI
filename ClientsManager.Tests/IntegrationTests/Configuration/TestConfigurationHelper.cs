@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,7 +13,7 @@ namespace ClientsManager.Tests.IntegrationTests
         private static IConfiguration getConfiguration(string path)
         {
             return new ConfigurationBuilder()
-                            .SetBasePath(path)
+                            .SetBasePath(Directory.GetCurrentDirectory())
                             .AddJsonFile("appsettings.json", optional: true)
                             .AddUserSecrets("78a329d0-4c82-4430-9169-d4894aa7a79e") //UserSecretsId in ClientsManager.WebAPI.csproj
                             .AddEnvironmentVariables()
