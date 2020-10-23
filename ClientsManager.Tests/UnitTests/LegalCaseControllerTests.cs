@@ -46,7 +46,7 @@ namespace ClientsManager.Tests.UnitTests
             _controller.ControllerContext = new ControllerContextModel();
 
             //Load LegalCases Test Data
-            _legalCases = LegalCasesData.GetLegalCases();
+            _legalCases = LegalCasesData.getTestLegalCases();
         }
 
         //GetAllLegalCasesAsync([FromQuery] QueryStringParameters parameters)1

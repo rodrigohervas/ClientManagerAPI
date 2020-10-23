@@ -12,39 +12,33 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ClientsManager.Tests.IntegrationTests
 {
+    /// <summary>
+    /// Bootstrapps an in-memory application (TestServer) for integration tests
+    /// </summary>
+    /// <typeparam name="TStartup">Startup class</typeparam>
     public class CustomWebApplicationFactory<TStartup> : WebApplicationFactory<TStartup> where TStartup : class
     {
-        //create a factory representing an in-memory API
-        //private readonly WebApplicationFactory<TStartup> _factory;
-        //create an HttpClient to send requests to in-memory API
-        //private readonly HttpClient _testClient;
 
-        //public CustomWebApplicationFactory()
-        //{
-        //    //create a WebApplicationfactory object
-        //    _factory = new WebApplicationFactory<TStartup>();
+        //uses the generic IHostBuilder, for apps using Host.CreateDefaultBuilder
+        protected override IHostBuilder CreateHostBuilder()
+        {
+            return base.CreateHostBuilder();
+        }
 
-        //    //create and Configure an HttpClient
-        //    _testClient = _factory
-        //                        .WithWebHostBuilder(builder =>
-        //                        {
-                                    
-        //                        })
-        //                        .CreateClient();
-
-        //    //set HttpClient.BaseAddress
-        //    this.BaseAddress = _testClient.BaseAddress;
-
-        //    //set the Test Authorization for the HttpClient
-        //    //Test Authorization is defined in TestAuthorizationHandler.cs
-        //    _testClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("TestScheme");
-        //}
-
+        //uses the IWebHostBuilder, for apps using the legacy WebHost.CreateDefaultBuilder
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
+            builder.ConfigureAppConfiguration(config =>
+            {
+                config.AddUserSecrets<TStartup>(true, reloadOnChange: true);
+            });
+
             builder.ConfigureServices(services =>
             {
                 //set the test Authentication Scheme using the TestAuthorizationHandler class
@@ -52,16 +46,24 @@ namespace ClientsManager.Tests.IntegrationTests
                         .AddScheme<AuthenticationSchemeOptions, TestAuthorizationHandler>("TestScheme", options => { });
 
                 //remove DBContext registered in Startup, to set a new test one
-                services.RemoveAll(typeof(ClientsManagerDBContext));
+                services.RemoveAll(typeof(ClientsManagerDbContext));
 
-                //Add testing configured (InMemory) DbContext
-                services.AddDbContext<TestDBContext>(options =>
-                        options.UseInMemoryDatabase("ClientsManagerTestDB")
-                               .EnableSensitiveDataLogging()
+                //Register TestDbContext Middleware (In-Memory DB)
+                services.AddDbContext<CMTestsDbContext>(options =>
+                                options.UseInMemoryDatabase("ClientsManagerTestDB")
+                                       .EnableSensitiveDataLogging()
                 );
 
+                //Register TestDbContext Middleware (SQL Server Test DB)
+                //string tempConnnString = "Server=(localdb)\\mssqllocaldb;Database=ClientsManagerTestDB;Trusted_Connection=True;MultipleActiveResultSets=true";
+                //var testDBConnectionString = TestConfigurationHelper.getTestConnectionString(TestContext.CurrentContext.);
+                //services.AddDbContext<CMTestsDbContext>( (options, context) =>
+                //    context.UseSqlServer(testDBConnectionString)
+                //    options.UseSqlServer(tempConnnString)
+                //);
+
                 //Add Generic Repo
-                //services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+                services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
                 //Build service provider
                 var sp = services.BuildServiceProvider();
@@ -71,18 +73,15 @@ namespace ClientsManager.Tests.IntegrationTests
                 {
                     //Get the Test DbContext from the service collection
                     var scopedServices = scope.ServiceProvider;
-                    var dbContext = scopedServices.GetRequiredService<TestDBContext>();
+                    var dbContext = scopedServices.GetRequiredService<CMTestsDbContext>();
 
                     //Get the Logger service from the service collection
                     var logger = scopedServices.GetRequiredService<ILogger<TStartup>>();
 
-                    //ensure DB created
-                    dbContext.Database.EnsureCreated();
-
                     try
                     {
-                        //Seed db for tests
-                        TestSeeder<Client>.SeedDB(dbContext);
+                        //Seed DataBase for tests
+                        TestSeeder.SeedDB(dbContext);
                     }
                     catch (Exception ex)
                     {

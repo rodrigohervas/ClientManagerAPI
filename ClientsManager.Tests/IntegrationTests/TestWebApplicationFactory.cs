@@ -35,10 +35,10 @@ namespace ClientsManager.Tests.IntegrationTests
                                                 .AddScheme<AuthenticationSchemeOptions, TestAuthorizationHandler>("TestScheme", options => { });
 
                                         //remove DBContext registered in Startup, to set a new test one
-                                        services.RemoveAll(typeof(ClientsManagerDBContext));
+                                        services.RemoveAll(typeof(ClientsManagerDbContext));
 
                                         //Add testing configured (InMemory) DbContext
-                                        services.AddDbContext<TestDBContext>(options =>
+                                        services.AddDbContext<CMTestsDbContext>(options =>
                                                 options.UseInMemoryDatabase("TestDB")
                                                        .EnableSensitiveDataLogging()
                                         );
@@ -54,7 +54,7 @@ namespace ClientsManager.Tests.IntegrationTests
                                         {
                                             //Get the Test DbContext from the service collection
                                             var scopedServices = scope.ServiceProvider;
-                                            var context = scopedServices.GetRequiredService<TestDBContext>();
+                                            var context = scopedServices.GetRequiredService<CMTestsDbContext>();
 
                                             //Get the Logger service from the service collection
                                             var logger = scopedServices.GetRequiredService<ILogger<Startup>>();

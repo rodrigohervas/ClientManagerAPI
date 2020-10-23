@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace ClientsManager.Tests.TestData
 {
-    public static class BillableActivityData
+    public static class BillableActivitiesData
     { 
-        public static IEnumerable<BillableActivity> GetTestBillableActivities()
+        public static IEnumerable<BillableActivity> getTestBillableActivities()
         {
             return new List<BillableActivity> {
                 new BillableActivity

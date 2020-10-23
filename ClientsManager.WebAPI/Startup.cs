@@ -69,7 +69,7 @@ namespace ClientsManager.WebAPI
             services.AddAutoMapper(typeof(Startup));
 
             //Register DbContext Middleware
-            services.AddDbContext<ClientsManagerDBContext>(options =>
+            services.AddDbContext<ClientsManagerDbContext>(options =>
                 options.UseSqlServer(_configuration["ConnectionStrings:ClientsManagerDBConnectionString"])
             );
 

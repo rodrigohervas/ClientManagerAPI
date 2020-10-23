@@ -20,6 +20,9 @@ namespace ClientsManager.Tests.UnitTests
     public class ClientsControllerTests
     {
         private readonly IEnumerable<Client> _clients;
+        private readonly IEnumerable<Address> _addresses;
+        private readonly IEnumerable<Contact> _contacts;
+        private readonly IEnumerable<LegalCase> _legalCases;
         private readonly Mock<IGenericRepository<Client>> _mockRepository;
         private readonly IMapper _mapper;
         private readonly ILogger<ClientsController> _logger;
@@ -28,7 +31,7 @@ namespace ClientsManager.Tests.UnitTests
         public ClientsControllerTests()
         {
             //get Clients test data
-            _clients = ClientsData.GetTestClients();
+            _clients = ClientsData.getTestClients();
 
             //AutoMapper Configuration
             var profiles = new AutoMapperProfiles();
@@ -53,7 +56,7 @@ namespace ClientsManager.Tests.UnitTests
         public async void GetAllClientsAsync_Returns_All_Clients()
         {
             //map Clients test data to DTOs
-            var _clients = ClientsData.GetTestClients();
+            var _clients = ClientsData.getTestClients();
             var expectedDTOs = _mapper.Map<IEnumerable<ClientDTO>>(_clients);
 
             //specify the mockRepo return
@@ -118,6 +121,7 @@ namespace ClientsManager.Tests.UnitTests
         {
             //get the Client with id 4 (that has related LegalCases) and map it to its DTO
             var client = _clients.First<Client>(cl => cl.Id == id);
+            client.LegalCases = LegalCasesData.getTestLegalCases() as ICollection<LegalCase>;
             var expectedClientDto = _mapper.Map<ClientWithLegalCasesDTO>(client);
 
             //specify the mockRepo return
@@ -149,6 +153,7 @@ namespace ClientsManager.Tests.UnitTests
         {
             //get the Client with id 4 (that has related Addresses) and map it to its DTO
             var client = _clients.First<Client>(cl => cl.Id == id);
+            client.Addresses = AddressesData.getTestAddresses() as ICollection<Address>;            
             var expectedClientDto = _mapper.Map<ClientWithAddressesDTO>(client);
 
             //specify the mockRepo return
@@ -181,6 +186,7 @@ namespace ClientsManager.Tests.UnitTests
         {
             //get the Client with id 4 (that has related Contacts) and map it to its DTO
             var client = _clients.First<Client>(cl => cl.Id == id);
+            client.Contacts = ContactsData.getTestContacts() as ICollection<Contact>;
             var expectedClientDto = _mapper.Map<ClientWithContactsDTO>(client);
 
             //specify the mockRepo return
@@ -211,7 +217,7 @@ namespace ClientsManager.Tests.UnitTests
         public async void AddClientAsync_Creates_One_Client_Returns_201_And_Client_Created(int id)
         {
             //get a Client and set expected DTO
-            var expectedClient = ClientsData.GetTestClients().First<Client>(cl => cl.Id == id);
+            var expectedClient = ClientsData.getTestClients().First<Client>(cl => cl.Id == id);
             ClientDTO expectedDTO = _mapper.Map<ClientDTO>(expectedClient);
 
             //set mockRepo return for Add action
@@ -282,7 +288,7 @@ namespace ClientsManager.Tests.UnitTests
         public async void UpdateClientAsync_Updates_One_Client_Returns_200_And_Client_Updated(int id)
         {
             //declare a Client
-            var expectedClient = ClientsData.GetTestClients().First<Client>(cl => cl.Id == id);
+            var expectedClient = ClientsData.getTestClients().First<Client>(cl => cl.Id == id);
             ClientDTO expectedDTO = _mapper.Map<ClientDTO>(expectedClient);
 
             //set repo return for getting the object to update
@@ -357,7 +363,7 @@ namespace ClientsManager.Tests.UnitTests
         public async void DeleteClientAsync_Deletes_One_Client_And_Returns_Number_Of_Deletions(int id)
         {
             //declare a Client
-            var expectedClient = ClientsData.GetTestClients().First(cl => cl.Id == id);
+            var expectedClient = ClientsData.getTestClients().First(cl => cl.Id == id);
             ClientDTO expectedDTO = _mapper.Map<ClientDTO>(expectedClient);
 
             //set repo return for getting the object to delete

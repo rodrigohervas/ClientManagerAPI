@@ -36,7 +36,7 @@ namespace ClientsManager.Tests.UnitTests
         public BillableActivityControllerTests()
         {
             //get Billable Activities test data
-            _billableActivities = BillableActivityData.GetTestBillableActivities();
+            _billableActivities = BillableActivitiesData.getTestBillableActivities();
 
             //AutoMapper Configuration
             var profiles = new AutoMapperProfiles();

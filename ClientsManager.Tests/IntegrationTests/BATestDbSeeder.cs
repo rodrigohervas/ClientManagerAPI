@@ -8,13 +8,13 @@ namespace ClientsManager.Tests.IntegrationTests
 {
     public static class BATestDbSeeder
     {
-        public static void SeedDB(TestDBContext context) {
-            context.BillableActivities.AddRange(BillableActivityData.GetTestBillableActivities());
+        public static void SeedDB(CMTestsDbContext context) {
+            context.BillableActivities.AddRange(BillableActivitiesData.getTestBillableActivities());
             context.SaveChanges();
         }
 
-        public static void ReSeedDB(TestDBContext context) {
-            context.BillableActivities.RemoveRange(BillableActivityData.GetTestBillableActivities());
+        public static void ReSeedDB(CMTestsDbContext context) {
+            context.BillableActivities.RemoveRange(BillableActivitiesData.getTestBillableActivities());
             SeedDB(context);
         }
     }

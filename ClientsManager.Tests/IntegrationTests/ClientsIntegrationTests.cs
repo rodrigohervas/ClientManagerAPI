@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using Xunit;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication;
+using ClientsManager.Tests.TestData;
+using FluentAssertions;
 
 namespace ClientsManager.Tests.IntegrationTests
 {
@@ -34,6 +36,7 @@ namespace ClientsManager.Tests.IntegrationTests
         public ClientsIntegrationTests(CustomWebApplicationFactory<Startup> factory)
         {
             _factory = factory;
+            // create an instance of HttpClient with CreateClient()
             //_httpClient = _factory.CreateClient(new WebApplicationFactoryClientOptions { });
         }
 
@@ -43,55 +46,38 @@ namespace ClientsManager.Tests.IntegrationTests
         public async Task GetAllClientsAsync_Returns_All_Clients_Paged(string url, int pageNumber, int pageSize)
         {
             //Arrange
+            //create test HttpClient
             var client = _factory.CreateClient();
-                      
 
-            //Act - send GET Request from testClient to API
+            //get test Clients
+            IEnumerable<Client> expectedClients = ClientsData.getTestClients();
+
+            //Act
             string uri = $"{url}?pageNumber={pageNumber}&pageSize={pageSize}";
-            var clients = await client.GetAsync(uri);
-
-            var serializedResponse = await clients.Content.ReadAsStringAsync();
-            var actual = JsonConvert.DeserializeObject<IEnumerable<Client>>(serializedResponse);
+            var httpResponse = await client.GetAsync(uri);
+            
+            //process Http response
+            var serializedResponse = await httpResponse.Content.ReadAsStringAsync();
+            var actualClients = JsonConvert.DeserializeObject<IEnumerable<Client>>(serializedResponse);
 
             //Assert
-            Assert.Contains(actual, cl => cl.Id == 1);
-            Assert.Contains(actual, cl => cl.Id == 2);
-            Assert.Contains(actual, cl => cl.Id == 3);
-            Assert.Contains(actual, cl => cl.Id == 6);
-            Assert.Contains(actual, cl => cl.Name == "Test Company 1");
-            Assert.Contains(actual, cl => cl.Name == "Test Company 2");
-        }
+            Assert.True(httpResponse.IsSuccessStatusCode);             
 
-        //public async Task<IEnumerable<BillableActivity>> GetBillableActivitiesByEmployeeIdAsync(int employee_id)
+            //use FluentAssertions to compare Collections of Reference types
+            actualClients.Should().BeEquivalentTo(expectedClients, options => options.ComparingByMembers<Client>());
+        }
 
 
         //GetClientByIdAsync([FromRoute] int id)
-        [Theory]
-        [InlineData(1)]
-        [InlineData(2)]
-        public async Task GetClientByIdAsync_Returns_Client_For_Id(int id)
-        {
-            //Arrange
-            var client = _factory.CreateClient();
-
-            //Act - send GET Request from testClient to API
-            string uri = $"{url}/{id}";
-            var clients = await client.GetAsync(uri);
-
-            var serializedResponse = await clients.Content.ReadAsStringAsync();
-            var actual = JsonConvert.DeserializeObject<IEnumerable<Client>>(serializedResponse);
-
-            //Assert
-            Assert.Contains(actual, cl => cl.Id == 1);
-            Assert.Contains(actual, cl => cl.Id == 2);
-            Assert.Contains(actual, cl => cl.Id == 3);
-            Assert.Contains(actual, cl => cl.Id == 6);
-            Assert.Contains(actual, cl => cl.Name == "Test Company 1");
-            Assert.Contains(actual, cl => cl.Name == "Test Company 2");
-        }
+        //[Theory]
+        //[InlineData(1)]
+        //[InlineData(2)]
+        //public async Task GetClientByIdAsync_Returns_Client_For_Id(int id)
+        //{
+        //    new NotImplementedException();
+        //}
 
 
-        //public async Task<BillableActivity> GetBillableActivityByIdAsync(int id)
 
     }
 }

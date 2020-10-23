@@ -46,10 +46,10 @@ namespace ClientsManager.Tests.IntegrationTests
 
                 //Remove the app's DbContext that was registered in Startup.ConfigureServices(), 
                 //to be able to use a different DB for testing
-                services.RemoveAll(typeof(ClientsManagerDBContext));
+                services.RemoveAll(typeof(ClientsManagerDbContext));
 
                 //Add testing configured (InMemory) DbContext
-                services.AddDbContext<TestDBContext>(options =>
+                services.AddDbContext<CMTestsDbContext>(options =>
                                                 options.UseInMemoryDatabase("InMemoryTestDB")
                                                        .EnableSensitiveDataLogging() );
 
@@ -68,7 +68,7 @@ namespace ClientsManager.Tests.IntegrationTests
                 {
                     //Get the Test DbContext from the service collection
                     var scopedServices = scope.ServiceProvider;
-                    var context = scopedServices.GetRequiredService<TestDBContext>();
+                    var context = scopedServices.GetRequiredService<CMTestsDbContext>();
 
                     //Get the Logger service from the service collection
                     var logger = scopedServices.GetRequiredService<ILogger<TestWebHost<TStartup>>>();
