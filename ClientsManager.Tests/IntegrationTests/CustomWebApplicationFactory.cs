@@ -55,7 +55,7 @@ namespace ClientsManager.Tests.IntegrationTests
                 );
 
                 //Register TestDbContext Middleware (SQL Server Test DB)
-                //var testDBConnectionString = TestConfigurationHelper.getTestConnectionString("");
+                //var testDBConnectionString = TestConfigurationHelper.getTestConnectionString();
                 //services.AddDbContext<CMTestsDbContext>(options =>
                 //    options.UseSqlServer(testDBConnectionString)
                 //);

@@ -1,4 +1,5 @@
 ﻿using ClientsManager.Tests.IntegrationTests.Configuration;
+using ClientsManager.WebAPI;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -10,21 +11,22 @@ namespace ClientsManager.Tests.IntegrationTests
 {
     public static class TestConfigurationHelper
     {
-        private static IConfiguration getConfiguration(string path)
+        private static IConfiguration getConfiguration()
         {
             return new ConfigurationBuilder()
                             .SetBasePath(Directory.GetCurrentDirectory())
                             .AddJsonFile("appsettings.json", optional: true)
-                            .AddUserSecrets("78a329d0-4c82-4430-9169-d4894aa7a79e") //UserSecretsId in ClientsManager.WebAPI.csproj
+                            //.AddUserSecrets("78a329d0-4c82-4430-9169-d4894aa7a79e") //UserSecretsId in ClientsManager.WebAPI.csproj
+                            .AddUserSecrets(typeof(Program).Assembly) //UserSecretsId in ClientsManager.WebAPI.csproj
                             .AddEnvironmentVariables()
                             .Build();
         }
 
-        public static TestsConfiguration getTestConfiguration(string path)
+        public static TestsConfiguration getTestConfiguration()
         {
             var configuration = new TestsConfiguration();
 
-            var iConfiguration = getConfiguration(path);
+            var iConfiguration = getConfiguration();
 
             iConfiguration
                 .GetSection("ConnectionStrings:TestsDBConnectionString")
@@ -33,9 +35,9 @@ namespace ClientsManager.Tests.IntegrationTests
             return configuration;
         }
 
-        public static string getTestConnectionString(string path)
+        public static string getTestConnectionString()
         {
-            var iConfiguration = getConfiguration(path);
+            var iConfiguration = getConfiguration();
 
             return iConfiguration.GetConnectionString("TestsDBConnectionString");
         }
