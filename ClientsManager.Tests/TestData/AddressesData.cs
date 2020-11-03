@@ -31,6 +31,16 @@ namespace ClientsManager.Tests.TestData
                     StateProvince = "Missouri",
                     ZipCode = "20812",
                     Country = "United States"
+                },
+                new Address()
+                {
+                    Id = 3,
+                    Client_Id = 4,
+                    StreetNumber = "132 Main Street",
+                    City = "Taskaloosse",
+                    StateProvince = "Kentucky",
+                    ZipCode = "28882",
+                    Country = "United States"
                 }
             };
         }
