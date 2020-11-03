@@ -294,45 +294,6 @@ namespace ClientsManager.Tests.UnitTests
             controller.ControllerContext = new ControllerContextModel();
 
             //Call the SUT method
-            //returns ActionResult<BillableActivity> type
-            var actionResult = await controller.UpdateContactAsync(1, contact);
-
-            //Get the int result from the posted ActionResult
-            var notFoundObjectResult = actionResult.Result as NotFoundObjectResult;
-            var statusCode = notFoundObjectResult.StatusCode;
-            string actualResponseMessage = (string)notFoundObjectResult.Value;
-
-            //Assert the result
-            Assert.NotNull(actionResult);
-
-            //Validate the return status code
-            Assert.Equal(404, statusCode);
-
-            //Validate the result
-            Assert.Equal(expectedResponseMessage, actualResponseMessage);
-        }
-
-        //=====> TODO: previous test, but with null id 
-        //Task<ActionResult<ContactDTO>> UpdateContactAsync([FromRoute] int id, [FromBody] Contact contact)
-        [Fact]
-        public async void UpdateContactAsync_Returns_NotFound_404_When_Update_With_null_Id()
-        {
-            //declare a null Contact
-            Contact contact = null;
-            //expected return error message
-            string expectedResponseMessage = "No Contact was updated";
-
-            ///set mockRepo return for Update action
-            _mockRepository.Setup(repo => repo.UpdateTAsync(contact)).ReturnsAsync(0);
-
-            //instantiate the controller, and call the method
-            var controller = new ContactsController(_mockRepository.Object, _mapper, _logger);
-
-            //Create Custom ControllerContext and add it to Controller for logging in the Controller in case of error
-            controller.ControllerContext = new ControllerContextModel();
-
-            //Call the SUT method
-            //returns ActionResult<BillableActivity> type
             var actionResult = await controller.UpdateContactAsync(1, contact);
 
             //Get the int result from the posted ActionResult
