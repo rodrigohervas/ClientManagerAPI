@@ -15,7 +15,7 @@ namespace ClientsManager.Tests.TestData
                 new Contact()
                 {
                     Id = 1,
-                    Client_Id = 4,
+                    Client_Id = 2,
                     Address_Id = 2,
                     Name = "Myca Coslett",
                     Position = "Legal Assistant",
@@ -26,7 +26,7 @@ namespace ClientsManager.Tests.TestData
                 new Contact()
                 {
                     Id = 2,
-                    Client_Id = 4,
+                    Client_Id = 2,
                     Address_Id = 3,
                     Name = "Dewitt Dioniso",
                     Position = "Project Manager",

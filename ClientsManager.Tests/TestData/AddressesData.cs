@@ -15,7 +15,7 @@ namespace ClientsManager.Tests.TestData
                 new Address()
                 {
                     Id = 1,
-                    Client_Id = 4,
+                    Client_Id = 1,
                     StreetNumber = "44 4th Drive",
                     City = "Silver Spring",
                     StateProvince = "Maryland",
@@ -25,7 +25,7 @@ namespace ClientsManager.Tests.TestData
                 new Address()
                 {
                     Id = 2,
-                    Client_Id = 4,
+                    Client_Id = 2,
                     StreetNumber = "4444 Mayer Point",
                     City = "Saint Joseph",
                     StateProvince = "Missouri",

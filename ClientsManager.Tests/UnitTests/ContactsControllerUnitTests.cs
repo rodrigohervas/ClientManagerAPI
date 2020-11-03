@@ -1,382 +1,434 @@
-﻿using System;
+﻿using AutoMapper;
+using ClientsManager.Data;
+using ClientsManager.Models;
+using ClientsManager.Tests.Models;
+using ClientsManager.Tests.TestData;
+using ClientsManager.WebAPI.AutoMapperProfiles;
+using ClientsManager.WebAPI.Controllers;
+using ClientsManager.WebAPI.DTOs;
+using FluentAssertions;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Moq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Xunit;
 
 namespace ClientsManager.Tests.UnitTests
 {
     public class ContactsControllerUnitTests
     {
-        //private readonly IEnumerable<BillableActivity> _billableActivities;
-        //private readonly Mock<IGenericRepository<BillableActivity>> _mockRepository;
-        //private readonly IMapper _mapper;
-        //private readonly ILogger<BillableActivitiesController> _logger;
-        //QueryStringParameters parameters;
-
-        //public SampleControllerTests()
-        //{
-        //    //get Billable Activities test data
-        //    _billableActivities = BillableActivityData.GetTestBillableActivities();
-
-        //    //AutoMapper Configuration
-        //    var profiles = new AutoMapperProfiles();
-        //    var configuration = new MapperConfiguration(config => config.AddProfile(profiles));
-        //    _mapper = new Mapper(configuration);
-
-        //    //Configure Logger Mock
-        //    var _loggerMock = new Mock<ILogger<BillableActivitiesController>>();
-        //    _logger = _loggerMock.Object;
-
-        //    //Mock Repo initialization
-        //    _mockRepository = new Mock<IGenericRepository<BillableActivity>>();
-
-        //    //QueryStringParameters for paging
-        //    parameters = new QueryStringParameters();
-        //    parameters.pageNumber = 1;
-        //    parameters.pageSize = 10;
-        //}
-
-        ////GetAllBillableActivitiesAsync
-        //[Fact]
-        //public async void GetAllAsync_Returns_All_BillableActivities()
-        //{
-        //    //specify the mockRepo return
-        //    _mockRepository.Setup(repo => repo.GetAllPagedAsync(ba => ba.LegalCase_Id, parameters)).ReturnsAsync(_billableActivities);
-
-        //    //instantiate the controller
-        //    var controller = new BillableActivitiesController(_mockRepository.Object, _mapper, _logger);
-
-        //    //Call the SUT method
-        //    var result = await controller.GetAllBillableActivitiesAsync(parameters);
-
-        //    //Assert the result
-        //    Assert.NotNull(result);
-        //    var actionResult = Assert.IsType<ActionResult<IEnumerable<BillableActivity>>>(result);
-        //    var objResult = Assert.IsType<OkObjectResult>(result.Result);
-        //    var billableActivitiesList = objResult.Value;
-        //    IEnumerable<BillableActivity> dtos = _mapper.Map<IEnumerable<BillableActivity>>(billableActivitiesList);
-
-        //    //use FluentAssertions to compare Collections of Reference types
-        //    dtos.Should().BeEquivalentTo(_billableActivities, options => options.ComparingByMembers<BillableActivityDTO>());
-        //}
-
-
-        ////GetBillableActivitiesByEmployeeIdAsync(int employee_id)
-        //[Theory]
-        //[InlineData(2)]
-        //public async void GetBillableActivitiesByEmployeeIdAsync_Returns_All_BillableActivities_for_One_Employee(int employee_id)
-        //{
-        //    //gets all BillableActivities for one employee
-        //    var _billableActivitiesOfEmployee = _billableActivities.Where(ba => ba.Employee_Id == employee_id);
-
-        //    //Setup repository
-        //    _mockRepository.Setup(repo => repo.GetByAsync(ba => ba.Employee_Id == employee_id))
-        //                                            .ReturnsAsync(_billableActivitiesOfEmployee);
-
-        //    //instantiate System Under Test
-        //    var controller = new BillableActivitiesController(_mockRepository.Object, _mapper, _logger); ;
-
-        //    //call SUT method
-        //    var actionResult = await controller.GetBillableActivitiesByEmployeeIdAsync(employee_id);
-
-        //    //Assert results
-        //    Assert.NotNull(actionResult);
-
-        //    //Assert object in actionresult
-        //    var result = Assert.IsType<OkObjectResult>(actionResult.Result);
-        //    var actualbillableActivities = (IEnumerable<BillableActivityDTO>)(result.Value);
-        //    IEnumerable<BillableActivity> dtos = _mapper.Map<IEnumerable<BillableActivity>>(actualbillableActivities);
-
-        //    //use FluentAssertions to compare Collections of Reference types
-        //    dtos.Should().BeEquivalentTo(_billableActivitiesOfEmployee, options => options.ComparingByMembers<BillableActivityDTO>());
-        //}
-
-
-        ////GetBillableActivityByIdAsync(int id)
-        //[Theory]
-        //[InlineData(1)]
-        //public async void GetBillableActivityByIdAsync_Returns_One_BillableActivity(int id)
-        //{
-        //    //get the first BA
-        //    var billableActivity = _billableActivities.FirstOrDefault<BillableActivity>();
-        //    var expectedBillableActivityDto = _mapper.Map<BillableActivityDTO>(billableActivity);
-
-        //    //specify the mockRepo return
-        //    _mockRepository.Setup(repo => repo.GetOneByAsync(tf => tf.Id == id)).ReturnsAsync(billableActivity);
-
-        //    //instantiate the controller, and call the method
-        //    var controller = new BillableActivitiesController(_mockRepository.Object, _mapper, _logger);
-
-        //    //Call the SUT method
-        //    //returns ActionResult<TimeFrame> type
-        //    var actionResult = await controller.GetBillableActivityByIdAsync(id);
-
-        //    //Assert the result
-        //    Assert.NotNull(actionResult);
-
-        //    //convert ActionResult to OkObjectResult to get its Value: a BillableActivity type
-        //    var result = Assert.IsType<OkObjectResult>(actionResult.Result);
-        //    //get the ObjectResult.Value
-        //    var actualBillableActivityDto = result.Value as BillableActivityDTO;
-
-        //    //use FluentAssertions to compare Reference types
-        //    actualBillableActivityDto.Should().BeEquivalentTo(expectedBillableActivityDto, options => options.ComparingByMembers<BillableActivityDTO>());
-        //}
-
-        ////AddBillableActivityAsync(BillableActivity billableActivity)
-        //[Fact]
-        //public async void AddBillableActivityAsync_Creates_One_BillableActivity_Returns_201_And_BA_Created()
-        //{
-        //    //declare a BillableActivity
-        //    var expectedBillableActivity = new BillableActivity
-        //    {
-        //        Id = 1,
-        //        LegalCase_Id = 1,
-        //        Employee_Id = 1,
-        //        Title = "Billable Activity 1",
-        //        Description = "this is the Billable Activity 1",
-        //        Price = 120.50m,
-        //        Start_DateTime = new DateTime(2020, 06, 20, 9, 30, 00),
-        //        Finish_DateTime = new DateTime(2020, 06, 20, 16, 00, 00)
-        //    };
-        //    BillableActivityDTO expectedBaDTO = _mapper.Map<BillableActivityDTO>(expectedBillableActivity);
-
-        //    //set mockRepo return for Add action
-        //    _mockRepository.Setup(repo => repo.AddTAsync(expectedBillableActivity)).ReturnsAsync(1);
-
-        //    //set repo return for getting the newly created object
-        //    _mockRepository.Setup(repo => repo.GetOneByAsync(ba =>
-        //                            ba.Title == expectedBillableActivity.Title &&
-        //                            ba.Employee_Id == expectedBillableActivity.Employee_Id &&
-        //                            ba.LegalCase_Id == expectedBillableActivity.LegalCase_Id))
-        //                    .ReturnsAsync(expectedBillableActivity);
-
-        //    //instantiate the controller, passing the repo object
-        //    var controller = new BillableActivitiesController(_mockRepository.Object, _mapper, _logger);
-
-        //    //Call the SUT method
-        //    //returns ActionResult<BillableActivity> type
-        //    var actionResult = await controller.AddBillableActivityAsync(expectedBillableActivity);
-
-        //    //Get the int result from the posted ActionResult
-        //    var createdResult = actionResult.Result as CreatedResult;
-        //    var statusCode = createdResult.StatusCode;
-        //    BillableActivityDTO actualBaDTO = createdResult.Value as BillableActivityDTO;
-
-        //    //Assert the result
-        //    Assert.NotNull(actionResult);
-
-        //    //Validate the return is 1 BillableActivity created
-        //    Assert.Equal(201, statusCode);
-
-        //    //Validate the actual BillableActivity
-        //    actualBaDTO.Should().BeEquivalentTo(expectedBaDTO, options => options.ComparingByMembers<BillableActivityDTO>());
-        //}
-
-
-        ////AddBillableActivityAsync(0)
-        //[Fact]
-        //public async void AddBillableActivityAsync_Returns_NotFound_404_When_Create_With_null_BillableActivity()
-        //{
-        //    //Configure Repository Mock
-        //    _mockRepository.Setup(repo => repo.AddTAsync(null)).ReturnsAsync(0);
-
-        //    //instantiate the controller, and call the method
-        //    var controller = new BillableActivitiesController(_mockRepository.Object, _mapper, _logger);
-
-        //    //Create Custom ControllerContext and add it to Controller for logging in the Controller in case of error
-        //    controller.ControllerContext = new ControllerContextModel();
-
-        //    //Call the SUT method - returns ActionResult<BillableActivity> type
-        //    var actionResult = await controller.AddBillableActivityAsync(new BillableActivity());
-
-        //    //Assert the result
-        //    Assert.NotNull(actionResult);
-
-        //    var result = actionResult.Result as NotFoundObjectResult;
-        //    var statusCode = result.StatusCode;
-        //    var message = result.Value;
-
-        //    //Assert message
-        //    Assert.Equal("No Billable Activity was created", message);
-
-        //    //Assert StatusCode
-        //    Assert.Equal(404, statusCode);
-        //}
-
-        ////UpdateBillableActivityAsync(int id, BillableActivity billableActivity)
-        //[Fact]
-        //public async void UpdateBillableActivityAsync_Updates_One_BillableActivity_Returns_200_And_BillableActivity_Updated()
-        //{
-        //    //declare a BillableActivity
-        //    var expectedBillableActivity = new BillableActivity
-        //    {
-        //        Id = 1,
-        //        LegalCase_Id = 1,
-        //        Employee_Id = 1,
-        //        Title = "Billable Activity 1",
-        //        Description = "this is the Billable Activity 1",
-        //        Price = 120.50m,
-        //        Start_DateTime = new DateTime(2020, 06, 20, 9, 30, 00),
-        //        Finish_DateTime = new DateTime(2020, 06, 20, 16, 00, 00)
-        //    };
-        //    BillableActivityDTO expectedBaDTO = _mapper.Map<BillableActivityDTO>(expectedBillableActivity);
-
-        //    //set repo return for getting the object to update
-        //    _mockRepository.Setup(repo => repo.GetOneByAsync(ba => ba.Id == expectedBillableActivity.Id))
-        //                   .ReturnsAsync(expectedBillableActivity);
-
-        //    //set mockRepo return for Update action
-        //    _mockRepository.Setup(repo => repo.UpdateTAsync(expectedBillableActivity)).ReturnsAsync(1);
-
-        //    //instantiate the controller, passing the repo object
-        //    var controller = new BillableActivitiesController(_mockRepository.Object, _mapper, _logger);
-
-        //    //Call the SUT method
-        //    //returns ActionResult<BillableActivity> type
-        //    var actionResult = await controller.UpdateBillableActivityAsync(expectedBillableActivity.Id, expectedBillableActivity);
-
-        //    //Get the int result from the posted ActionResult
-        //    var okObjectResult = actionResult.Result as OkObjectResult;
-        //    var statusCode = okObjectResult.StatusCode;
-        //    BillableActivityDTO actualBaDTO = okObjectResult.Value as BillableActivityDTO;
-
-        //    //Assert the result
-        //    Assert.NotNull(actionResult);
-
-        //    //Validate StatusCode
-        //    Assert.Equal(200, statusCode);
-
-        //    //Validate the actual BillableActivity
-        //    actualBaDTO.Should().BeEquivalentTo(expectedBaDTO, options => options.ComparingByMembers<BillableActivityDTO>());
-        //}
-
-        ////UpdateBillableActivityAsync(int id, BillableActivity billableActivity)
-        //[Fact]
-        //public async void UpdateBillableActivityAsync_Returns_NotFound_404_When_Update_With_null_BillableActivity()
-        //{
-        //    //declare a BillableActivity
-        //    BillableActivity expectedBillableActivity = null;
-        //    //expected return error message
-        //    string expectedResponseMessage = "No Billable Activity was updated";
-
-        //    ///set mockRepo return for Update action
-        //    _mockRepository.Setup(repo => repo.UpdateTAsync(expectedBillableActivity)).ReturnsAsync(0);
-
-        //    //instantiate the controller, and call the method
-        //    var controller = new BillableActivitiesController(_mockRepository.Object, _mapper, _logger);
-
-        //    //Create Custom ControllerContext and add it to Controller for logging in the Controller in case of error
-        //    controller.ControllerContext = new ControllerContextModel();
-
-        //    //Call the SUT method
-        //    //returns ActionResult<BillableActivity> type
-        //    var actionResult = await controller.UpdateBillableActivityAsync(1, expectedBillableActivity);
-
-        //    //Get the int result from the posted ActionResult
-        //    var notFoundObjectResult = actionResult.Result as NotFoundObjectResult;
-        //    var statusCode = notFoundObjectResult.StatusCode;
-        //    string actualResponseMessage = (string)notFoundObjectResult.Value;
-
-        //    //Assert the result
-        //    Assert.NotNull(actionResult);
-
-        //    //Validate the return status code
-        //    Assert.Equal(404, statusCode);
-
-        //    //Validate the actual BillableActivity
-        //    Assert.Equal(expectedResponseMessage, actualResponseMessage);
-        //}
-
-        ////DeleteBillableActivityAsync(int id)
-        //[Theory]
-        //[InlineData(1)]
-        //public async void DeleteBillableActivityAsync_Deletes_One_BillableActivity_And_Returns_Number_Of_Deletions(int id)
-        //{
-        //    //declare a BillableActivity
-        //    var expectedBillableActivity = new BillableActivity
-        //    {
-        //        Id = 1,
-        //        LegalCase_Id = 1,
-        //        Employee_Id = 1,
-        //        Title = "Billable Activity 1",
-        //        Description = "this is the Billable Activity 1",
-        //        Price = 120.50m,
-        //        Start_DateTime = new DateTime(2020, 06, 20, 9, 30, 00),
-        //        Finish_DateTime = new DateTime(2020, 06, 20, 16, 00, 00)
-        //    };
-        //    BillableActivityDTO expectedBaDTO = _mapper.Map<BillableActivityDTO>(expectedBillableActivity);
-
-        //    //set repo return for getting the object to delete
-        //    _mockRepository.Setup(repo => repo.GetOneByAsync(ba => ba.Id == id))
-        //                   .ReturnsAsync(expectedBillableActivity);
-
-        //    //set mockRepo return for Delete action
-        //    _mockRepository.Setup(repo => repo.DeleteTAsync(expectedBillableActivity)).ReturnsAsync(1);
-
-        //    //instantiate the controller, passing the repo object
-        //    var controller = new BillableActivitiesController(_mockRepository.Object, _mapper, _logger);
-
-        //    //Call the controller method
-        //    var actionResult = await controller.DeleteBillableActivityAsync(id);
-
-        //    //Get the int result
-        //    var okObjectResult = actionResult.Result as OkObjectResult;
-        //    var statusCode = okObjectResult.StatusCode;
-        //    int actualDeleted = (int)okObjectResult.Value;
-
-        //    //Assert the result
-        //    Assert.NotNull(actionResult);
-
-        //    //Validate StatusCode
-        //    Assert.Equal(200, statusCode);
-
-        //    //Validate the number of BAs deleted
-        //    Assert.Equal(1, actualDeleted);
-        //}
-
-
-        ////delete error
-        ////DeleteBillableActivityAsync(int id)
-        //[Theory]
-        //[InlineData(0)]
-        //public async void DeleteBillableActivityAsync_Returns_NotFound_404_When_Delete_With_null_BillableActivity(int id)
-        //{
-        //    //declare a BillableActivity
-        //    BillableActivity expectedBillableActivity = null;
-
-        //    //response error message:
-        //    string expectedResponseMessage = "No data was found for the id";
-
-        //    //set repo return for getting the object to delete
-        //    _mockRepository.Setup(repo => repo.GetOneByAsync(ba => ba.Id == id))
-        //                   .ReturnsAsync(expectedBillableActivity);
-
-        //    //set mockRepo return for Delete action
-        //    _mockRepository.Setup(repo => repo.DeleteTAsync(expectedBillableActivity)).ReturnsAsync(0);
-
-        //    //instantiate the controller, and call the method
-        //    var controller = new BillableActivitiesController(_mockRepository.Object, _mapper, _logger);
-
-        //    //Create Custom ControllerContext and add it to Controller for logging in the Controller in case of error
-        //    controller.ControllerContext = new ControllerContextModel();
-
-        //    //Call the controller method
-        //    var actionResult = await controller.DeleteBillableActivityAsync(id);
-
-        //    //Get the int result
-        //    var notFoundObjectResult = actionResult.Result as NotFoundObjectResult;
-        //    var statusCode = notFoundObjectResult.StatusCode;
-        //    string actualResponseMessage = (string)notFoundObjectResult.Value;
-
-        //    //Assert the result
-        //    Assert.NotNull(actionResult);
-
-        //    //Validate StatusCode
-        //    Assert.Equal(404, statusCode);
-
-        //    //Validate the number of BAs deleted
-        //    Assert.Equal(expectedResponseMessage, actualResponseMessage);
-        //}
+        private readonly IEnumerable<Contact> _contacts;
+        private readonly Mock<IGenericRepository<Contact>> _mockRepository;
+        private readonly IMapper _mapper;
+        private readonly ILogger<ContactsController> _logger;
+        QueryStringParameters parameters;
+
+        public ContactsControllerUnitTests()
+        {
+            //get Billable Activities test data
+            _contacts = ContactsData.getTestContacts();
+            
+            //AutoMapper Configuration
+            var profiles = new AutoMapperProfiles();
+            var configuration = new MapperConfiguration(config => config.AddProfile(profiles));
+            _mapper = new Mapper(configuration);
+
+            //Configure Logger Mock
+            var _loggerMock = new Mock<ILogger<ContactsController>>();
+            _logger = _loggerMock.Object;
+
+            //Mock Repo initialization
+            _mockRepository = new Mock<IGenericRepository<Contact>>();
+
+            //QueryStringParameters for paging
+            parameters = new QueryStringParameters();
+            parameters.pageNumber = 1;
+            parameters.pageSize = 10;
+        }
+
+        //Task<ActionResult<IEnumerable<Contact>>> GetAllContactsAsync([FromQuery] QueryStringParameters parameters)
+        [Fact]
+        public async void GetAllContactsAsync_Returns_All_Contacts()
+        {
+            IEnumerable<ContactDTO> expectedDtos = _mapper.Map<IEnumerable<ContactDTO>>(_contacts);
+            //specify the mockRepo return
+            _mockRepository.Setup(repo => repo.GetAllPagedAsync(co => co.Client_Id, parameters)).ReturnsAsync(_contacts);
+
+            //instantiate the controller
+            var controller = new ContactsController(_mockRepository.Object, _mapper, _logger);
+
+            //Call the SUT method
+            var result = await controller.GetAllContactsAsync(parameters);
+
+            //Assert the result
+            Assert.NotNull(result);
+            var actionResult = Assert.IsType<ActionResult<IEnumerable<Contact>>>(result);
+            var objResult = Assert.IsType<OkObjectResult>(result.Result);
+            var contactsList = objResult.Value;
+            IEnumerable<ContactDTO> actualDtos = _mapper.Map<IEnumerable<ContactDTO>>(contactsList);
+
+            //use FluentAssertions to compare Collections of Reference types
+            actualDtos.Should().BeEquivalentTo(expectedDtos, options => options.ComparingByMembers<ContactDTO>());
+        }
+
+
+        //Task<ActionResult<IEnumerable<ContactDTO>>> GetContactsByClientIdAsync([FromRoute] int client_id)
+        [Theory]
+        [InlineData(2)]
+        public async void GetContactsByClientIdAsync_Returns_All_Contacts_for_One_Client(int client_id)
+        {
+            //gets all BillableActivities for one employee
+            var _contactsForClient = _contacts.Where(co => co.Client_Id == client_id);
+            IEnumerable<ContactDTO> expectedDtos = _mapper.Map<IEnumerable<ContactDTO>>(_contactsForClient);
+            
+            //Setup repository
+            _mockRepository.Setup(repo => repo.GetByAsync(co => co.Client_Id == client_id))
+                                                    .ReturnsAsync(_contactsForClient);
+
+            //instantiate System Under Test
+            var controller = new ContactsController(_mockRepository.Object, _mapper, _logger); ;
+
+            //call SUT method
+            var actionResult = await controller.GetContactsByClientIdAsync(client_id);
+
+            //Assert results
+            Assert.NotNull(actionResult);
+
+            //Assert object in actionresult
+            var result = Assert.IsType<OkObjectResult>(actionResult.Result);
+            var actualContacts = (IEnumerable<ContactDTO>)(result.Value);
+            IEnumerable<ContactDTO> dtos = _mapper.Map<IEnumerable<ContactDTO>>(actualContacts);
+
+            //use FluentAssertions to compare Collections of Reference types
+            dtos.Should().BeEquivalentTo(expectedDtos, options => options.ComparingByMembers<ContactDTO>());
+        }
+
+
+        //Task<ActionResult<ContactDTO>> GetContactByIdAsync([FromRoute] int id)
+        [Theory]
+        [InlineData(1)]
+        public async void GetContactByIdAsync_Returns_One_Contact(int id)
+        {
+            //get the first Contact
+            var contact = _contacts.FirstOrDefault<Contact>();
+            var expectedContactDto = _mapper.Map<ContactDTO>(contact);
+
+            //specify the mockRepo return
+            _mockRepository.Setup(repo => repo.GetOneByAsync(co => co.Id == id)).ReturnsAsync(contact);
+
+            //instantiate the controller, and call the method
+            var controller = new ContactsController(_mockRepository.Object, _mapper, _logger);
+
+            //Call the SUT method
+            var actionResult = await controller.GetContactByIdAsync(id);
+
+            //Assert the result
+            Assert.NotNull(actionResult);
+
+            //convert ActionResult to OkObjectResult to get its Value
+            var result = Assert.IsType<OkObjectResult>(actionResult.Result);
+            //get the ObjectResult.Value
+            var actualContactDto = result.Value as ContactDTO;
+
+            //use FluentAssertions to compare Reference types
+            actualContactDto.Should().BeEquivalentTo(expectedContactDto, options => options.ComparingByMembers<ContactDTO>());
+        }
+
+
+        //Task<ActionResult<ContactWithAddressDTO>> GetContactByIdWithDetailsAsync([FromRoute] int id)
+        [Theory]
+        [InlineData(1)]
+        public async void GetContactByIdWithDetailsAsync_Returns_One_Contact_With_Related_Addresses(int id)
+        {
+            //get the first Contact and its address
+            var contact = _contacts.FirstOrDefault<Contact>();
+            contact.Address = AddressesData.getTestAddresses().First(ad => ad.Client_Id == id);
+            var expectedContactDto = _mapper.Map<ContactWithAddressDTO>(contact);
+
+            //specify the mockRepo return
+            _mockRepository.Setup(repo => repo.GetOneByWithRelatedDataAsync(co => co.Id == id, co => co.Address)).ReturnsAsync(contact);
+
+            //instantiate the controller, and call the method
+            var controller = new ContactsController(_mockRepository.Object, _mapper, _logger);
+
+            //Call the SUT method
+            var actionResult = await controller.GetContactByIdWithDetailsAsync(id);
+
+            //Assert the result
+            Assert.NotNull(actionResult);
+
+            //convert ActionResult to OkObjectResult to get its Value
+            var result = Assert.IsType<OkObjectResult>(actionResult.Result);
+            //get the ObjectResult.Value
+            var actualContactDto = result.Value as ContactWithAddressDTO;
+
+            //use FluentAssertions to compare Reference types
+            actualContactDto.Should().BeEquivalentTo(expectedContactDto, options => options.ComparingByMembers<ContactDTO>());
+        }
+
+
+        //Task<ActionResult<ContactDTO>> AddContactAsync([FromBody] Contact contact)
+        [Fact]
+        public async void AddContactAsync_Creates_One_Contact_And_Returns_201_And_Contact_Created()
+        {
+            //declare a contact
+            Contact contact = _contacts.First();
+            ContactDTO expectedDTO = _mapper.Map<ContactDTO>(contact);
+            
+            //set mockRepo return for Add action
+            _mockRepository.Setup(repo => repo.AddTAsync(contact)).ReturnsAsync(1);
+
+            //set repo return for getting the newly created object
+            _mockRepository.Setup(repo => repo.GetOneByAsync(co => co.Client_Id == contact.Client_Id &&
+                                                             co.Name == contact.Name &&
+                                                             co.Position == contact.Position)).ReturnsAsync(contact);
+
+            //instantiate the controller, passing the repo object
+            var controller = new ContactsController(_mockRepository.Object, _mapper, _logger);
+
+            //Call the SUT method
+            var actionResult = await controller.AddContactAsync(contact);
+
+            //Get the int result from the posted ActionResult
+            var createdResult = actionResult.Result as CreatedResult;
+            var statusCode = createdResult.StatusCode;
+            ContactDTO actualDto = createdResult.Value as ContactDTO;
+
+            //Assert the result
+            Assert.NotNull(actionResult);
+
+            //Validate returned status code
+            Assert.Equal(201, statusCode);
+
+            //Validate the result
+            actualDto.Should().BeEquivalentTo(expectedDTO, options => options.ComparingByMembers<ContactDTO>());
+        }
+
+
+        //Task<ActionResult<ContactDTO>> AddContactAsync([FromBody] Contact contact)
+        [Fact]
+        public async void AddContactAsync_Returns_NotFound_404_When_Create_With_null_Contact()
+        {
+            //Configure Repository Mock
+            _mockRepository.Setup(repo => repo.AddTAsync(null)).ReturnsAsync(0);
+            string expectedMessage = "No Contact was created";
+
+            //instantiate the controller, and call the method
+            var controller = new ContactsController(_mockRepository.Object, _mapper, _logger);
+
+            //Create Custom ControllerContext and add it to Controller for logging in the Controller in case of error
+            controller.ControllerContext = new ControllerContextModel();
+
+            //Call the SUT method - returns ActionResult<BillableActivity> type
+            var actionResult = await controller.AddContactAsync(new Contact());
+
+            //Assert the result
+            Assert.NotNull(actionResult);
+
+            var result = actionResult.Result as NotFoundObjectResult;
+            var statusCode = result.StatusCode;
+            var message = result.Value;
+
+            //Assert message
+            Assert.Equal(expectedMessage, message);
+
+            //Assert StatusCode
+            Assert.Equal(404, statusCode);
+        }
+
+        //Task<ActionResult<ContactDTO>> UpdateContactAsync([FromRoute] int id, [FromBody] Contact contact)
+        [Fact]
+        public async void UpdateContactAsync_Updates_One_Contact_And_Returns_200_And_Contact_Updated()
+        {
+            //declare a Contact
+            Contact contact = _contacts.FirstOrDefault();
+            ContactDTO expectedDto = _mapper.Map<ContactDTO>(contact);
+
+            //set repo return for getting the object to update
+            _mockRepository.Setup(repo => repo.GetOneByAsync(co => co.Id == contact.Id)).ReturnsAsync(contact);
+
+            //set mockRepo return for Update action
+            _mockRepository.Setup(repo => repo.UpdateTAsync(contact)).ReturnsAsync(1);
+
+            //instantiate the controller, passing the repo object
+            var controller = new ContactsController(_mockRepository.Object, _mapper, _logger);
+
+            //Call the SUT method
+            //returns ActionResult<BillableActivity> type
+            var actionResult = await controller.UpdateContactAsync(contact.Id, contact);
+
+            //Get the int result from the posted ActionResult
+            var okObjectResult = actionResult.Result as OkObjectResult;
+            var statusCode = okObjectResult.StatusCode;
+            ContactDTO dto = okObjectResult.Value as ContactDTO;
+
+            //Assert the result
+            Assert.NotNull(actionResult);
+
+            //Validate StatusCode
+            Assert.Equal(200, statusCode);
+
+            //Validate the actual BillableActivity
+            dto.Should().BeEquivalentTo(expectedDto, options => options.ComparingByMembers<ContactDTO>());
+        }
+
+        //Task<ActionResult<ContactDTO>> UpdateContactAsync([FromRoute] int id, [FromBody] Contact contact)
+        [Fact]
+        public async void UpdateContactAsync_Returns_NotFound_404_When_Update_With_null_Contact()
+        {
+            //declare a null Contact
+            Contact contact = null;
+            //expected return error message
+            string expectedResponseMessage = "No Contact was updated";
+
+            ///set mockRepo return for Update action
+            _mockRepository.Setup(repo => repo.UpdateTAsync(contact)).ReturnsAsync(0);
+
+            //instantiate the controller, and call the method
+            var controller = new ContactsController(_mockRepository.Object, _mapper, _logger);
+
+            //Create Custom ControllerContext and add it to Controller for logging in the Controller in case of error
+            controller.ControllerContext = new ControllerContextModel();
+
+            //Call the SUT method
+            //returns ActionResult<BillableActivity> type
+            var actionResult = await controller.UpdateContactAsync(1, contact);
+
+            //Get the int result from the posted ActionResult
+            var notFoundObjectResult = actionResult.Result as NotFoundObjectResult;
+            var statusCode = notFoundObjectResult.StatusCode;
+            string actualResponseMessage = (string)notFoundObjectResult.Value;
+
+            //Assert the result
+            Assert.NotNull(actionResult);
+
+            //Validate the return status code
+            Assert.Equal(404, statusCode);
+
+            //Validate the result
+            Assert.Equal(expectedResponseMessage, actualResponseMessage);
+        }
+
+        //=====> TODO: previous test, but with null id 
+        //Task<ActionResult<ContactDTO>> UpdateContactAsync([FromRoute] int id, [FromBody] Contact contact)
+        [Fact]
+        public async void UpdateContactAsync_Returns_NotFound_404_When_Update_With_null_Id()
+        {
+            //declare a null Contact
+            Contact contact = null;
+            //expected return error message
+            string expectedResponseMessage = "No Contact was updated";
+
+            ///set mockRepo return for Update action
+            _mockRepository.Setup(repo => repo.UpdateTAsync(contact)).ReturnsAsync(0);
+
+            //instantiate the controller, and call the method
+            var controller = new ContactsController(_mockRepository.Object, _mapper, _logger);
+
+            //Create Custom ControllerContext and add it to Controller for logging in the Controller in case of error
+            controller.ControllerContext = new ControllerContextModel();
+
+            //Call the SUT method
+            //returns ActionResult<BillableActivity> type
+            var actionResult = await controller.UpdateContactAsync(1, contact);
+
+            //Get the int result from the posted ActionResult
+            var notFoundObjectResult = actionResult.Result as NotFoundObjectResult;
+            var statusCode = notFoundObjectResult.StatusCode;
+            string actualResponseMessage = (string)notFoundObjectResult.Value;
+
+            //Assert the result
+            Assert.NotNull(actionResult);
+
+            //Validate the return status code
+            Assert.Equal(404, statusCode);
+
+            //Validate the result
+            Assert.Equal(expectedResponseMessage, actualResponseMessage);
+        }
+
+        
+        //Task<ActionResult<int>> DeleteContactAsync([FromRoute] int id)
+        [Theory]
+        [InlineData(1)]
+        public async void DeleteContactAsync_Deletes_One_Contact_And_Returns_Number_Of_Deletions(int id)
+        {
+            //declare a BillableActivity
+            Contact contact = _contacts.FirstOrDefault();
+
+            //set repo return for getting the object to delete
+            _mockRepository.Setup(repo => repo.GetOneByAsync(ba => ba.Id == id))
+                           .ReturnsAsync(contact);
+
+            //set mockRepo return for Delete action
+            _mockRepository.Setup(repo => repo.DeleteTAsync(contact)).ReturnsAsync(1);
+
+            //instantiate the controller, passing the repo object
+            var controller = new ContactsController(_mockRepository.Object, _mapper, _logger);
+
+            //Call the controller method
+            var actionResult = await controller.DeleteContactAsync(id);
+
+            //Get the int result
+            var okObjectResult = actionResult.Result as OkObjectResult;
+            var statusCode = okObjectResult.StatusCode;
+            int actualDeleted = (int)okObjectResult.Value;
+
+            //Assert the result
+            Assert.NotNull(actionResult);
+
+            //Validate StatusCode
+            Assert.Equal(200, statusCode);
+
+            //Validate the number of Contacts deleted
+            Assert.Equal(1, actualDeleted);
+        }
+
+
+        //Task<ActionResult<int>> DeleteContactAsync([FromRoute] int id)
+        [Theory]
+        [InlineData(0)]
+        [InlineData(99)]
+        public async void DeleteContactAsync_Returns_NotFound_404_When_Delete_With_non_existent_Id(int id)
+        {
+            //declare a null Contact
+            Contact contact = null;
+
+            //response error message:
+            string expectedResponseMessage = "No Contact was found";
+
+            //set repo return for getting the object to delete
+            _mockRepository.Setup(repo => repo.GetOneByAsync(ba => ba.Id == id))
+                           .ReturnsAsync(contact);
+
+            //set mockRepo return for Delete action
+            _mockRepository.Setup(repo => repo.DeleteTAsync(contact)).ReturnsAsync(0);
+
+            //instantiate the controller, and call the method
+            var controller = new ContactsController(_mockRepository.Object, _mapper, _logger);
+
+            //Create Custom ControllerContext and add it to Controller for logging in the Controller in case of error
+            controller.ControllerContext = new ControllerContextModel();
+
+            //Call the controller method
+            var actionResult = await controller.DeleteContactAsync(id);
+
+            //Get the int result
+            var notFoundObjectResult = actionResult.Result as NotFoundObjectResult;
+            var statusCode = notFoundObjectResult.StatusCode;
+            string actualResponseMessage = (string)notFoundObjectResult.Value;
+
+            //Assert the result
+            Assert.NotNull(actionResult);
+
+            //Validate StatusCode
+            Assert.Equal(404, statusCode);
+
+            //Validate result
+            Assert.Equal(expectedResponseMessage, actualResponseMessage);
+        }
     }
 }
