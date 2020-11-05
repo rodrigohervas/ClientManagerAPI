@@ -55,13 +55,13 @@ namespace ClientsManager.Tests.IntegrationTests
             //Act
             string uri = $"{url}?pageNumber={pageNumber}&pageSize={pageSize}";
             var httpResponse = await client.GetAsync(uri);
-            
-            //process Http response
-            var serializedResponse = await httpResponse.Content.ReadAsStringAsync();
-            var actualClients = JsonConvert.DeserializeObject<IEnumerable<Client>>(serializedResponse);
 
+            //process Http response
+            string serializedResponse = httpResponse.Content.ReadAsStringAsync().Result;
+            var actualClients = JsonConvert.DeserializeObject<IEnumerable<Client>>(serializedResponse);
+            
             //Assert
-            Assert.True(httpResponse.IsSuccessStatusCode);             
+            Assert.True(httpResponse.IsSuccessStatusCode);
 
             //use FluentAssertions to compare Collections of Reference types
             actualClients.Should().BeEquivalentTo(expectedClients, options => options.ComparingByMembers<Client>());
