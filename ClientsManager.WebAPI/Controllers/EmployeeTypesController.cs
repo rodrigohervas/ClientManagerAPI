@@ -140,6 +140,7 @@ namespace ClientsManager.WebAPI.Controllers
         /// <summary>
         /// Updates an existing EmployeeType
         /// </summary>
+        /// <param name="id">int - the employeeType id</param>
         /// <param name="employeeType">The EmployeeType object to update</param>
         /// <returns>Task&lt;ActionResult&lt;EmployeeTypeDTO&gt;&gt; - The updated EmployeeType</returns>
         /// <![CDATA[ <returns>Task<ActionResult<EmployeeTypeDTO>> - The updated EmployeeType</returns> ]]>

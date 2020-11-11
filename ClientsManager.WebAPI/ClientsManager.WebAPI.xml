@@ -97,13 +97,7 @@
             <!--IGenericRepository<BillableActivity> for DI -->
             </summary>
         </member>
-        <member name="M:ClientsManager.WebAPI.Controllers.BillableActivitiesController.#ctor(ClientsManager.Data.IGenericRepository{ClientsManager.Models.BillableActivity},AutoMapper.IMapper,Microsoft.Extensions.Logging.ILogger{ClientsManager.WebAPI.Controllers.BillableActivitiesController})">
-            <summary>
-            DI constructor injection of Respository
-            </summary>
-            <param name="genericRepository"> GenericRepository object</param>
-            <param name="mapper">AutoMapper Imapper object</param>
-        </member>
+        <!-- Badly formed XML comment ignored for member "M:ClientsManager.WebAPI.Controllers.BillableActivitiesController.#ctor(ClientsManager.Data.IGenericRepository{ClientsManager.Models.BillableActivity},AutoMapper.IMapper,Microsoft.Extensions.Logging.ILogger{ClientsManager.WebAPI.Controllers.BillableActivitiesController})" -->
         <member name="M:ClientsManager.WebAPI.Controllers.BillableActivitiesController.GetAllBillableActivitiesAsync(ClientsManager.Models.QueryStringParameters)">
             <summary>
             Async returns a list of all the available BillableActivities for the paging parameters
@@ -335,7 +329,7 @@
             <summary>
             Deletes an existing Employee
             </summary>
-            <param name="employee"> int - The Employee id</param>
+            <param name="id"> int - The Employee id</param>
             <returns>Task&lt;ActionResult&lt;int&gt;&gt; - The number of Employees deleted</returns>
             <![CDATA[ <returns>Task<ActionResult<int>> - The number of Employees deleted</returns> ]]>
         </member>
@@ -366,6 +360,7 @@
             <summary>
             Updates an existing EmployeeType
             </summary>
+            <param name="id">int - the employeeType id</param>
             <param name="employeeType">The EmployeeType object to update</param>
             <returns>Task&lt;ActionResult&lt;EmployeeTypeDTO&gt;&gt; - The updated EmployeeType</returns>
             <![CDATA[ <returns>Task<ActionResult<EmployeeTypeDTO>> - The updated EmployeeType</returns> ]]>

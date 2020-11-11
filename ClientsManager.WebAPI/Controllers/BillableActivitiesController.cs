@@ -36,6 +36,7 @@ namespace ClientsManager.WebAPI.Controllers
         /// </summary>
         /// <param name="genericRepository"> GenericRepository object</param>
         /// <param name="mapper">AutoMapper Imapper object</param>
+        /// <param name="logger">ILogger<BillableActivitiesController> object</param>
         public BillableActivitiesController(IGenericRepository<BillableActivity> genericRepository, IMapper mapper, ILogger<BillableActivitiesController> logger)
         {
             _genericRepository = genericRepository;

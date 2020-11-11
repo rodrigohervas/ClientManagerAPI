@@ -222,7 +222,7 @@ namespace ClientsManager.WebAPI.Controllers
         /// <summary>
         /// Deletes an existing Employee
         /// </summary>
-        /// <param name="employee"> int - The Employee id</param>
+        /// <param name="id"> int - The Employee id</param>
         /// <returns>Task&lt;ActionResult&lt;int&gt;&gt; - The number of Employees deleted</returns>
         /// <![CDATA[ <returns>Task<ActionResult<int>> - The number of Employees deleted</returns> ]]>
         // DELETE: employees/id
