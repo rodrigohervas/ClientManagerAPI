@@ -21,12 +21,14 @@ steps:
     command: 'restore'
     projects: '**/*.csproj'
     feedsToUse: 'select'
+  displayName: 'ClientsManager API Restore'
 
 - task: DotNetCoreCLI@2
   inputs:
     command: 'build'
     projects: '**/*.csproj'
     arguments: '--configuration $(buildConfiguration)'
+  displayName: 'ClientsManager API Build'
 
 - task: DotNetCoreCLI@2
   inputs:
@@ -34,10 +36,12 @@ steps:
     projects: '**/*Tests.csproj'
     arguments: '--configuration $(buildConfiguration)'
     testRunTitle: 'ClientsManagerAPI_Tests_Run'
+  displayName: 'ClientsManager API Test'
 
 - task: DotNetCoreCLI@2
   inputs:
     command: 'publish'
     publishWebProjects: true
     arguments: '--configuration $(buildConfiguration)  --output $(Build.ArtifactStagingDirectory)'
+  displayName: 'ClientsManager API Publish'
 
