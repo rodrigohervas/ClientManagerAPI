@@ -11,10 +11,22 @@
   },
   "parameters": {
     "resourceGroup": {
+      "Name": "resourceGroup",
+      "Type": "resourceGroup",
+      "Value": "dev"
+    },
+    "mssql1.subscriptionId": {
+      "Name": "mssql1.subscriptionId",
+      "Type": "subscription",
+      "Value": "4b7673ee-e0bd-4417-b4c5-1585e2b769e5"
+    },
+    "mssql1.resourceGroupName": {
+      "Name": "mssql1.resourceGroupName",
       "Type": "resourceGroup",
       "Value": "dev"
     },
     "subscriptionId": {
+      "Name": "subscriptionId",
       "Type": "subscription",
       "Value": "4b7673ee-e0bd-4417-b4c5-1585e2b769e5"
     }

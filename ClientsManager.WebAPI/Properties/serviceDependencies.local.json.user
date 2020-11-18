@@ -1,16 +1,13 @@
 {
-  "dependencies": {
-    "secrets1": {
-      "restored": true,
-      "restoreTime": "2020-09-08T17:35:02.4146547Z"
-    }
-  },
+  "dependencies": {},
   "parameters": {
     "resourceGroup": {
+      "Name": "resourceGroup",
       "Type": "resourceGroup",
       "Value": "dev"
     },
     "subscriptionId": {
+      "Name": "subscriptionId",
       "Type": "subscription",
       "Value": "4b7673ee-e0bd-4417-b4c5-1585e2b769e5"
     }
