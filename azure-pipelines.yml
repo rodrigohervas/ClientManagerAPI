@@ -1,7 +1,8 @@
-# ASP.NET Core
-# Build and test ASP.NET Core projects targeting .NET Core.
-# Add steps that run tests, create a NuGet package, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+# ClientsmanagerAPI CI Pipeline: 
+# Configures CI Pipeline.
+# Configures Restore, Build, Test and Publish tasks.
+# Publishes build artifact to Azure Pipelines
+
 
 trigger:
 - master
@@ -13,9 +14,6 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-#- script: dotnet build --configuration $(buildConfiguration)
-#  displayName: 'dotnet build $(buildConfiguration)'
-
 - task: DotNetCoreCLI@2
   inputs:
     command: 'restore'
@@ -47,4 +45,4 @@ steps:
   displayName: 'ClientsManager API Publish'
 
 #take all the files in $(Build.ArtifactStagingDirectory) and upload them as an artifact of your build
-#- task: PublishBuildArtifacts@1
+- task: PublishBuildArtifacts@1
